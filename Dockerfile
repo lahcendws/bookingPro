@@ -4,21 +4,21 @@ FROM node:20-alpine AS base
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # ── Install migration script deps ─────────────────
 FROM base AS script-deps
 WORKDIR /app/scripts
-COPY scripts/package.json ./
-RUN npm install --production
+COPY scripts/package.json scripts/yarn.lock* ./
+RUN yarn install --production --frozen-lockfile
 
 # ── Build ─────────────────────────────────────────
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN yarn run build
 
 # ── Production runner ─────────────────────────────
 FROM base AS runner
