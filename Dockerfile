@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # ── Install app deps ───────────────────────────────
 FROM base AS deps
@@ -37,6 +37,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=script-deps --chown=nextjs:nodejs /app/scripts/node_modules ./scripts/node_modules
 COPY --chown=nextjs:nodejs scripts/migrate.js ./scripts/migrate.js
 COPY --chown=nextjs:nodejs supabase/migrations/ ./supabase/migrations/
+COPY --chown=nextjs:nodejs certs/ ./certs/
 
 USER nextjs
 EXPOSE 3000
