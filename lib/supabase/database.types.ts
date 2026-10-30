@@ -9,6 +9,66 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      plans: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          price_monthly: number
+          price_yearly: number
+          appointments_limit: number | null
+          employees_limit: number | null
+          locations_limit: number | null
+          storage_limit_mb: number
+          sms_enabled: boolean
+          inventory_enabled: boolean
+          analytics_enabled: boolean
+          api_enabled: boolean
+          is_active: boolean
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          price_monthly?: number
+          price_yearly?: number
+          appointments_limit?: number | null
+          employees_limit?: number | null
+          locations_limit?: number | null
+          storage_limit_mb?: number
+          sms_enabled?: boolean
+          inventory_enabled?: boolean
+          analytics_enabled?: boolean
+          api_enabled?: boolean
+          is_active?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          price_monthly?: number
+          price_yearly?: number
+          appointments_limit?: number | null
+          employees_limit?: number | null
+          locations_limit?: number | null
+          storage_limit_mb?: number
+          sms_enabled?: boolean
+          inventory_enabled?: boolean
+          analytics_enabled?: boolean
+          api_enabled?: boolean
+          is_active?: boolean
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       businesses: {
         Row: {
           id: string
@@ -50,6 +110,12 @@ export type Database = {
           brand_color: string | null
           notification_language: string | null
           enabled_modules: string[] | null
+          plan_id: string | null
+          subscription_status: string
+          trial_ends_at: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          stripe_price_id: string | null
           created_at: string
           updated_at: string
         }
@@ -93,6 +159,12 @@ export type Database = {
           brand_color?: string | null
           notification_language?: string | null
           enabled_modules?: string[] | null
+          plan_id?: string | null
+          subscription_status?: string
+          trial_ends_at?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_price_id?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -136,6 +208,12 @@ export type Database = {
           brand_color?: string | null
           notification_language?: string | null
           enabled_modules?: string[] | null
+          plan_id?: string | null
+          subscription_status?: string
+          trial_ends_at?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_price_id?: string | null
           created_at?: string
           updated_at?: string
         }
