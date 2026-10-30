@@ -60,10 +60,10 @@ export function slugify(text: string): string {
 }
 
 export function getTenantSlug(hostname: string): string | null {
-  // salon-maya.trypronto.app → salon-maya
+  // salon-maya.bookingpro.app → salon-maya
   // localhost:3000 → null (dev mode)
   const parts = hostname.split('.')
-  if (parts.length >= 3 && parts[1] === 'trypronto') {
+  if (parts.length >= 3 && parts[1] === 'bookingpro') {
     return parts[0]
   }
   return null

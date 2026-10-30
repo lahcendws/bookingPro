@@ -28,15 +28,15 @@ export const metadata: Metadata = {
     'WhatsApp booking',
   ],
   alternates: {
-    canonical: 'https://trypronto.app/',
+    canonical: 'https://bookingpro.app/',
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/',
+    url: 'https://bookingpro.app/',
     title: 'BookingPro — Free Open Source POS & CRM for Service Businesses',
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
-    images: [{ url: 'https://trypronto.app/og-image.png' }],
+    images: [{ url: 'https://bookingpro.app/og-image.png' }],
     locale: 'en_US',
     siteName: 'BookingPro',
   },
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: 'BookingPro — Free Open Source POS & CRM for Service Businesses',
     description:
       'Self-hosted POS, CRM, Booking and Omnichannel notifications. Zero commission. One command install.',
-    images: ['https://trypronto.app/og-image.png'],
+    images: ['https://bookingpro.app/og-image.png'],
   },
 }
 
@@ -53,7 +53,7 @@ const softwareAppJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'BookingPro',
-  url: 'https://trypronto.app',
+  url: 'https://bookingpro.app',
   description:
     'Free open-source POS, CRM, inventory and appointment booking for service businesses.',
   applicationCategory: 'BusinessApplication',
@@ -116,8 +116,8 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'BookingPro',
-  url: 'https://trypronto.app',
-  logo: 'https://trypronto.app/logo.png',
+  url: 'https://bookingpro.app',
+  logo: 'https://bookingpro.app/logo.png',
   sameAs: ['https://github.com/SGrappelli/BookingPro'],
 }
 
@@ -409,7 +409,7 @@ export default function RootPage() {
             {/* CLOUD */}
             <div className={`${styles.pathCard} ${styles.cloud}`}>
               <div className={styles.pathLabel}>Option 2</div>
-              <h3>Cloud — trypronto.app</h3>
+              <h3>Cloud — bookingpro.app</h3>
               <p className={styles.pathDesc}>
                 No server needed. Ready in 5 minutes. Your own subdomain. We handle updates,
                 backups, and infrastructure.
@@ -431,7 +431,7 @@ export default function RootPage() {
                 <div className={styles.pathPoint}>
                   <div className={styles.pathPointDot}></div>
                   <div className={styles.pathPointText}>
-                    <strong>Your own subdomain</strong> — salon-maya.trypronto.app or custom domain
+                    <strong>Your own subdomain</strong> — salon-maya.bookingpro.app or custom domain
                     on Pro+
                   </div>
                 </div>

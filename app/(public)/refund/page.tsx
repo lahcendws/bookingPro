@@ -87,8 +87,8 @@ export default function RefundPage() {
             <ol className="list-decimal pl-6 space-y-2">
               <li>
                 Email us at{' '}
-                <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
-                  support@trypronto.app
+                <a href="mailto:support@bookingpro.app" className="text-blue-600 hover:underline">
+                  support@bookingpro.app
                 </a>{' '}
                 with the subject line <strong>&ldquo;Refund Request&rdquo;</strong>.
               </li>
@@ -126,8 +126,8 @@ export default function RefundPage() {
               <p className="font-medium text-gray-900">BookingPro Support</p>
               <p>
                 Email:{' '}
-                <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
-                  support@trypronto.app
+                <a href="mailto:support@bookingpro.app" className="text-blue-600 hover:underline">
+                  support@bookingpro.app
                 </a>
               </p>
               <p>

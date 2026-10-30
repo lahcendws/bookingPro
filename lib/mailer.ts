@@ -87,7 +87,7 @@ export async function sendMail(msg: MailMessage): Promise<{ id?: string; error?:
  *  "BookingPro <noreply@...>" → "Ananda <noreply@...>"
  */
 export function getFromAddress(businessName?: string): string {
-  const base = process.env.RESEND_FROM_EMAIL ?? process.env.SMTP_FROM ?? 'BookingPro <noreply@trypronto.app>'
+  const base = process.env.RESEND_FROM_EMAIL ?? process.env.SMTP_FROM ?? 'BookingPro <noreply@bookingpro.app>'
   if (!businessName) return base
   // Заменяем всё до '<' на имя бизнеса, сохраняя email-адрес
   return base.replace(/^[^<]*</, `${businessName} <`)

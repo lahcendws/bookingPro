@@ -19,7 +19,7 @@ export default async function OnboardingPage() {
   if (business.onboarding_completed) {
     const isSaas = process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas'
     if (isSaas && business.slug) {
-      const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'
+      const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'bookingpro.app'
       redirect(`https://${business.slug}.${rootDomain}/dashboard`)
     }
     redirect('/dashboard')
@@ -32,7 +32,7 @@ export default async function OnboardingPage() {
       initialSlug={business.slug ?? ''}
       initialName={business.name ?? ''}
       isSaas={isSaas}
-      rootDomain={process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'trypronto.app'}
+      rootDomain={process.env.NEXT_PUBLIC_ROOT_DOMAIN ?? 'bookingpro.app'}
     />
   )
 }

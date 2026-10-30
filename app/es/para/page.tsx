@@ -8,20 +8,20 @@ export const metadata: Metadata = {
   keywords:
     'software para negocios de servicios, POS para pequeños negocios, software de reservas gratis, programa para salón de belleza, software para barbería, sistema para taller mecánico, software clínica dental, gestión gimnasio, POS cafetería, software código abierto negocios',
   alternates: {
-    canonical: 'https://trypronto.app/es/para',
+    canonical: 'https://bookingpro.app/es/para',
     languages: {
-      en: 'https://trypronto.app',
-      es: 'https://trypronto.app/es/para',
-      'x-default': 'https://trypronto.app',
+      en: 'https://bookingpro.app',
+      es: 'https://bookingpro.app/es/para',
+      'x-default': 'https://bookingpro.app',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/para',
+    url: 'https://bookingpro.app/es/para',
     title: 'BookingPro para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
-    images: [{ url: 'https://trypronto.app/og-image-es.png' }],
+    images: [{ url: 'https://bookingpro.app/og-image-es.png' }],
     locale: 'es_ES',
     siteName: 'BookingPro',
   },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: 'BookingPro para Negocios de Servicios — POS, Reservas y CRM Gratis',
     description:
       'POS, CRM y reservas gratis para cualquier negocio de servicios. Sin comisiones. Self-hosted o en la nube.',
-    images: ['https://trypronto.app/og-image-es.png'],
+    images: ['https://bookingpro.app/og-image-es.png'],
   },
 }
 
@@ -38,9 +38,9 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://trypronto.app' },
-    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
-    { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://trypronto.app/es/para' },
+    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://bookingpro.app' },
+    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://bookingpro.app/es/' },
+    { '@type': 'ListItem', position: 3, name: 'Para negocios', item: 'https://bookingpro.app/es/para' },
   ],
 }
 
@@ -49,14 +49,14 @@ const itemListSchema = {
   '@type': 'ItemList',
   name: 'BookingPro para negocios de servicios',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Salones de belleza', url: 'https://trypronto.app/es/para/salones' },
-    { '@type': 'ListItem', position: 2, name: 'Barberías', url: 'https://trypronto.app/es/para/barberia' },
-    { '@type': 'ListItem', position: 3, name: 'Talleres de autos', url: 'https://trypronto.app/es/para/autoservicio' },
-    { '@type': 'ListItem', position: 4, name: 'Clínicas dentales', url: 'https://trypronto.app/es/para/dental' },
-    { '@type': 'ListItem', position: 5, name: 'Gimnasios', url: 'https://trypronto.app/es/para/gimnasio' },
-    { '@type': 'ListItem', position: 6, name: 'Cafeterías', url: 'https://trypronto.app/es/para/cafeteria' },
-    { '@type': 'ListItem', position: 7, name: 'Masajes y spa', url: 'https://trypronto.app/es/para/spa' },
-    { '@type': 'ListItem', position: 8, name: 'Estudios de tatuajes', url: 'https://trypronto.app/es/para/tatuajes' },
+    { '@type': 'ListItem', position: 1, name: 'Salones de belleza', url: 'https://bookingpro.app/es/para/salones' },
+    { '@type': 'ListItem', position: 2, name: 'Barberías', url: 'https://bookingpro.app/es/para/barberia' },
+    { '@type': 'ListItem', position: 3, name: 'Talleres de autos', url: 'https://bookingpro.app/es/para/autoservicio' },
+    { '@type': 'ListItem', position: 4, name: 'Clínicas dentales', url: 'https://bookingpro.app/es/para/dental' },
+    { '@type': 'ListItem', position: 5, name: 'Gimnasios', url: 'https://bookingpro.app/es/para/gimnasio' },
+    { '@type': 'ListItem', position: 6, name: 'Cafeterías', url: 'https://bookingpro.app/es/para/cafeteria' },
+    { '@type': 'ListItem', position: 7, name: 'Masajes y spa', url: 'https://bookingpro.app/es/para/spa' },
+    { '@type': 'ListItem', position: 8, name: 'Estudios de tatuajes', url: 'https://bookingpro.app/es/para/tatuajes' },
   ],
 }
 

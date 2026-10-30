@@ -1,5 +1,5 @@
 /**
- * Pronto — automatic database migration runner
+ * BookingPro — automatic database migration runner
  *
  * Reads SQL files from supabase/migrations/ in order and applies any that
  * haven't been applied yet.  Applied migrations are tracked in the

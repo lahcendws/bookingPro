@@ -161,7 +161,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   useEffect(() => { setOrigin(window.location.origin) }, [])
   const bookingUrl = useMemo(() => {
     if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas') {
-      const baseDomain = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://trypronto.app')
+      const baseDomain = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://bookingpro.app')
         .replace(/^https?:\/\//, '').replace(/\/$/, '')
       return `https://${slug}.${baseDomain}/book`
     }

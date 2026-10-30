@@ -153,7 +153,7 @@ export async function GET(req: NextRequest) {
   ]
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' })
-  const filename = `pronto-sales-${fileFrom}-${fileTo}.xlsx`
+  const filename = `bookingpro-sales-${fileFrom}-${fileTo}.xlsx`
 
   return new NextResponse(buffer, {
     headers: {

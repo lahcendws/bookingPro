@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
           [
             `👋 Hi ${senderName}!`,
             ``,
-            `You are now connected to ${biz.name} on Pronto.`,
+            `You are now connected to ${biz.name} on BookingPro.`,
             ``,
             `You'll receive notifications here:`,
             `• 📅 New bookings`,
@@ -207,7 +207,7 @@ export async function POST(req: NextRequest) {
           biz.viber_bot_token,
           senderId,
           [
-            `Pronto Bot — available commands:`,
+            `BookingPro Bot — available commands:`,
             ``,
             `/today — today's appointments (owner only)`,
             `/link {phone} — link your Viber to your client profile`,

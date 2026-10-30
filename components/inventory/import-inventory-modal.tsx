@@ -196,7 +196,7 @@ export function ImportInventoryModal({ open, onClose, onImported }: Props) {
     ]
     const wb = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(wb, ws, 'Products')
-    XLSX.writeFile(wb, 'pronto-products-template.xlsx')
+    XLSX.writeFile(wb, 'bookingpro-products-template.xlsx')
   }
 
   const processFile = useCallback(async (file: File) => {

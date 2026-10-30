@@ -20,7 +20,7 @@ export default function PrivacyPage() {
               BookingPro (&ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or
               &ldquo;our&rdquo;) is committed to protecting your personal data. This Privacy Policy
               explains what data we collect when you use{' '}
-              <span className="font-medium">trypronto.app</span> (&ldquo;Service&rdquo;), how we
+              <span className="font-medium">bookingpro.app</span> (&ldquo;Service&rdquo;), how we
               use it, and your rights regarding that data. This policy is compliant with the
               General Data Protection Regulation (GDPR) and other applicable privacy laws.
             </p>
@@ -190,8 +190,8 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-3">
               To exercise any of these rights, contact us at{' '}
-              <a href="mailto:privacy@trypronto.app" className="text-blue-600 hover:underline">
-                privacy@trypronto.app
+              <a href="mailto:privacy@bookingpro.app" className="text-blue-600 hover:underline">
+                privacy@bookingpro.app
               </a>
               . We will respond within 30 days.
             </p>
@@ -237,7 +237,7 @@ export default function PrivacyPage() {
                   privacy@trypronto.app
                 </a>
               </p>
-              <p>Website: trypronto.app</p>
+              <p>Website: bookingpro.app</p>
             </div>
           </section>
 

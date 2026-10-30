@@ -34,12 +34,12 @@ const withSerwist = require('@serwist/next').default({
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 // Build the list of allowed origins for Server Actions.
-// Always includes localhost (dev) and trypronto.app (SaaS).
+// Always includes localhost (dev) and bookingpro.app (SaaS).
 // Self-hosted: NEXT_PUBLIC_APP_URL is added automatically so server
 // actions work when the app is deployed on a custom domain.
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
 const appHost = appUrl ? appUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : null
-const allowedOrigins = ['localhost:3000', '*.trypronto.app']
+const allowedOrigins = ['localhost:3000', '*.bookingpro.app']
 if (appHost && !allowedOrigins.includes(appHost)) {
   allowedOrigins.push(appHost)
 }
