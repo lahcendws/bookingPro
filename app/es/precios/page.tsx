@@ -29,20 +29,20 @@ export const metadata: Metadata = {
     'BookingPro precios planes',
   ],
   alternates: {
-    canonical: 'https://trypronto.app/es/precios',
+    canonical: 'https://bookingpro.app/es/precios',
     languages: {
-      en: 'https://trypronto.app',
-      es: 'https://trypronto.app/es/precios',
-      'x-default': 'https://trypronto.app',
+      en: 'https://bookingpro.app',
+      es: 'https://bookingpro.app/es/precios',
+      'x-default': 'https://bookingpro.app',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/precios',
+    url: 'https://bookingpro.app/es/precios',
     title: 'Precios de BookingPro — Desde $0 al mes. Sin comisiones.',
     description:
       'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
-    images: [{ url: 'https://trypronto.app/og-pricing-es.png' }],
+    images: [{ url: 'https://bookingpro.app/og-pricing-es.png' }],
     locale: 'es_ES',
     siteName: 'BookingPro',
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: 'Precios de BookingPro — Desde $0 al mes. Sin comisiones.',
     description:
       'Plan gratuito para siempre en self-hosted. Planes en la nube desde $19 al mes con 14 días de prueba gratis. Sin tarjeta de crédito.',
-    images: ['https://trypronto.app/og-pricing-es.png'],
+    images: ['https://bookingpro.app/og-pricing-es.png'],
   },
 }
 
@@ -77,7 +77,7 @@ const faqJsonLd = {
     },
     {
       '@type': 'Question',
-      name: '¿Pronto cobra comisión por reservas o ventas?',
+      name: '¿BookingPro cobra comisión por reservas o ventas?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'No. BookingPro nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
@@ -88,7 +88,7 @@ const faqJsonLd = {
       name: '¿Cuál es la diferencia entre self-hosted y la nube?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Con self-hosted instalas BookingPro en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en trypronto.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
+        text: 'Con self-hosted instalas BookingPro en tu propio servidor con un solo comando (docker compose up -d). Es gratis para siempre, sin límites, y tus datos nunca salen de tu máquina. Con la nube en bookingpro.app no necesitas servidor: estás listo en 5 minutos y nosotros nos encargamos de las actualizaciones, copias de seguridad y el uptime.',
       },
     },
     {
@@ -130,9 +130,9 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://trypronto.app' },
-    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://trypronto.app/es/' },
-    { '@type': 'ListItem', position: 3, name: 'Precios', item: 'https://trypronto.app/es/precios' },
+    { '@type': 'ListItem', position: 1, name: 'BookingPro', item: 'https://bookingpro.app' },
+    { '@type': 'ListItem', position: 2, name: 'Inicio', item: 'https://bookingpro.app/es/' },
+    { '@type': 'ListItem', position: 3, name: 'Precios', item: 'https://bookingpro.app/es/precios' },
   ],
 }
 
@@ -281,7 +281,7 @@ export default function EsPreciosPage() {
             <p className="text-center text-sm text-gray-500 mt-10">
               Todos los precios en USD. Facturación mensual.{' '}
               ¿Tienes preguntas?{' '}
-              <a href="mailto:hello@trypronto.app" className="text-blue-600 hover:underline">
+              <a href="mailto:hello@bookingpro.app" className="text-blue-600 hover:underline">
                 Escríbenos
               </a>
               .
@@ -298,7 +298,7 @@ export default function EsPreciosPage() {
               <div className="divide-y divide-gray-100 border-t border-gray-100">
                 {[
                   {
-                    q: '¿Pronto tiene un plan gratuito?',
+                    q: '¿BookingPro tiene un plan gratuito?',
                     a: 'Sí. El plan Gratis no tiene fecha de vencimiento — incluye POS, CRM, inventario, página de reservas en línea y notificaciones por Email para 1 empleado y hasta 100 clientes. Además, la versión self-hosted es completamente gratuita sin ningún límite bajo licencia MIT.',
                   },
                   {
@@ -306,7 +306,7 @@ export default function EsPreciosPage() {
                     a: 'Sí. Los planes Starter, Pro y Agency incluyen 14 días de prueba gratuita. No se requiere tarjeta de crédito para comenzar. Puedes cancelar en cualquier momento antes de que termine el período de prueba sin cargo alguno.',
                   },
                   {
-                    q: '¿Pronto cobra comisión por reservas o ventas?',
+                    q: '¿BookingPro cobra comisión por reservas o ventas?',
                     a: 'No. BookingPro nunca cobra comisión por tus reservas ni por tus ventas. Ni en el plan gratuito ni en los de pago. Tus clientes reservan directamente contigo y tú recibes el 100% de tus ingresos.',
                   },
                   {

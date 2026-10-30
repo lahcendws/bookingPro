@@ -22,14 +22,14 @@
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- Удаляем задачу если уже существует (чтобы можно было перезапустить миграцию)
-select cron.unschedule('pronto-notify') where exists (
-  select 1 from cron.job where jobname = 'pronto-notify'
+select cron.unschedule('bookingpro-notify') where exists (
+  select 1 from cron.job where jobname = 'bookingpro-notify'
 );
 
 -- Создаём задачу: каждые 15 минут вызываем /api/cron/notify
 -- pg_net.http_get — встроенный в Supabase способ делать HTTP-запросы из базы данных
 select cron.schedule(
-  'pronto-notify',        -- имя задачи (уникальное)
+  'bookingpro-notify',        -- имя задачи (уникальное)
   '*/15 * * * *',         -- расписание: каждые 15 минут
   $$
   select net.http_get(
@@ -42,7 +42,7 @@ select cron.schedule(
 );
 
 -- После запуска можно проверить что задача создана:
--- SELECT * FROM cron.job WHERE jobname = 'pronto-notify';
+-- SELECT * FROM cron.job WHERE jobname = 'bookingpro-notify';
 --
 -- Посмотреть историю запусков (последние выполнения):
--- SELECT * FROM cron.job_run_details WHERE jobname = 'pronto-notify' ORDER BY start_time DESC LIMIT 10;
+-- SELECT * FROM cron.job_run_details WHERE jobname = 'bookingpro-notify' ORDER BY start_time DESC LIMIT 10;

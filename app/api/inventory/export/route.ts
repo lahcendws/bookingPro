@@ -52,7 +52,7 @@ export async function GET(_req: NextRequest) {
   ]
 
   const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' })
-  const filename = `pronto-products-${new Date().toISOString().slice(0, 10)}.xlsx`
+  const filename = `bookingpro-products-${new Date().toISOString().slice(0, 10)}.xlsx`
 
   return new NextResponse(buffer, {
     headers: {

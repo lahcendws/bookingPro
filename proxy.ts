@@ -4,10 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
-  // SaaS subdomain routing: rewrite openyoga.trypronto.app/book → /book/openyoga
+  // SaaS subdomain routing: rewrite openyoga.bookingpro.app/book → /book/openyoga
   if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas' && pathname === '/book') {
     const hostname = request.headers.get('host') ?? ''
-    const match = hostname.match(/^([a-z0-9-]+)\.trypronto\.app/)
+    const match = hostname.match(/^([a-z0-9-]+)\.bookingpro\.app/)
     const tenantSlug = match?.[1]
     if (tenantSlug && tenantSlug !== 'www') {
       const rewriteUrl = request.nextUrl.clone()

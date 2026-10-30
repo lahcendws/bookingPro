@@ -1,6 +1,6 @@
 {
-  "name": "Pronto",
-  "short_name": "Pronto",
+  "name": "BookingPro",
+  "short_name": "BookingPro",
   "description": "Free open-source POS, CRM & booking for service businesses",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },

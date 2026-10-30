@@ -31,7 +31,7 @@ export default function TermsPage() {
               medium businesses. The Service includes point-of-sale (POS), customer relationship
               management (CRM), inventory management, appointment booking, and omnichannel
               notification features accessible at{' '}
-              <span className="font-medium">trypronto.app</span> and related subdomains.
+              <span className="font-medium">bookingpro.app</span> and related subdomains.
             </p>
           </section>
 
@@ -42,8 +42,8 @@ export default function TermsPage() {
               information. You are responsible for maintaining the confidentiality of your
               credentials and for all activity that occurs under your account. You must notify us
               immediately at{' '}
-              <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
-                support@trypronto.app
+              <a href="mailto:support@bookingpro.app" className="text-blue-600 hover:underline">
+                support@bookingpro.app
               </a>{' '}
               if you suspect unauthorized access.
             </p>
@@ -190,8 +190,8 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">14. Contact</h2>
             <p>
               Questions about these Terms? Contact us at{' '}
-              <a href="mailto:support@trypronto.app" className="text-blue-600 hover:underline">
-                support@trypronto.app
+              <a href="mailto:support@bookingpro.app" className="text-blue-600 hover:underline">
+                support@bookingpro.app
               </a>
               .
             </p>

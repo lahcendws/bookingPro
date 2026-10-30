@@ -1,5 +1,5 @@
 {
-  "name": "pronto-migrate",
+  "name": "bookingpro-migrate",
   "private": true,
   "dependencies": {
     "pg": "^8.22.0"

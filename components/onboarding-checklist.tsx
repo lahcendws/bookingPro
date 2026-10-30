@@ -5,8 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
-const DISMISSED_KEY = 'pronto_onboarding_dismissed'
-const COMPLETE_KEY = 'pronto_onboarding_complete'
+const DISMISSED_KEY = 'bookingpro_onboarding_dismissed'
+const COMPLETE_KEY = 'bookingpro_onboarding_complete'
 
 interface Props {
   businessId: string

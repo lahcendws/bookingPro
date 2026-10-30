@@ -29,20 +29,20 @@ export const metadata: Metadata = {
     'software código abierto negocios servicios',
   ],
   alternates: {
-    canonical: 'https://trypronto.app/es/',
+    canonical: 'https://bookingpro.app/es/',
     languages: {
-      en: 'https://trypronto.app/',
-      es: 'https://trypronto.app/es/',
-      'x-default': 'https://trypronto.app/',
+      en: 'https://bookingpro.app/',
+      es: 'https://bookingpro.app/es/',
+      'x-default': 'https://bookingpro.app/',
     },
   },
   openGraph: {
     type: 'website',
-    url: 'https://trypronto.app/es/',
+    url: 'https://bookingpro.app/es/',
     title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
     description:
       'POS, CRM, reservas y notificaciones omnicanal para cualquier negocio de servicios. Sin comisiones. Una sola instalación.',
-    images: [{ url: 'https://trypronto.app/og-image-es.png' }],
+    images: [{ url: 'https://bookingpro.app/og-image-es.png' }],
     locale: 'es_ES',
     siteName: 'BookingPro',
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
     description:
       'POS, CRM, reservas y notificaciones omnicanal para cualquier negocio de servicios. Sin comisiones. Una sola instalación.',
-    images: ['https://trypronto.app/og-image-es.png'],
+    images: ['https://bookingpro.app/og-image-es.png'],
   },
 }
 
@@ -134,9 +134,9 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'BookingPro',
-  url: 'https://trypronto.app',
-  logo: 'https://trypronto.app/logo.png',
-  sameAs: ['https://github.com/SGrappelli/pronto'],
+  url: 'https://bookingpro.app',
+  logo: 'https://bookingpro.app/logo.png',
+  sameAs: ['https://github.com/SGrappelli/BookingPro'],
 }
 
 export default function EsPage() {
@@ -415,7 +415,7 @@ export default function EsPage() {
               </div>
               <br />
               <a
-                href="https://github.com/SGrappelli/pronto"
+                href="https://github.com/SGrappelli/BookingPro"
                 className={styles.btnOutline}
                 style={{ marginTop: '16px' }}
                 target="_blank"
@@ -431,7 +431,7 @@ export default function EsPage() {
             {/* CLOUD */}
             <div className={`${styles.pathCard} ${styles.cloud}`}>
               <div className={styles.pathLabel}>Opción 2</div>
-              <h3>Nube — trypronto.app</h3>
+              <h3>Nube — bookingpro.app</h3>
               <p className={styles.pathDesc}>
                 Sin servidor propio. Listo en 5 minutos. Tu subdominio personalizado. Nosotros nos
                 encargamos de las actualizaciones, copias de seguridad e infraestructura.
@@ -457,7 +457,7 @@ export default function EsPage() {
                 <div className={styles.pathPoint}>
                   <div className={styles.pathPointDot}></div>
                   <div className={styles.pathPointText}>
-                    <strong>Tu propio subdominio</strong> — salon-maya.trypronto.app o dominio
+                    <strong>Tu propio subdominio</strong> — salon-maya.bookingpro.app o dominio
                     personalizado en Pro+
                   </div>
                 </div>

@@ -9,7 +9,7 @@
  *  - clients_cache         — client list
  */
 
-const DB_NAME = 'pronto-offline'
+const DB_NAME = 'bookingpro-offline'
 const DB_VERSION = 1
 
 // ─── Types ───────────────────────────────────────────────────────────────────

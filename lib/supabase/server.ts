@@ -2,8 +2,8 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers';
 import type { Database } from './database.types'
 
-// In SaaS mode, cookies must be shared across *.trypronto.app subdomains
-// so that a user authenticated on trypronto.app can access their subdomain dashboard.
+// In SaaS mode, cookies must be shared across subdomains
+// so that a user authenticated on the main domain can access their subdomain dashboard.
 function cookieDomain(): string | undefined {
   if (
     process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas' &&

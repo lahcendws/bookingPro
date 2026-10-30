@@ -36,11 +36,11 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    images: [{ url: 'https://trypronto.app/og-image.png', width: 1200, height: 630 }],
+    images: [{ url: 'https://bookingpro.app/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['https://trypronto.app/og-image.png'],
+    images: ['https://bookingpro.app/og-image.png'],
   },
 }
 
