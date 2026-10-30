@@ -5,7 +5,7 @@ const eslintConfig = [
     // Flat config only auto-ignores node_modules — build output and any
     // stray untracked artifact directories need to be excluded explicitly,
     // or eslint lints generated/minified JS as if it were source.
-    ignores: ['.next/**', '.next-*/**', 'public/**', 'next-env.d.ts'],
+    ignores: ['.next/**', '.next-*/**', 'public/**', 'next-env.d.ts', '__tests__/**', 'e2e/**'],
   },
   ...nextCoreWebVitals,
   {
