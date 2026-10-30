@@ -1,20 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from '../landing.module.css'
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-bricolage',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
-})
+// Using system fonts for offline Docker builds
+// These pages redirect to /login in self-hosted mode anyway
+const fontVariables = {
+  style: {
+    '--font-bricolage': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    '--font-dm-sans': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  } as React.CSSProperties,
+}
 
 export const metadata: Metadata = {
   title: 'BookingPro — Software Gratis de POS, CRM y Reservas para Negocios de Servicios',
@@ -149,7 +145,7 @@ export default function EsPage() {
   }
 
   return (
-    <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+    <div className={styles.page} style={fontVariables.style}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
