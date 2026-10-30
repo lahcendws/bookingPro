@@ -1,22 +1,17 @@
 import Link from 'next/link'
-import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import styles from './public-layout.module.css'
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-bricolage',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
-})
+// Using system fonts for offline Docker builds
+const fontVariables = {
+  style: {
+    '--font-bricolage': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    '--font-dm-sans': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  } as React.CSSProperties,
+}
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+    <div className={styles.page} style={fontVariables.style}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.navBrand}>
           BookingPro<span>.</span>

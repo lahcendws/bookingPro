@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const interClassName = 'font-sans'
 
 export const metadata: Metadata = {
   title: 'BookingPro — Business Management for Service SMBs',
@@ -62,7 +61,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={inter.className}>
+      <body className={interClassName} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

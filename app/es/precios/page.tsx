@@ -1,22 +1,17 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Bricolage_Grotesque, DM_Sans } from 'next/font/google'
 import { Check, Minus } from 'lucide-react'
 import { PricingCards } from './PricingCards'
 import styles from '../../(public)/public-layout.module.css'
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-bricolage',
-})
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
-})
+// Using system fonts for offline Docker builds
+const fontVariables = {
+  style: {
+    '--font-bricolage': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    '--font-dm-sans': 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  } as React.CSSProperties,
+}
 
 export const metadata: Metadata = {
   title: 'Precios de BookingPro — Software Gratis de Gestión para Negocios de Servicios',
@@ -191,7 +186,7 @@ export default function EsPreciosPage() {
   }
 
   return (
-    <div className={`${styles.page} ${bricolage.variable} ${dmSans.variable}`}>
+    <div className={styles.page} style={fontVariables.style}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
