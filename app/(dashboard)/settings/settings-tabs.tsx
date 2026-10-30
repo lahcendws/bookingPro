@@ -877,6 +877,93 @@ export function SettingsTabs({ business: initial, services: initServices, employ
         </div>
       )}
 
+      {/* Billing & Subscription */}
+      {tab === 'billing' && (
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-gray-900 mb-2">Subscription & Plans</h2>
+            <p className="text-sm text-gray-500 mb-6">Manage your BookingPro subscription plan and 14-day free trial.</p>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { name: 'Free', slug: 'free', price: '$0', desc: 'Basic features for starting out', features: ['50 appointments/mo', '1 employee', 'Basic booking page'] },
+                { name: 'Pro', slug: 'pro', price: '$29/mo', desc: 'For growing independent professionals', features: ['500 appointments/mo', '5 employees', 'SMS & Inventory enabled', 'Analytics'] },
+                { name: 'Business', slug: 'business', price: '$79/mo', desc: 'For busy salons & clinics', features: ['Unlimited appointments', '15 employees', '3 locations', 'API access'] },
+                { name: 'Enterprise', slug: 'enterprise', price: '$199/mo', desc: 'Custom scaling for large businesses', features: ['Unlimited everything', 'Dedicated support', 'Custom integrations'] },
+              ].map((p) => (
+                <div key={p.slug} className={`border rounded-xl p-5 flex flex-col justify-between transition-all ${biz.plan === p.slug ? 'border-blue-600 ring-2 ring-blue-600/20 bg-blue-50/30' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="font-bold text-gray-900">{p.name}</h3>
+                      {biz.plan === p.slug && <Badge variant="success">Current Plan</Badge>}
+                    </div>
+                    <div className="text-2xl font-extrabold text-gray-900 mb-1">{p.price}</div>
+                    <p className="text-xs text-gray-500 mb-4">{p.desc}</p>
+                    <ul className="text-xs text-gray-600 space-y-1.5 mb-6">
+                      {p.features.map((f, i) => (
+                        <li key={i} className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />{f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    {p.slug === 'free' ? (
+                      <Button
+                        variant="outline"
+                        className="w-full text-xs"
+                        onClick={async () => {
+                          const res = await fetch('/api/business/plan', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ planSlug: 'free', startTrial: false }),
+                          })
+                          if (res.ok) router.refresh()
+                        }}
+                      >
+                        Select Free
+                      </Button>
+                    ) : (
+                      <div className="space-y-2">
+                        <Button
+                          className="w-full text-xs bg-blue-600 hover:bg-blue-700 text-white"
+                          onClick={async () => {
+                            const res = await fetch('/api/business/plan', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ planSlug: p.slug, startTrial: true }),
+                            })
+                            if (res.ok) router.refresh()
+                          }}
+                        >
+                          Start 14-Day Free Trial
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="w-full text-xs"
+                          onClick={async () => {
+                            const res = await fetch('/api/stripe/checkout', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ planSlug: p.slug, billingCycle: 'monthly' }),
+                            })
+                            const data = await res.json()
+                            if (data.url) window.location.href = data.url
+                            else if (data.checkoutUrl) window.location.href = data.checkoutUrl
+                          }}
+                        >
+                          Upgrade via Stripe
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Notifications */}
       {tab === 'notifications' && (
         <div className="space-y-4">
