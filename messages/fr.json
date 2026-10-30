@@ -150,7 +150,7 @@
       "slugLabel": "Votre URL de réservation dédiée"
     },
     "step1": {
-      "heading": "Ajoutez votre premier prestation",
+      "heading": "Ajoutez votre première prestation",
       "subheading": "Vous pourrez en ajouter d'autres à tout moment depuis vos paramètres",
       "serviceNameLabel": "Nom de la prestation *",
       "serviceNamePlaceholder": "Coupe & Brushing",
@@ -208,8 +208,15 @@
     },
     "general": {
       "heading": "Informations générales",
-      "nameLabel": "Nom de l'établissement",
-      "currencyLabel": "Devise principale",
+      "fields": {
+        "name": "Nom de l'établissement",
+        "phone": "Téléphone",
+        "email": "E-mail",
+        "address": "Adresse",
+        "timezone": "Fuseau horaire",
+        "currency": "Devise (ISO)",
+        "slug": "Identifiant URL (Slug)"
+      },
       "typeLabel": "Secteur",
       "typeDefault": "Sélectionner le secteur...",
       "types": {
@@ -246,7 +253,16 @@
     },
     "workingHours": {
       "heading": "Horaires d'ouverture",
-      "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+      "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+      "from": "De",
+      "to": "À",
+      "closed": "Fermé",
+      "addBreak": "Ajouter une pause",
+      "breakInvalidRange": "{day} : l'heure de fin de pause doit être après l'heure de début",
+      "breakOutsideHours": "{day} : la pause doit être comprise dans les horaires d'ouverture",
+      "saveButton": "Enregistrer les horaires",
+      "saving": "Enregistrement...",
+      "saved": "Enregistré ✓"
     },
     "services": {
       "empty": "Aucune prestation configurée",

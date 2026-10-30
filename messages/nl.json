@@ -208,8 +208,15 @@
     },
     "general": {
       "heading": "Algemene gegevens",
-      "nameLabel": "Bedrijfsnaam",
-      "currencyLabel": "Valuta",
+      "fields": {
+        "name": "Bedrijfsnaam",
+        "phone": "Telefoonnummer",
+        "email": "E-mailadres",
+        "address": "Adres",
+        "timezone": "Tijdzone",
+        "currency": "Valuta (ISO)",
+        "slug": "Boekings-slug"
+      },
       "typeLabel": "Sector",
       "typeDefault": "Selecteer sector...",
       "types": {
@@ -246,7 +253,16 @@
     },
     "workingHours": {
       "heading": "Openingstijden",
-      "dayNames": ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
+      "dayNames": ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"],
+      "from": "Van",
+      "to": "Tot",
+      "closed": "Gesloten",
+      "addBreak": "Pauze toevoegen",
+      "breakInvalidRange": "{day}: eindtijd van de pauze moet na de starttijd liggen",
+      "breakOutsideHours": "{day}: pauze moet binnen de openingstijden vallen",
+      "saveButton": "Uren opslaan",
+      "saving": "Opslaan...",
+      "saved": "Opgeslagen ✓"
     },
     "services": {
       "empty": "Geen diensten geconfigureerd",
