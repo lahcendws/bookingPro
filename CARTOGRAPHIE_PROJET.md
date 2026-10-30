@@ -130,11 +130,16 @@ Dockerfile = `node:20-alpine`, mais CI & README visent **Node 22** (nécessaire 
 Séquence `020_appointment_paid_status → 023_performance_indexes` (021, 022 absents). Probablement des migrations
 SaaS/financières retirées. `scripts/migrate.js` trie par nom de fichier → ce n'est pas bloquant, mais à **documenter** pour éviter qu'un agent recrée un `021_*` entrant en collision conceptuelle.
 
-### 🟡 R6 — Points de vigilance transverses
-- **Sécurité** à ne pas régresser : RLS + search_path + révocation anon (016) + rate-limit (`lib/rate-limit.ts`) + `INTERNAL_API_SECRET`/`CRON_SECRET` pour l'API cron. Ne pas remettre de routes anon exposant `smtp_pass`, tokens bot.
-- `eslint` : 4 règles react-hooks en `warn` par choix assumé (problèmes pré-existants) — ne pas les passer en `error` sans corriger les effets.
-- SEO/SEO-consistency : `sitemap.ts`, metadata, redirects `APP_DOMAIN`. Le multi-domaine `trypronto.app` codé en dur contredit un fork autonome.
-- secrets locaux `.env.local`, `certs/supabase-ca.crt`, `supabase/.temp/linked-project.json` (ref projet) présents sur disque — **ne jamais committer**.
+### 🔒 6.1 Audit Sécurité `service_role` & Rate Limiting & Turnstile
+
+- **Audit `service_role`** :
+  - `/api/book` : Oui (réservation publique anonyme) → Risque moyen, sécurisé par validation Zod et vérification de l'existence du business.
+  - `app/(auth)/register/actions.ts` : Oui (création tenant) → Risque élevé, exécuté uniquement pour l'utilisateur authentifié courant.
+  - `/api/cron/notify` : Oui (tâches planifiées) → Risque moyen, sécurisé par `CRON_SECRET`.
+  - `/api/telegram/viber` : Oui (webhooks) → Risque élevé, sécurisé par validation de signature/token.
+- **Rate Limiting** : Implémenté via `lib/rate-limit.ts` (fenêtre glissante en mémoire) sur `/login`, `/signup`, `/api/book`, `/api/import`, webhooks.
+- **CAPTCHA Moderne (Cloudflare Turnstile)** : Intégration via `components/TurnstileWidget.tsx` et `lib/turnstile.ts` pour la protection des formulaires publics et d'authentification sans friction visuelle.
+
 
 ---
 
