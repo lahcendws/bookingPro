@@ -1,0 +1,400 @@
+{
+  "meta": {
+    "title": "BookingPro — Gestion d'entreprise pour les TPE & PME de services",
+    "description": "POS, CRM, Inventaire et Notifications omnicanales en auto-hébergement ou SaaS. Zéro commission. Installation Docker en une commande."
+  },
+  "brand": {
+    "name": "BookingPro",
+    "tagline": "Gestion d'entreprise · Zéro commission"
+  },
+  "nav": {
+    "pricing": "Tarifs",
+    "github": "GitHub",
+    "signIn": "Connexion",
+    "startFree": "Essai gratuit"
+  },
+  "landing": {
+    "badge": "Open source · Licence MIT · Docker en une commande",
+    "headline": "Gestion d'entreprise pour les professionnels de services",
+    "subheadline": "POS · CRM · Inventaire · Réservation · Notifications omnicanales.",
+    "pitch": "Vos données, votre serveur. Zéro commission.",
+    "ctaPrimary": "Commencer gratuitement",
+    "ctaGithub": "Voir sur GitHub",
+    "featuresHeading": "Tout ce dont vous avez besoin, sans superflu",
+    "features": {
+      "pos": "Caisse / POS — 3 clics pour encaisser une vente",
+      "crm": "CRM — historique client complet en 1 seconde",
+      "inventory": "Gestion des stocks avec alertes de stock bas",
+      "booking": "Calendrier + réservation en ligne sans inscription",
+      "notifications": "Notifications Telegram & Viber (gratuites)",
+      "hosting": "SaaS multi-tenant ou auto-hébergé via Docker"
+    },
+    "pricingHeading": "Tarifs simples et transparents",
+    "pricingSubheading": "Ou auto-hébergez gratuitement —",
+    "pricingSubheadingLink": "cloner sur GitHub",
+    "mostPopular": "Le plus populaire",
+    "footer": "BookingPro © 2026 · Licence MIT",
+    "plans": {
+      "free": {
+        "name": "Gratuit",
+        "price": "0 €",
+        "limit": "1 employé · 100 clients",
+        "cta": "Commencer"
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "19 €/mois",
+        "limit": "3 employés · 1 000 clients",
+        "cta": "Commencer"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "39 €/mois",
+        "limit": "15 employés · illimité",
+        "cta": "Commencer"
+      },
+      "agency": {
+        "name": "Agence",
+        "price": "79 €/mois",
+        "limit": "Multi-sites · marque blanche",
+        "cta": "Contactez-nous"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "heading": "Connexion à votre compte",
+      "googleButton": "Continuer avec Google",
+      "divider": "ou",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@exemple.fr",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "submitButton": "Se connecter",
+      "noAccount": "Pas de compte ?",
+      "createAccount": "Créer un compte gratuit",
+      "forgotPassword": "Mot de passe oublié ?",
+      "errorInvalid": "E-mail ou mot de passe incorrect",
+      "errorGoogle": "Échec de la connexion Google"
+    },
+    "register": {
+      "heading": "Créer votre compte",
+      "subheading": "Plan gratuit à vie · Sans carte bancaire",
+      "businessNameLabel": "Nom de l'entreprise",
+      "businessNamePlaceholder": "Salon de Marie",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@exemple.fr",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Min. 8 caractères",
+      "submitButton": "Créer un compte gratuit",
+      "alreadyHaveAccount": "Déjà un compte ?",
+      "signIn": "Se connecter",
+      "errorNoName": "Le nom de l'entreprise est requis",
+      "errorCreateBusiness": "Impossible de créer l'entreprise. Réessayez."
+    },
+    "checkEmail": {
+      "heading": "Vérifiez votre e-mail",
+      "body": "Nous vous avons envoyé un lien de confirmation. Cliquez dessus pour accéder directement à votre compte.",
+      "noEmail": "Vous n'avez rien reçu ?",
+      "registerAgain": "S'inscrire à nouveau"
+    },
+    "forgotPassword": {
+      "heading": "Réinitialiser le mot de passe",
+      "subheading": "Entrez votre e-mail pour recevoir un lien de réinitialisation.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@exemple.fr",
+      "submitButton": "Envoyer le lien",
+      "sending": "Envoi en cours...",
+      "forgotLink": "Mot de passe oublié ?",
+      "sentHeading": "Vérifiez votre e-mail",
+      "sentBody": "Nous avons envoyé un lien de réinitialisation à {email}.",
+      "noEmail": "Pas d'e-mail ? Vérifiez vos spams ou",
+      "tryAgain": "réessayez",
+      "backToLogin": "← Retour à la connexion"
+    },
+    "resetPassword": {
+      "heading": "Nouveau mot de passe",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "Min. 8 caractères",
+      "confirmLabel": "Confirmer le mot de passe",
+      "confirmPlaceholder": "Répétez le mot de passe",
+      "submitButton": "Mettre à jour"
+    }
+  },
+  "onboarding": {
+    "logo": "BookingPro",
+    "intro": "Configuration de votre entreprise en 3 étapes",
+    "steps": {
+      "businessType": "Type d'activité",
+      "firstService": "Premier service",
+      "notifications": "Notifications"
+    },
+    "businessTypes": {
+      "salon": "💇 Coiffure / Beauté",
+      "barbershop": "✂️ Barbershop",
+      "auto_repair": "🔧 Garage auto",
+      "cafe": "☕ Café / Restaurant",
+      "dental": "🦷 Clinique dentaire",
+      "fitness": "💪 Fitness / Salle de sport",
+      "massage": "💆 Massage / Spa",
+      "shop": "🏪 Boutique / Commerce",
+      "other": "🏢 Autre"
+    },
+    "step0": {
+      "heading": "Parlez-nous de votre entreprise",
+      "subheading": "Nous allons configurer l'application pour vous",
+      "bizNameLabel": "Nom de l'entreprise *",
+      "bizNamePlaceholder": "Salon de Marie",
+      "businessTypeLabel": "Type d'activité",
+      "continue": "Continuer",
+      "slugLabel": "Votre URL BookingPro"
+    },
+    "step1": {
+      "heading": "Ajoutez votre premier service",
+      "subheading": "Vous pourrez en ajouter d'autres plus tard",
+      "serviceNameLabel": "Nom du service *",
+      "serviceNamePlaceholder": "Coupe homme / Brushing",
+      "durationLabel": "Durée (minutes)",
+      "priceLabel": "Prix (€)",
+      "skip": "Ignorer pour l'instant",
+      "continue": "Enregistrer et continuer"
+    },
+    "step2": {
+      "heading": "Notifications et rappels",
+      "subheading": "Envoyez des rappels automatiques à vos clients",
+      "telegramLabel": "Bot Telegram (optionnel)",
+      "telegramHint": "Créez un bot via @BotFather et collez le token ici",
+      "finish": "Terminer la configuration"
+    }
+  },
+  "dashboard": {
+    "heading": "Tableau de bord",
+    "subtitle": "Aperçu de votre activité et des rendez-vous du jour",
+    "todayAppointments": "Rendez-vous du jour",
+    "revenueToday": "Chiffre d'affaires du jour",
+    "clientsCount": "Total clients",
+    "activeStaff": "Employés actifs",
+    "recentActivity": "Activité récente",
+    "quickActions": "Actions rapides",
+    "newAppointment": "Nouveau RDV",
+    "newClient": "Nouveau client",
+    "posTerminal": "Caisse (POS)"
+  },
+  "booking": {
+    "heading": "Réservez en ligne",
+    "selectService": "Choisissez un service",
+    "selectEmployee": "Choisissez un employé",
+    "selectDate": "Choisissez une date",
+    "selectTime": "Choisissez un créneau",
+    "clientDetails": "Vos coordonnées",
+    "name": "Nom complet",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "submit": "Confirmer le rendez-vous",
+    "success": "Rendez-vous confirmé avec succès !",
+    "errorSlotUnavailable": "Ce créneau vient d'être réservé. Veuillez en choisir un autre.",
+    "errorClosed": "L'établissement est fermé à cette date."
+  },
+  "settings": {
+    "heading": "Paramètres",
+    "tabs": {
+      "general": "Général",
+      "services": "Services",
+      "employees": "Employés",
+      "notifications": "Notifications",
+      "billing": "Abonnement",
+      "modules": "Modules",
+      "account": "Compte"
+    },
+    "general": {
+      "heading": "Informations de l'entreprise",
+      "nameLabel": "Nom",
+      "currencyLabel": "Devise",
+      "typeLabel": "Type",
+      "typeDefault": "Sélectionner...",
+      "types": {
+        "salon": "Salon de coiffure",
+        "barbershop": "Barbershop",
+        "auto_repair": "Garage auto",
+        "cafe": "Café / Restaurant",
+        "dental": "Dentiste",
+        "fitness": "Fitness / Gym",
+        "massage": "Massage / Spa",
+        "other": "Autre"
+      },
+      "slugLabel": "Slug de réservation",
+      "slugHint": "Utilisé pour votre lien de réservation public",
+      "slugError": "Caractères invalides dans le slug",
+      "brandColorLabel": "Couleur de la marque",
+      "brandColorHint": "Personnalisez la couleur de votre page de réservation",
+      "logoLabel": "Logo de l'entreprise",
+      "logoHint": "PNG, JPG ou SVG (max 2 Mo)",
+      "logoUpload": "Télécharger un logo",
+      "logoUploading": "Téléchargement...",
+      "logoRemove": "Supprimer le logo",
+      "logoRemoving": "Suppression...",
+      "logoFormats": "Formats acceptés : PNG, JPG, WebP, SVG",
+      "logoErrorRemove": "Erreur lors de la suppression du logo",
+      "logoErrorNetwork": "Erreur réseau : {message}",
+      "notificationLanguageLabel": "Langue des notifications",
+      "notificationLanguageHint": "Langue utilisée pour les e-mails et messages envoyés aux clients",
+      "bookingUrlLabel": "Lien de réservation public",
+      "saving": "Enregistrement...",
+      "saved": "Enregistré",
+      "planLabel": "Plan actuel :",
+      "saveButton": "Enregistrer les modifications"
+    },
+    "workingHours": {
+      "heading": "Horaires d'ouverture",
+      "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+    },
+    "services": {
+      "empty": "Aucun service configuré",
+      "table": {
+        "name": "Nom",
+        "price": "Prix",
+        "duration": "Durée",
+        "category": "Catégorie"
+      },
+      "addHeading": "Ajouter un service",
+      "editHeading": "Modifier le service",
+      "addButton": "Ajouter",
+      "updateButton": "Mettre à jour",
+      "cancelButton": "Annuler",
+      "deleteConfirm": "Supprimer ?",
+      "deleteYes": "Oui",
+      "deleteNo": "Non"
+    },
+    "employees": {
+      "empty": "Aucun employé configuré",
+      "table": {
+        "name": "Nom",
+        "role": "Rôle",
+        "contact": "E-mail",
+        "phone": "Téléphone"
+      },
+      "addHeading": "Ajouter un employé",
+      "editHeading": "Modifier l'employé",
+      "addButton": "Ajouter",
+      "updateButton": "Mettre à jour",
+      "cancelButton": "Annuler",
+      "deleteConfirm": "Supprimer ?",
+      "deleteYes": "Oui",
+      "deleteNo": "Non",
+      "fields": {
+        "name": "Nom",
+        "role": "Rôle",
+        "email": "E-mail",
+        "phone": "Téléphone"
+      }
+    },
+    "notifications": {
+      "heading": "Notifications et intégrations",
+      "email": {
+        "label": "Fournisseur d'e-mails",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "smtpOption": "Serveur SMTP personnalisé",
+        "resendOption": "Resend (API)",
+        "smtpHost": "Hôte SMTP",
+        "smtpHostPlaceholder": "smtp.example.com",
+        "smtpPort": "Port",
+        "smtpUser": "Utilisateur SMTP",
+        "smtpPass": "Mot de passe SMTP",
+        "smtpPassHint": "Sécurisé et chiffré",
+        "smtpFrom": "Adresse e-mail d'expédition",
+        "smtpFromPlaceholder": "noreply@monentreprise.fr",
+        "resendApiKey": "Clé API Resend",
+        "resendApiKeyPlaceholder": "re_...",
+        "resendSignup": "Obtenir une clé sur resend.com"
+      },
+      "telegram": {
+        "label": "Bot Telegram",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "step1": "Ouvrez <strong>@BotFather</strong> sur Telegram",
+        "step2": "Créez un nouveau bot avec /newbot",
+        "step3": "Copiez le token HTTP API et collez-le ci-dessous",
+        "placeholder": "123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ",
+        "connectButton": "Connecter Telegram"
+      },
+      "viber": {
+        "label": "Bot Viber",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "step1": "Rendez-vous sur le portail Viber Admin",
+        "step2": "Créez un compte Bot et obtenez votre token",
+        "step3": "Collez votre token ci-dessous",
+        "placeholder": "viber-bot-token...",
+        "connectButton": "Connecter Viber"
+      },
+      "whatsapp": {
+        "label": "WhatsApp Business API",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "description": "Envoyez des confirmations de rendez-vous et rappels via WhatsApp Cloud API.",
+        "step1": "Rendez-vous sur <strong>Meta for Developers</strong> (developers.facebook.com)",
+        "step2": "Créez une application WhatsApp Business et obtenez vos identifiants",
+        "step3": "Entrez votre Phone Number ID et Access Token puis cliquez sur {saveButton}",
+        "step4": "Vos clients recevront des messages professionnels vérifiés",
+        "phoneNumberIdPlaceholder": "ID du numéro de téléphone WhatsApp",
+        "accessTokenPlaceholder": "Jeton d'accès permanent Meta",
+        "saveButton": "Enregistrer WhatsApp"
+      },
+      "ownerWhatsapp": {
+        "label": "Numéro WhatsApp du gérant",
+        "description": "Recevez une alerte sur votre WhatsApp personnel pour chaque nouvelle réservation"
+      },
+      "waTemplates": {
+        "heading": "Modèles de messages WhatsApp",
+        "description": "Personnalisez les textes envoyés à vos clients",
+        "confirmation": "Confirmation de rendez-vous",
+        "confirmationPlaceholder": "Bonjour {name}, votre RDV est confirmé pour le {date} à {time}.",
+        "reminder": "Rappel de rendez-vous",
+        "reengagement": "Message de relance / réactivation",
+        "birthday": "Message d'anniversaire",
+        "thankyou": "Message de remerciement"
+      }
+    },
+    "modules": {
+      "heading": "Modules de l'application",
+      "description": "Activez ou désactivez les fonctionnalités selon vos besoins",
+      "saveButton": "Enregistrer les modules",
+      "saved": "Modules enregistrés",
+      "turnOffButton": "Désactiver"
+    },
+    "account": {
+      "heading": "Paramètres du compte",
+      "currentEmailLabel": "E-mail actuel",
+      "newEmailLabel": "Nouvel e-mail",
+      "newEmailPlaceholder": "nouveau@exemple.fr",
+      "changeEmailButton": "Modifier l'e-mail",
+      "emailHint": "Un lien de confirmation sera envoyé à la nouvelle adresse.",
+      "passwordHeading": "Modifier le mot de passe",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "saving": "Enregistrement..."
+    }
+  },
+  "errors": {
+    "unauthorized": "Accès non autorisé",
+    "forbidden": "Action interdite",
+    "notFound": "Ressource introuvable",
+    "serverError": "Une erreur interne est survenue. Veuillez réessayer.",
+    "rateLimited": "Trop de requêtes. Veuillez patienter quelques minutes.",
+    "validationFailed": "Données invalides. Veuillez vérifier vos entrées."
+  },
+  "emails": {
+    "confirmation": {
+      "subject": "Confirmation de votre rendez-vous — {businessName}",
+      "greeting": "Bonjour {clientName},",
+      "body": "Votre rendez-vous chez {businessName} est bien confirmé pour le {date} à {time}.",
+      "service": "Service : {serviceName}",
+      "employee": "Employé : {employeeName}",
+      "footer": "Merci de votre confiance !"
+    },
+    "reminder": {
+      "subject": "Rappel : Votre rendez-vous demain chez {businessName}",
+      "body": "Nous vous rappelons votre rendez-vous prévu demain {date} à {time} chez {businessName}."
+    }
+  }
+}

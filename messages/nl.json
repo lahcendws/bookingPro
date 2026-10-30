@@ -1,0 +1,400 @@
+{
+  "meta": {
+    "title": "BookingPro — Bedrijfsbeheer voor service-mkb",
+    "description": "POS, CRM, voorraad en omnichannel notificaties in eigen beheer of SaaS. Nul commissie. Docker installatie in één commando."
+  },
+  "brand": {
+    "name": "BookingPro",
+    "tagline": "Bedrijfsbeheer · Nul commissie"
+  },
+  "nav": {
+    "pricing": "Prijzen",
+    "github": "GitHub",
+    "signIn": "Inloggen",
+    "startFree": "Gratis starten"
+  },
+  "landing": {
+    "badge": "Open source · MIT-licentie · Docker in één commando",
+    "headline": "Bedrijfsbeheer voor servicebedrijven",
+    "subheadline": "POS · CRM · Voorraad · Boekingen · Omnichannel notificaties.",
+    "pitch": "Jouw data, jouw server. Nul commissie.",
+    "ctaPrimary": "Gratis starten",
+    "ctaGithub": "Bekijk op GitHub",
+    "featuresHeading": "Alles wat je nodig hebt, niets teveel",
+    "features": {
+      "pos": "Kassa / POS — 3 klikken om een verkoop af te ronden",
+      "crm": "CRM — volledige klantgeschiedenis in 1 seconde",
+      "inventory": "Voorraadbeheer met bijna-leeg-waarschuwingen",
+      "booking": "Agenda + online boeken zonder registratie",
+      "notifications": "Telegram- & Vibernotificaties (gratis)",
+      "hosting": "Multi-tenant SaaS ofself-hosted via Docker"
+    },
+    "pricingHeading": "Eenvoudige, transparante prijzen",
+    "pricingSubheading": "Of host gratis zelf —",
+    "pricingSubheadingLink": "kloon op GitHub",
+    "mostPopular": "Meest populair",
+    "footer": "BookingPro © 2026 · MIT-licentie",
+    "plans": {
+      "free": {
+        "name": "Gratis",
+        "price": "€0",
+        "limit": "1 medewerker · 100 klanten",
+        "cta": "Starten"
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "€19/mnd",
+        "limit": "3 medewerkers · 1.000 klanten",
+        "cta": "Starten"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€39/mnd",
+        "limit": "15 medewerkers · onbeperkt",
+        "cta": "Starten"
+      },
+      "agency": {
+        "name": "Bureau",
+        "price": "€79/mnd",
+        "limit": "Meerdere vestigingen · whitelabel",
+        "cta": "Neem contact op"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "heading": "Inloggen op je account",
+      "googleButton": "Doorgaan met Google",
+      "divider": "of",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jij@voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "••••••••",
+      "submitButton": "Inloggen",
+      "noAccount": "Geen account?",
+      "createAccount": "Gratis aanmaken",
+      "forgotPassword": "Wachtwoord vergeten?",
+      "errorInvalid": "Ongeldig e-mailadres of wachtwoord",
+      "errorGoogle": "Inloggen via Google mislukt"
+    },
+    "register": {
+      "heading": "Account aanmaken",
+      "subheading": "Altijd gratis plan · Geen creditcard vereist",
+      "businessNameLabel": "Bedrijfsnaam",
+      "businessNamePlaceholder": "Kapsalon de Wit",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jij@voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Min. 8 tekens",
+      "submitButton": "Gratis account aanmaken",
+      "alreadyHaveAccount": "Heb je al een account?",
+      "signIn": "Inloggen",
+      "errorNoName": "Bedrijfsnaam is verplicht",
+      "errorCreateBusiness": "Kon bedrijf niet aanmaken. Probeer het opnieuw."
+    },
+    "checkEmail": {
+      "heading": "Controleer je e-mail",
+      "body": "We hebben je een bevestigingslink gestuurd. Klik erop om direct naar je account te gaan.",
+      "noEmail": "Niks ontvangen?",
+      "registerAgain": "Opnieuw registreren"
+    },
+    "forgotPassword": {
+      "heading": "Wachtwoord resetten",
+      "subheading": "Vul je e-mailadres in en we sturen je een resetlink.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jij@voorbeeld.nl",
+      "submitButton": "Resetlink verzenden",
+      "sending": "Verzenden...",
+      "forgotLink": "Wachtwoord vergeten?",
+      "sentHeading": "Controleer je e-mail",
+      "sentBody": "We hebben een resetlink gestuurd naar {email}.",
+      "noEmail": "Geen e-mail? Controleer je spammap of",
+      "tryAgain": "probeer opnieuw",
+      "backToLogin": "← Terug naar inloggen"
+    },
+    "resetPassword": {
+      "heading": "Nieuw wachtwoord instellen",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "newPasswordPlaceholder": "Min. 8 tekens",
+      "confirmLabel": "Bevestig wachtwoord",
+      "confirmPlaceholder": "Herhaal wachtwoord",
+      "submitButton": "Wachtwoord bijwerken"
+    }
+  },
+  "onboarding": {
+    "logo": "BookingPro",
+    "intro": "Stel je bedrijf in in 3 stappen",
+    "steps": {
+      "businessType": "Bedrijfstype",
+      "firstService": "Eerste dienst",
+      "notifications": "Notificaties"
+    },
+    "businessTypes": {
+      "salon": "💇 Kapsalon / Schoonheid",
+      "barbershop": "✂️ Barbershop",
+      "auto_repair": "🔧 Autogarage",
+      "cafe": "☕ Café / Restaurant",
+      "dental": "🦷 Tandartspraktijk",
+      "fitness": "💪 Fitness / Gym",
+      "massage": "💆 Massage / Spa",
+      "shop": "🏪 Winkel / Kiosk",
+      "other": "🏢 Anders"
+    },
+    "step0": {
+      "heading": "Vertel ons over je bedrijf",
+      "subheading": "We stemmen de app op jou af",
+      "bizNameLabel": "Bedrijfsnaam *",
+      "bizNamePlaceholder": "Kapsalon de Wit",
+      "businessTypeLabel": "Bedrijfstype",
+      "continue": "Doorgaan",
+      "slugLabel": "Je BookingPro URL"
+    },
+    "step1": {
+      "heading": "Voeg je eerste dienst toe",
+      "subheading": "Je kunt er later meer toevoegen",
+      "serviceNameLabel": "Naam dienst *",
+      "serviceNamePlaceholder": "Herenknippen / Föhnen",
+      "durationLabel": "Duur (minuten)",
+      "priceLabel": "Prijs (€)",
+      "skip": "Overslaan voor nu",
+      "continue": "Opslaan en doorgaan"
+    },
+    "step2": {
+      "heading": "Notificaties en herinneringen",
+      "subheading": "Stuur automatische herinneringen naar je klanten",
+      "telegramLabel": "Telegram Bot (optioneel)",
+      "telegramHint": "Maak een bot via @BotFather en plak de token hier",
+      "finish": "Installatie voltooien"
+    }
+  },
+  "dashboard": {
+    "heading": "Dashboard",
+    "subtitle": "Overzicht van je activiteiten en afspraken van vandaag",
+    "todayAppointments": "Afspraken vandaag",
+    "revenueToday": "Omzet vandaag",
+    "clientsCount": "Totaal klanten",
+    "activeStaff": "Actieve medewerkers",
+    "recentActivity": "Recente activiteit",
+    "quickActions": "Snelle acties",
+    "newAppointment": "Nieuwe afspraak",
+    "newClient": "Nieuwe klant",
+    "posTerminal": "Kassa (POS)"
+  },
+  "booking": {
+    "heading": "Online boeken",
+    "selectService": "Kies een dienst",
+    "selectEmployee": "Kies een medewerker",
+    "selectDate": "Kies een datum",
+    "selectTime": "Kies een tijd",
+    "clientDetails": "Jouw gegevens",
+    "name": "Volledige naam",
+    "phone": "Telefoonnummer",
+    "email": "E-mailadres",
+    "submit": "Afspraak bevestigen",
+    "success": "Afspraak succesvol bevestigd!",
+    "errorSlotUnavailable": "Dit tijdslot is zojuist gereserveerd. Kies een andere.",
+    "errorClosed": "De zaak is gesloten op deze datum."
+  },
+  "settings": {
+    "heading": "Instellingen",
+    "tabs": {
+      "general": "Algemeen",
+      "services": "Diensten",
+      "employees": "Medewerkers",
+      "notifications": "Notificaties",
+      "billing": "Abonnement",
+      "modules": "Modules",
+      "account": "Account"
+    },
+    "general": {
+      "heading": "Bedrijfsgegevens",
+      "nameLabel": "Naam",
+      "currencyLabel": "Valuta",
+      "typeLabel": "Type",
+      "typeDefault": "Selecteer...",
+      "types": {
+        "salon": "Kapsalon",
+        "barbershop": "Barbershop",
+        "auto_repair": "Autogarage",
+        "cafe": "Café / Restaurant",
+        "dental": "Tandarts",
+        "fitness": "Fitness / Gym",
+        "massage": "Massage / Spa",
+        "other": "Anders"
+      },
+      "slugLabel": "Boekings-slug",
+      "slugHint": "Gebruikt voor je openbare boekingslink",
+      "slugError": "Ongeldige tekens in slug",
+      "brandColorLabel": "Merkkleur",
+      "brandColorHint": "Pas de kleur van je boekingspagina aan",
+      "logoLabel": "Bedrijfslogo",
+      "logoHint": "PNG, JPG of SVG (max 2MB)",
+      "logoUpload": "Logo uploaden",
+      "logoUploading": "Uploaden...",
+      "logoRemove": "Logo verwijderen",
+      "logoRemoving": "Verwijderen...",
+      "logoFormats": "Geaccepteerde formaten: PNG, JPG, WebP, SVG",
+      "logoErrorRemove": "Fout bij verwijderen logo",
+      "logoErrorNetwork": "Netwerkfout: {message}",
+      "notificationLanguageLabel": "Notificatietaal",
+      "notificationLanguageHint": "Taal gebruikt voor e-mails en berichten naar klanten",
+      "bookingUrlLabel": "Openbare boekingslink",
+      "saving": "Opslaan...",
+      "saved": "Opgeslagen",
+      "planLabel": "Huidig plan:",
+      "saveButton": "Wijzigingen opslaan"
+    },
+    "workingHours": {
+      "heading": "Openingstijden",
+      "dayNames": ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
+    },
+    "services": {
+      "empty": "Geen diensten geconfigureerd",
+      "table": {
+        "name": "Naam",
+        "price": "Prijs",
+        "duration": "Duur",
+        "category": "Categorie"
+      },
+      "addHeading": "Dienst toevoegen",
+      "editHeading": "Dienst bewerken",
+      "addButton": "Toevoegen",
+      "updateButton": "Bijwerken",
+      "cancelButton": "Annuleren",
+      "deleteConfirm": "Verwijderen?",
+      "deleteYes": "Ja",
+      "deleteNo": "Nee"
+    },
+    "employees": {
+      "empty": "Geen medewerkers geconfigureerd",
+      "table": {
+        "name": "Naam",
+        "role": "Rol",
+        "contact": "E-mail",
+        "phone": "Telefoon"
+      },
+      "addHeading": "Medewerker toevoegen",
+      "editHeading": "Medewerker bewerken",
+      "addButton": "Toevoegen",
+      "updateButton": "Bijwerken",
+      "cancelButton": "Annuleren",
+      "deleteConfirm": "Verwijderen?",
+      "deleteYes": "Ja",
+      "deleteNo": "Nee",
+      "fields": {
+        "name": "Naam",
+        "role": "Rol",
+        "email": "E-mail",
+        "phone": "Telefoon"
+      }
+    },
+    "notifications": {
+      "heading": "Notificaties en integraties",
+      "email": {
+        "label": "E-mailprovider",
+        "connected": "Verbonden",
+        "notSet": "Niet ingesteld",
+        "smtpOption": "Aangepaste SMTP-server",
+        "resendOption": "Resend (API)",
+        "smtpHost": "SMTP-host",
+        "smtpHostPlaceholder": "smtp.example.com",
+        "smtpPort": "Poort",
+        "smtpUser": "SMTP-gebruiker",
+        "smtpPass": "SMTP-wachtwoord",
+        "smtpPassHint": "Beveiligd en versleuteld",
+        "smtpFrom": "Afzender e-mailadres",
+        "smtpFromPlaceholder": "noreply@mijnbedrijf.nl",
+        "resendApiKey": "Resend API-sleutel",
+        "resendApiKeyPlaceholder": "re_...",
+        "resendSignup": "Verkrijg een sleutel op resend.com"
+      },
+      "telegram": {
+        "label": "Telegram Bot",
+        "connected": "Verbonden",
+        "notSet": "Niet ingesteld",
+        "step1": "Open <strong>@BotFather</strong> op Telegram",
+        "step2": "Maak een nieuwe bot via /newbot",
+        "step3": "Kopieer de HTTP API-token en plak deze hieronder",
+        "placeholder": "123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ",
+        "connectButton": "Telegram verbinden"
+      },
+      "viber": {
+        "label": "Viber Bot",
+        "connected": "Verbonden",
+        "notSet": "Niet ingesteld",
+        "step1": "Ga naar de Viber Admin Portal",
+        "step2": "Maak een botaccount aan en ontvang je token",
+        "step3": "Plak je token hieronder",
+        "placeholder": "viber-bot-token...",
+        "connectButton": "Viber verbinden"
+      },
+      "whatsapp": {
+        "label": "WhatsApp Business API",
+        "connected": "Verbonden",
+        "notSet": "Niet ingesteld",
+        "description": "Verstuur afspraakbevestigingen en herinneringen via WhatsApp Cloud API.",
+        "step1": "Ga naar <strong>Meta for Developers</strong> (developers.facebook.com)",
+        "step2": "Maak een WhatsApp Business-app aan en verkrijg je gegevens",
+        "step3": "Voer je Phone Number ID en Access Token in en klik op {saveButton}",
+        "step4": "Je klanten ontvangen geverifieerde professionele berichten",
+        "phoneNumberIdPlaceholder": "WhatsApp Telefoonnummer ID",
+        "accessTokenPlaceholder": "Meta Permanente Toegangstoken",
+        "saveButton": "WhatsApp opslaan"
+      },
+      "ownerWhatsapp": {
+        "label": "WhatsApp-nummer van eigenaar",
+        "description": "Ontvang een melding op je persoonlijke WhatsApp voor elke nieuwe boeking"
+      },
+      "waTemplates": {
+        "heading": "WhatsApp berichtsjablonen",
+        "description": "Pas de teksten aan die naar je klanten worden verzonden",
+        "confirmation": "Afspraakbevestiging",
+        "confirmationPlaceholder": "Hallo {name}, je afspraak is bevestigd voor {date} om {time}.",
+        "reminder": "Afspraakherinnering",
+        "reengagement": "Heractivatiebericht",
+        "birthday": "Verjaardagsbericht",
+        "thankyou": "Bedankbericht"
+      }
+    },
+    "modules": {
+      "heading": "Applicatiemodules",
+      "description": "Schakel functies in of uit op basis van je behoeften",
+      "saveButton": "Modules opslaan",
+      "saved": "Modules opgeslagen",
+      "turnOffButton": "Uitschakelen"
+    },
+    "account": {
+      "heading": "Accountinstellingen",
+      "currentEmailLabel": "Huidig e-mailadres",
+      "newEmailLabel": "Nieuw e-mailadres",
+      "newEmailPlaceholder": "nieuw@voorbeeld.nl",
+      "changeEmailButton": "E-mailadres wijzigen",
+      "emailHint": "Er wordt een bevestigingslink gestuurd naar het nieuwe adres.",
+      "passwordHeading": "Wachtwoord wijzigen",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "saving": "Opslaan..."
+    }
+  },
+  "errors": {
+    "unauthorized": "Niet geautoriseerde toegang",
+    "forbidden": "Verboden actie",
+    "notFound": "Bron niet gevonden",
+    "serverError": "Er is een interne fout opgetreden. Probeer het later opnieuw.",
+    "rateLimited": "Te veel verzoeken. Wacht alstublieft een paar minuten.",
+    "validationFailed": "Ongeldige gegevens. Controleer je invoer."
+  },
+  "emails": {
+    "confirmation": {
+      "subject": "Bevestiging van je afspraak — {businessName}",
+      "greeting": "Hallo {clientName},",
+      "body": "Je afspraak bij {businessName} is bevestigd voor {date} om {time}.",
+      "service": "Dienst: {serviceName}",
+      "employee": "Medewerker: {employeeName}",
+      "footer": "Bedankt voor je vertrouwen!"
+    },
+    "reminder": {
+      "subject": "Herinnering: Je afspraak morgen bij {businessName}",
+      "body": "We herinneren je aan je afspraak morgen op {date} om {time} bij {businessName}."
+    }
+  }
+}
