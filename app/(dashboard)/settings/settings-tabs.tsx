@@ -364,8 +364,8 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     { key: 'billing', label: t('tabs.billing') },
     { key: 'modules', label: t('tabs.modules') },
     { key: 'account', label: t('tabs.account') },
-    { key: 'gdpr', label: 'RGPD & Vie privée' },
-    { key: 'audit', label: 'Journal d\'activité' },
+    { key: 'gdpr', label: t('tabs.gdpr') },
+    { key: 'audit', label: t('tabs.audit') },
   ]
 
   const generalFields: { key: keyof Business; label: string; type: string }[] = [

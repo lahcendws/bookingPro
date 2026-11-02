@@ -496,7 +496,9 @@
       "notifications": "Notifications",
       "billing": "Facturation",
       "account": "Compte",
-      "modules": "Modules"
+      "modules": "Modules",
+      "gdpr": "RGPD & Vie privée",
+      "audit": "Journal d'activité"
     },
     "billing": {
       "heading": "Plan actuel",

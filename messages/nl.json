@@ -496,7 +496,9 @@
       "notifications": "Notificaties",
       "billing": "Facturering",
       "account": "Account",
-      "modules": "Modules"
+      "modules": "Modules",
+      "gdpr": "AVG & Privacy",
+      "audit": "Activiteitenlogboek"
     },
     "billing": {
       "heading": "Huidig abonnement",
