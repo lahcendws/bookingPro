@@ -311,7 +311,8 @@
         "name": "Naam",
         "price": "Prijs",
         "duration": "Duur",
-        "category": "Categorie"
+        "category": "Categorie",
+        "capacity": "Capaciteit"
       },
       "addHeading": "Dienst toevoegen",
       "editHeading": "Dienst bewerken",
@@ -425,9 +426,9 @@
         "heading": "WhatsApp berichtsjablonen",
         "description": "Pas de standaardteksten voor geautomatiseerde berichten aan",
         "confirmation": "Afspraakbevestiging",
-        "confirmationPlaceholder": "Hallo {name}, je afspraak is bevestigd voor {date} om {time}.",
+        "confirmationPlaceholder": "Hallo [Naam], je afspraak is bevestigd voor [Datum] om [Tijd].",
         "reminder": "Afspraakherinnering",
-        "reminderPlaceholder": "Herinnering: Je afspraak morgen om {time}.",
+        "reminderPlaceholder": "Herinnering: Je afspraak morgen om [Tijd].",
         "reengagement": "Heractivatiebericht",
         "reengagementPlaceholder": "Het is al even geleden! Kom snel weer langs.",
         "birthday": "Verjaardagsbericht",

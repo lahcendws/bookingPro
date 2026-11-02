@@ -311,7 +311,8 @@
         "name": "Intitulé",
         "price": "Tarif",
         "duration": "Durée",
-        "category": "Catégorie"
+        "category": "Catégorie",
+        "capacity": "Capacité"
       },
       "addHeading": "Ajouter une prestation",
       "editHeading": "Modifier la prestation",
@@ -425,9 +426,9 @@
         "heading": "Modèles de messages WhatsApp",
         "description": "Personnalisez la formulation des messages automatisés",
         "confirmation": "Confirmation de rendez-vous",
-        "confirmationPlaceholder": "Bonjour {name}, votre rendez-vous est confirmé le {date} à {time}.",
+        "confirmationPlaceholder": "Bonjour [Nom], votre rendez-vous est confirmé le [Date] à [Heure].",
         "reminder": "Rappel de rendez-vous",
-        "reminderPlaceholder": "Rappel : Votre rendez-vous demain à {time}.",
+        "reminderPlaceholder": "Rappel : Votre rendez-vous demain à [Heure].",
         "reengagement": "Campagne de réactivation",
         "reengagementPlaceholder": "Cela fait un moment ! Venez nous rendre visite.",
         "birthday": "Message d'anniversaire",
