@@ -63,7 +63,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const router = useRouter()
   const t = useTranslations('settings')
   const searchParams = useSearchParams()
-  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules', 'gdpr'].includes(searchParams.get('tab') ?? '')
+  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules', 'gdpr', 'audit'].includes(searchParams.get('tab') ?? '')
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
