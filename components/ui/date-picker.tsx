@@ -38,13 +38,18 @@ export function DatePicker({
   const [open, setOpen] = useState(false)
   const [viewYear, setViewYear] = useState(parsed?.getFullYear() ?? today.getFullYear())
   const [viewMonth, setViewMonth] = useState(parsed?.getMonth() ?? today.getMonth())
-  const ref = useRef<HTMLDivElement>(null)
+  const [prevValue, setPrevValue] = useState(value)
 
-  // Sync view to value when value changes externally
-  useEffect(() => {
+  if (value !== prevValue) {
+    setPrevValue(value)
     const d = parseDate(value)
-    if (d) { setViewYear(d.getFullYear()); setViewMonth(d.getMonth()) }
-  }, [value])
+    if (d) {
+      setViewYear(d.getFullYear())
+      setViewMonth(d.getMonth())
+    }
+  }
+
+  const ref = useRef<HTMLDivElement>(null)
 
   // Close on outside click
   useEffect(() => {
