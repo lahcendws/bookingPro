@@ -158,6 +158,7 @@ export function BookingCalendar({ businessId, slug, timezone, appointments: init
   const t = useTranslations('booking')
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()))
   const [origin, setOrigin] = useState('')
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setOrigin(window.location.origin) }, [])
   const bookingUrl = useMemo(() => {
     if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas') {

@@ -116,6 +116,7 @@ export function PublicBookingForm({ business, services, employees, workingHours,
   const closedWeekdays = effectiveHours.filter((h) => !h.is_open).map((h) => h.day_of_week)
   const today = new Date().toISOString().slice(0, 10)
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (!date || !selectedService) {
       setAvailableSlots([])

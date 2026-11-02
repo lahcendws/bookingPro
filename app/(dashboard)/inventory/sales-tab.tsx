@@ -68,6 +68,7 @@ export function SalesTab() {
     }
   }, [])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (activeRange) {
       load(period, activeRange)

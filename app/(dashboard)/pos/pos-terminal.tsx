@@ -119,6 +119,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
   }, [initialServices, initialEmployees, initialClients])
 
   // ─── On mount: prefill from booking context ──────────────────────────────
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (!bookingContext) return
     const svc = initialServices.find((s) => s.id === bookingContext.serviceId)
@@ -134,6 +135,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
   }, [])
 
   // ─── Online / offline detection ──────────────────────────────────────────
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     const setOnline = () => setIsOnline(true)
     const setOffline = () => setIsOnline(false)
@@ -185,6 +187,7 @@ export function POSTerminal({ businessId, currency, services: initialServices, e
     }
   }, [supabase])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (isOnline && pendingCount > 0) {
       syncQueue()

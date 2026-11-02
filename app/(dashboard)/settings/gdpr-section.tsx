@@ -94,7 +94,7 @@ export function GDPRSection() {
         {/* 6.4 Consent */}
         <div className="border-t border-gray-100 pt-5">
           <h3 className="text-sm font-semibold text-gray-900 mb-1">6.4 Gestion du consentement</h3>
-          <p className="text-xs text-gray-500 mb-3">Enregistrez ou renouvelez votre consentement pour le traitement des données et conditions d'utilisation.</p>
+          <p className="text-xs text-gray-500 mb-3">Enregistrez ou renouvelez votre consentement pour le traitement des données et conditions d&apos;utilisation.</p>
           <div className="flex flex-wrap items-center gap-3">
             <select
               value={consentType}

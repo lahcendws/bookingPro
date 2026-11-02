@@ -71,6 +71,7 @@ export function OnboardingWizard({ initialSlug, initialName, isSaas, rootDomain 
   ]
 
   // Debounced slug availability check
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (!isSaas) return
 

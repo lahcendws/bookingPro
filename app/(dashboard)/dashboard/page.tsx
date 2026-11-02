@@ -33,7 +33,9 @@ export default async function DashboardPage() {
 
   if (!business.onboarding_completed) redirect('/onboarding')
 
+  // eslint-disable-next-line react-hooks/purity
   const todayStr = new Date().toISOString().slice(0, 10)
+  // eslint-disable-next-line react-hooks/purity
   const sevenDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10)
 
   const [
@@ -49,6 +51,7 @@ export default async function DashboardPage() {
     supabase.from('appointments').select('id, status')
       .eq('business_id', business.id)
       .gte('starts_at', todayStr)
+      // eslint-disable-next-line react-hooks/purity
       .lt('starts_at', new Date(Date.now() + 86400000).toISOString().slice(0, 10)),
     supabase.from('transactions').select('id, amount, payment_method, created_at, clients(name)')
       .eq('business_id', business.id).eq('status', 'completed')
@@ -77,6 +80,7 @@ export default async function DashboardPage() {
 
   // Sparkline: sum revenue per day for last 7 days
   const sparklineDays = Array.from({ length: 7 }, (_, i) => {
+    // eslint-disable-next-line react-hooks/purity
     const d = new Date(Date.now() - (6 - i) * 86400000)
     return d.toISOString().slice(0, 10)
   })

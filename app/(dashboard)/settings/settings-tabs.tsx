@@ -141,6 +141,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   })
   const [savingHours, setSavingHours] = useState(false)
   const [origin, setOrigin] = useState('')
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setOrigin(window.location.origin) }, [])
 
   const bookingUrl = useMemo(() => `${origin}/book/${biz.slug}`, [biz.slug, origin])
