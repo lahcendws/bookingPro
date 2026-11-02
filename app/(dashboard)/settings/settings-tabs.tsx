@@ -9,6 +9,7 @@ import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Users,
 import { useTranslations } from 'next-intl'
 import { MODULES, ModuleKey } from '@/lib/modules'
 import { GDPRSection } from './gdpr-section'
+import { AuditSection } from './audit-section'
 
 const clean = (s: string, max = 500) => s?.trim().slice(0, max) ?? ''
 
@@ -55,7 +56,7 @@ const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
 })
 
 interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string }
-type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'modules' | 'gdpr'
+type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'modules' | 'gdpr' | 'audit'
 
 export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail }: Props) {
   const supabase = createClient()
@@ -364,6 +365,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     { key: 'modules', label: t('tabs.modules') },
     { key: 'account', label: t('tabs.account') },
     { key: 'gdpr', label: 'RGPD & Vie privée' },
+    { key: 'audit', label: 'Journal d\'activité' },
   ]
 
   const generalFields: { key: keyof Business; label: string; type: string }[] = [
@@ -1477,6 +1479,9 @@ export function SettingsTabs({ business: initial, services: initServices, employ
 
       {/* GDPR */}
       {tab === 'gdpr' && <GDPRSection />}
+
+      {/* Audit Logs */}
+      {tab === 'audit' && <AuditSection businessId={biz.id} />}
     </div>
   )
 }
