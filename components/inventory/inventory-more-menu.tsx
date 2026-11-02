@@ -19,6 +19,7 @@ export function InventoryMoreMenu({ atLimit }: Props) {
   const btnRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), [])
 
   // The trigger sits inside Header's overflow-x-auto actions row (needed to
