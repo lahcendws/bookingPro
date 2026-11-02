@@ -495,6 +495,36 @@
       "confirmPasswordLabel": "Bevestig nieuw wachtwoord",
       "confirmPasswordPlaceholder": "Herhaal het nieuwe wachtwoord",
       "changePasswordButton": "Wachtwoord wijzigen"
+    },
+    "pos": {
+      "title": "Kassasysteem / POS",
+      "history": "Verkoopgeschiedenis",
+      "searchService": "Zoek dienst of artikel...",
+      "cart": "Winkelmand",
+      "emptyCart": "Je winkelmand is leeg",
+      "total": "Totaal",
+      "pay": "Afrekenen",
+      "cash": "Contant",
+      "card": "Pin / Creditcard",
+      "other": "Overig",
+      "success": "Betaling succesvol verwerkt!"
+    },
+    "inventory": {
+      "title": "Voorraadbeheer",
+      "addItem": "Artikel toevoegen",
+      "search": "Zoek op naam, SKU of barcode...",
+      "allCategories": "Alle categorieën",
+      "lowStockOnly": "Alleen lage voorraad",
+      "export": "Exporteren",
+      "import": "Importeren",
+      "empty": "Geen artikelen in voorraad"
+    },
+    "crm": {
+      "title": "Klanten & CRM",
+      "addClient": "Klant toevoegen",
+      "search": "Zoek op naam, telefoon of e-mail...",
+      "import": "Klanten importeren",
+      "empty": "Geen klanten geregistreerd"
     }
   },
   "sidebar": {

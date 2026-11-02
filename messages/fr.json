@@ -495,6 +495,36 @@
       "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
       "confirmPasswordPlaceholder": "Répétez le nouveau mot de passe",
       "changePasswordButton": "Modifier le mot de passe"
+    },
+    "pos": {
+      "title": "Caisse / POS",
+      "history": "Historique des ventes",
+      "searchService": "Rechercher une prestation ou un article...",
+      "cart": "Panier",
+      "emptyCart": "Votre panier est vide",
+      "total": "Total",
+      "pay": "Encaisser",
+      "cash": "Espèces",
+      "card": "Carte bancaire",
+      "other": "Autre",
+      "success": "Paiement validé avec succès !"
+    },
+    "inventory": {
+      "title": "Gestion des stocks",
+      "addItem": "Ajouter un article",
+      "search": "Rechercher par nom, SKU ou code-barres...",
+      "allCategories": "Toutes les catégories",
+      "lowStockOnly": "Stock bas uniquement",
+      "export": "Exporter",
+      "import": "Importer",
+      "empty": "Aucun article en stock"
+    },
+    "crm": {
+      "title": "Clients & CRM",
+      "addClient": "Ajouter un client",
+      "search": "Rechercher par nom, téléphone ou e-mail...",
+      "import": "Importer des clients",
+      "empty": "Aucun client enregistré"
     }
   },
   "sidebar": {
