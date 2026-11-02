@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "BookingPro — Gestion d'entreprise pour les professionnels de services",
-    "description": "Logiciel de caisse (POS), CRM, gestion de stocks et notifications omnicanales. Vos données, votre serveur. Zéro commission."
+    "title": "BookingPro — Gestion d'entreprise pour prestataires de services",
+    "description": "Caisse (POS), CRM, gestion des stocks et notifications omnicanales hébergés par vos soins. Vos données, votre serveur. Zéro commission. Installation en une commande."
   },
   "brand": {
     "name": "BookingPro",
@@ -11,27 +11,27 @@
     "pricing": "Tarifs",
     "github": "GitHub",
     "signIn": "Connexion",
-    "startFree": "Essai gratuit"
+    "startFree": "Commencer gratuitement"
   },
   "landing": {
     "badge": "Open source · Licence MIT · Docker en une commande",
-    "headline": "La solution tout-en-un pour les entreprises de services",
-    "subheadline": "Caisse (POS) · CRM · Stocks · Réservation en ligne · Notifications.",
-    "pitch": "Vos données, votre infrastructure. Zéro commission sur vos ventes.",
-    "ctaPrimary": "Démarrer gratuitement",
+    "headline": "Gestion d'entreprise pour prestataires de services",
+    "subheadline": "POS · CRM · Stocks · Réservation · Notifications omnicanales.",
+    "pitch": "Vos données, votre serveur. Zéro commission.",
+    "ctaPrimary": "Commencer gratuitement",
     "ctaGithub": "Voir sur GitHub",
-    "featuresHeading": "Tout ce dont vous avez besoin, sans compromis",
+    "featuresHeading": "Tout ce dont vous avez besoin, sans superflu",
     "features": {
-      "pos": "Caisse / POS — Encaisser une vente en 3 clics",
-      "crm": "CRM client — Historique complet et notes en 1 seconde",
-      "inventory": "Gestion des stocks — Alertes automatiques de rupture",
-      "booking": "Agenda et réservation en ligne sans inscription requise",
-      "notifications": "Notifications automatiques Telegram et Viber (gratuites)",
-      "hosting": "SaaS hébergé ou auto-hébergement souverain via Docker"
+      "pos": "Caisse / POS — 3 clics pour encaisser une vente",
+      "crm": "CRM — historique client complet en 1 seconde",
+      "inventory": "Gestion des stocks avec alertes de stock bas",
+      "booking": "Agenda et réservation en ligne sans inscription pour le client",
+      "notifications": "Notifications Telegram et Viber (gratuites)",
+      "hosting": "SaaS multi-tenant ou auto-hébergé via Docker"
     },
-    "pricingHeading": "Des tarifs simples et transparents",
-    "pricingSubheading": "Ou auto-hébergez gratuitement —",
-    "pricingSubheadingLink": "cloner le dépôt GitHub",
+    "pricingHeading": "Tarifs simples et transparents",
+    "pricingSubheading": "Ou auto-hébergement gratuit —",
+    "pricingSubheadingLink": "cloner sur GitHub",
     "mostPopular": "Le plus populaire",
     "footer": "BookingPro © 2026 · Licence MIT",
     "plans": {
@@ -50,315 +50,674 @@
       "pro": {
         "name": "Pro",
         "price": "39 €/mois",
-        "limit": "15 employés · clients illimités",
+        "limit": "15 employés · illimité",
         "cta": "Commencer"
       },
       "agency": {
         "name": "Agence",
         "price": "79 €/mois",
-        "limit": "Multi-établissements · marque blanche",
-        "cta": "Contactez-nous"
+        "limit": "Multi-sites · marque blanche",
+        "cta": "Nous contacter"
       }
     }
   },
   "auth": {
     "login": {
-      "heading": "Connexion à votre espace",
+      "heading": "Connexion à votre compte",
       "googleButton": "Continuer avec Google",
       "divider": "ou",
-      "emailLabel": "Adresse e-mail",
+      "emailLabel": "E-mail",
       "emailPlaceholder": "vous@exemple.fr",
       "passwordLabel": "Mot de passe",
       "passwordPlaceholder": "••••••••",
       "submitButton": "Se connecter",
-      "noAccount": "Pas encore de compte ?",
+      "noAccount": "Pas de compte ?",
       "createAccount": "Créer un compte gratuit",
       "forgotPassword": "Mot de passe oublié ?",
-      "errorInvalid": "E-mail ou mot de passe incorrect",
-      "errorGoogle": "Échec de l'authentification Google"
+      "errorInvalid": "E-mail ou mot de passe invalide",
+      "errorGoogle": "Échec de la connexion Google"
     },
     "register": {
-      "heading": "Créer votre compte professionnel",
+      "heading": "Créez votre compte",
       "subheading": "Plan gratuit à vie · Aucune carte bancaire requise",
-      "businessNameLabel": "Nom de l'établissement",
-      "businessNamePlaceholder": "Salon Élégance",
-      "emailLabel": "Adresse e-mail",
+      "businessNameLabel": "Nom de l'entreprise",
+      "businessNamePlaceholder": "Salon de Maya",
+      "emailLabel": "E-mail",
       "emailPlaceholder": "vous@exemple.fr",
       "passwordLabel": "Mot de passe",
-      "passwordPlaceholder": "8 caractères minimum",
-      "submitButton": "Créer mon compte",
-      "alreadyHaveAccount": "Déjà inscrit ?",
+      "passwordPlaceholder": "Min. 8 caractères",
+      "submitButton": "Créer un compte gratuit",
+      "alreadyHaveAccount": "Déjà un compte ?",
       "signIn": "Se connecter",
-      "errorNoName": "Le nom de l'établissement est requis",
-      "errorCreateBusiness": "Erreur lors de la création de l'établissement. Veuillez réessayer."
+      "errorNoName": "Le nom de l'entreprise est requis",
+      "errorCreateBusiness": "Impossible de créer l'entreprise. Réessayez."
     },
     "checkEmail": {
-      "heading": "Vérifiez votre boîte mail",
-      "body": "Un e-mail de confirmation vient de vous être envoyé. Cliquez sur le lien pour accéder directement à votre espace.",
+      "heading": "Vérifiez votre e-mail",
+      "body": "Nous vous avons envoyé un lien de confirmation. Cliquez dessus pour accéder directement à votre compte.",
       "noEmail": "Vous n'avez rien reçu ?",
-      "registerAgain": "Recommencer l'inscription"
+      "registerAgain": "S'inscrire à nouveau"
     },
     "forgotPassword": {
-      "heading": "Réinitialisation du mot de passe",
-      "subheading": "Indiquez votre adresse e-mail pour recevoir les instructions de réinitialisation.",
-      "emailLabel": "Adresse e-mail",
+      "heading": "Réinitialisez votre mot de passe",
+      "subheading": "Entrez votre e-mail et nous vous enverrons un lien de réinitialisation.",
+      "emailLabel": "E-mail",
       "emailPlaceholder": "vous@exemple.fr",
       "submitButton": "Envoyer le lien",
       "sending": "Envoi en cours...",
       "forgotLink": "Mot de passe oublié ?",
-      "sentHeading": "E-mail envoyé",
-      "sentBody": "Un lien de réinitialisation a été envoyé à l'adresse {email}.",
-      "noEmail": "Vous ne voyez rien ? Vérifiez vos spams ou",
+      "sentHeading": "Vérifiez votre e-mail",
+      "sentBody": "Nous avons envoyé un lien de réinitialisation à {email}. Cliquez dessus pour définir un nouveau mot de passe.",
+      "noEmail": "Pas d'e-mail ? Vérifiez vos spams ou",
       "tryAgain": "réessayez",
       "backToLogin": "← Retour à la connexion"
     },
     "resetPassword": {
-      "heading": "Définition d'un nouveau mot de passe",
+      "heading": "Définir un nouveau mot de passe",
       "newPasswordLabel": "Nouveau mot de passe",
-      "newPasswordPlaceholder": "8 caractères minimum",
+      "newPasswordPlaceholder": "Min. 8 caractères",
       "confirmLabel": "Confirmer le mot de passe",
-      "confirmPlaceholder": "Répétez le mot de passe",
+      "confirmPlaceholder": "Répétez le nouveau mot de passe",
       "submitButton": "Mettre à jour le mot de passe"
     }
   },
   "onboarding": {
     "logo": "BookingPro",
-    "intro": "Configuration de votre établissement en 3 étapes",
+    "intro": "Configurons votre entreprise en 3 étapes",
     "steps": {
-      "businessType": "Activité",
-      "firstService": "Premier service",
+      "businessType": "Type d'activité",
+      "firstService": "Première prestation",
       "notifications": "Notifications"
     },
-    "checklist": {
-      "title": "Guide de démarrage",
-      "subtitle": "Complétez ces étapes pour optimiser votre utilisation",
-      "dismiss": "Masquer",
-      "allDone": "Tout est configuré !",
-      "completed": "complété",
-      "businessInfo": "Renseigner les informations de l'établissement",
-      "businessInfoDesc": "Nom, adresse, horaires d'ouverture",
-      "addService": "Ajouter une première prestation",
-      "addServiceDesc": "Définir vos services et leurs tarifs",
-      "addEmployee": "Ajouter un membre de l'équipe",
-      "addEmployeeDesc": "Inviter vos collaborateurs",
-      "setupNotifications": "Configurer les notifications",
-      "setupNotificationsDesc": "Activer les rappels automatiques",
-      "addClient": "Ajouter un premier client",
-      "addClientDesc": "Créer votre base de contacts",
-      "testBooking": "Tester la réservation en ligne",
-      "testBookingDesc": "Vérifier le parcours client"
-    },
     "businessTypes": {
-      "salon": "💇 Coiffure & Beauté",
+      "salon": "💇 Beauté / Salon",
       "barbershop": "✂️ Barbershop",
-      "auto_repair": "🔧 Garage & Automobile",
-      "cafe": "☕ Restauration & Café",
-      "dental": "🦷 Cabinet dentaire",
-      "fitness": "💪 Fitness & Bien-être",
-      "massage": "💆 Massage & Spa",
-      "shop": "🏪 Commerce de détail",
-      "other": "🏢 Autre activité"
+      "auto_repair": "🔧 Garage automobile",
+      "cafe": "☕ Café / Restaurant",
+      "dental": "🦷 Clinique dentaire",
+      "fitness": "💪 Fitness / Salle de sport",
+      "massage": "💆 Massage / Spa",
+      "shop": "🏪 Boutique / Kiosque",
+      "other": "🏢 Autre"
     },
     "step0": {
-      "heading": "Présentation de votre entreprise",
-      "subheading": "Ces informations nous permettent d'adapter l'application à vos besoins",
-      "bizNameLabel": "Nom de l'établissement *",
-      "bizNamePlaceholder": "Salon Élégance",
-      "businessTypeLabel": "Secteur d'activité",
+      "heading": "Parlez-nous de votre entreprise",
+      "subheading": "Nous allons adapter la configuration pour vous",
+      "bizNameLabel": "Nom de l'entreprise *",
+      "bizNamePlaceholder": "Salon de Maya",
+      "businessTypeLabel": "Type d'activité",
       "continue": "Continuer",
-      "slugLabel": "Votre URL de réservation dédiée"
+      "slugLabel": "Votre URL BookingPro",
+      "slugHint": "Lettres minuscules, chiffres et tirets · 3 à 30 caractères",
+      "slugChecking": "Vérification…",
+      "slugAvailable": "Disponible ✓",
+      "slugTaken": "Déjà pris — essayez un autre nom",
+      "slugInvalid": "Utilisez uniquement a-z, 0-9 et des tirets (3-30 car.)",
+      "slugPreview": "Votre page de réservation :"
     },
     "step1": {
       "heading": "Ajoutez votre première prestation",
-      "subheading": "Vous pourrez en ajouter d'autres à tout moment depuis vos paramètres",
+      "subheading": "Vous pourrez en ajouter d'autres plus tard dans les Paramètres",
       "serviceNameLabel": "Nom de la prestation *",
-      "serviceNamePlaceholder": "Coupe & Brushing",
-      "durationLabel": "Durée (en minutes)",
-      "priceLabel": "Tarif (€)",
-      "skip": "Passer cette étape",
-      "continue": "Enregistrer et continuer"
+      "serviceNamePlaceholder": "ex. Coupe de cheveux, Vidange…",
+      "priceLabel": "Prix *",
+      "durationLabel": "Durée (min)",
+      "back": "Retour",
+      "skip": "Passer",
+      "continue": "Continuer"
+    },
+    "checklist": {
+      "title": "Bien démarrer avec BookingPro",
+      "progress": "{done} sur {total} complétés",
+      "step1": "Profil d'entreprise créé",
+      "step2": "Ajouter votre première prestation",
+      "step3": "Ajouter votre premier client",
+      "step4": "Créer votre premier rendez-vous",
+      "stepModules": "Choisir vos modules",
+      "step5": "Connecter les notifications",
+      "step5sub": "Envoyer des rappels automatiques aux clients",
+      "connect": "Connecter",
+      "configure": "Configurer",
+      "addService": "Ajouter prestation",
+      "addClient": "Ajouter client",
+      "openCalendar": "Ouvrir l'agenda",
+      "stepProduct": "Ajouter votre premier article",
+      "addProduct": "Ajouter article",
+      "allDone": "Tout est prêt ! 🎉",
+      "upgradeTitle": "Tout est prêt — prêt à passer à la vitesse supérieure ?",
+      "upgradeSubtitle": "Vous avez commencé avec le plan {plan}. Voici ce que vous débloquez :",
+      "upgradeCtaButton": "Continuer vers le paiement →",
+      "upgradeLaterButton": "Peut-être plus tard, rester sur le plan Gratuit"
     },
     "step2": {
-      "heading": "Canaux de notification",
-      "subheading": "Activez les rappels automatiques pour réduire les rendez-vous non honorés",
-      "telegramLabel": "Bot Telegram (recommandé)",
-      "telegramHint": "Créez votre bot gratuitement via @BotFather et indiquez le token ci-dessous",
-      "finish": "Accéder à mon tableau de bord"
+      "heading": "Configurer les notifications",
+      "subheading": "L'e-mail est prêt à l'emploi. Vous pouvez optionnellement connecter Telegram, Viber ou WhatsApp plus tard dans Paramètres → Notifications.",
+      "emailChannel": "E-mail (Resend / SMTP)",
+      "emailChannelSub": "Confirmations de réservation & rappels",
+      "emailChannelStatus": "Activé par défaut",
+      "messengerChannel": "Telegram · Viber · WhatsApp",
+      "messengerChannelSub": "Ajoutez vos jetons plus tard dans Paramètres → Notifications",
+      "messengerChannelStatus": "Optionnel",
+      "back": "Retour",
+      "settingUp": "Configuration en cours…",
+      "submit": "Aller au tableau de bord →",
+      "error": "Une erreur est survenue. Veuillez réessayer."
     }
   },
   "dashboard": {
-    "heading": "Tableau de bord",
     "title": "Tableau de bord",
-    "subtitle": "Synthèse de votre activité et suivi des rendez-vous du jour",
-    "todayAppointments": "Rendez-vous du jour",
-    "revenueToday": "Chiffre d'affaires journalier",
-    "clientsCount": "Total clients",
-    "activeStaff": "Équipe active",
-    "recentActivity": "Activité récente",
-    "quickActions": "Actions rapides",
-    "newAppointment": "Nouveau rendez-vous",
-    "newClient": "Nouveau client",
-    "posTerminal": "Terminal de Caisse (POS)",
     "stats": {
-      "revenueToday": "Aujourd'hui",
-      "appointmentsToday": "Aujourd'hui",
-      "totalClients": "Clients inscrits",
-      "lowStock": "Articles en rupture",
-      "lowStockOk": "OK"
+      "revenueToday": "Chiffre d'affaires du jour",
+      "appointmentsToday": "Rendez-vous du jour",
+      "totalClients": "Total clients",
+      "lowStock": "Articles en stock bas",
+      "lowStockOk": "Tout va bien ✓",
+      "transactionsToday": "Ventes du jour",
+      "unitsSold": "unités vendues",
+      "totalProducts": "Total articles"
+    },
+    "lowStockList": {
+      "heading": "Stock bas",
+      "viewAll": "Voir tout →",
+      "allGood": "Tous les articles sont bien approvisionnés ✓",
+      "threshold": "seuil",
+      "badge": "Stock bas"
     },
     "upcomingAppointments": {
-      "heading": "Rendez-vous à venir",
-      "viewAll": "Voir tout l'agenda",
-      "empty": "Aucun rendez-vous prévu pour le moment.",
-      "addOne": "Ajouter un rendez-vous"
+      "heading": "Prochains rendez-vous",
+      "viewAll": "Voir tout",
+      "empty": "Aucun rendez-vous à venir.",
+      "addOne": "Ajouter",
+      "walkIn": "Sans RDV"
     },
     "recentSales": {
       "heading": "Ventes récentes",
-      "viewAll": "Voir l'historique complet",
-      "empty": "Aucune vente enregistrée.",
-      "makeFirst": "Enregistrer une vente"
+      "viewAll": "Transactions →",
+      "empty": "Aucune vente pour le moment.",
+      "makeFirst": "Effectuer une vente",
+      "walkIn": "Sans RDV",
+      "pmCash": "Espèces",
+      "pmCard": "Carte",
+      "pmTransfer": "Virement",
+      "pmOnline": "En ligne"
+    },
+    "appointmentStatus": {
+      "pending": "en attente",
+      "confirmed": "confirmé",
+      "completed": "terminé",
+      "paid": "payé",
+      "cancelled": "annulé",
+      "no_show": "absent"
+    }
+  },
+  "pos": {
+    "title": "Caisse / POS",
+    "salesHistory": "Transactions",
+    "categoryOther": "Autre",
+    "cart": "Panier",
+    "clientLabel": "Client",
+    "walkIn": "Client de passage",
+    "employeeLabel": "Employé",
+    "anyEmployee": "Tous",
+    "emptyCart": "Appuyez sur une prestation pour l'ajouter",
+    "emptyCartService": "Appuyez sur une prestation pour l'ajouter",
+    "emptyCartProduct": "Scannez ou appuyez sur un article pour l'ajouter",
+    "productsLabel": "Articles",
+    "outOfStock": "Rupture de stock",
+    "itemsLeft": "{count} restants",
+    "showingProducts": "Affichage de {shown} sur {total} articles — tapez pour rechercher",
+    "scanToAdd": "Scanner ou saisir un code-barres…",
+    "itemNotFound": "Article introuvable",
+    "discountLabel": "Remise",
+    "paymentMethods": {
+      "cash": "espèces",
+      "card": "carte",
+      "transfer": "virement"
+    },
+    "totalLabel": "Total",
+    "processing": "Traitement…",
+    "chargeButton": "Encaisser",
+    "servicesTab": "Prestations",
+    "noServices": "Aucune prestation pour le moment.",
+    "addServices": "Ajouter des prestations",
+    "bookingBanner": "Encaissement pour la réservation :",
+    "success": {
+      "heading": "Vente validée !",
+      "receipt": "Reçu",
+      "newSale": "Nouvelle vente"
+    },
+    "saveClientPrompt": "Enregistrer ce client dans votre base ?",
+    "saveClientNamePlaceholder": "Nom *",
+    "saveClientPhonePlaceholder": "Téléphone",
+    "saveClientEmailPlaceholder": "E-mail",
+    "saveClientNotesPlaceholder": "Notes",
+    "saveClientSkip": "Passer",
+    "saveClientSave": "Enregistrer le client",
+    "offlineMode": "Mode hors-ligne",
+    "offlineSyncAuto": "Les ventes se synchroniseront automatiquement à la reconnexion.",
+    "offlinePendingCount": "{count} en attente",
+    "offlineSyncing": "Synchronisation de {count} ventes hors-ligne…",
+    "offlinePendingSync": "{count} ventes hors-ligne en attente de synchronisation",
+    "offlineSyncNow": "Synchroniser",
+    "offlineSavedReceipt": "Enregistré hors-ligne. Synchronisation dès le retour d'Internet.",
+    "durationMin": "{min} min"
+  },
+  "crm": {
+    "title": "Clients",
+    "addClient": "Ajouter un client",
+    "searchPlaceholder": "Rechercher par nom, téléphone, e-mail…",
+    "limitTitle": "Vous avez atteint la limite de 100 clients du plan Gratuit.",
+    "limitDesc": "Passez au plan Starter pour ajouter un nombre illimité de clients.",
+    "empty": {
+      "icon": "👥",
+      "heading": "Aucun client pour le moment",
+      "action": "Ajouter votre premier client"
+    },
+    "table": {
+      "name": "Nom",
+      "contact": "Contact",
+      "tags": "Tags",
+      "lastService": "Dernière prestation",
+      "visits": "Visites",
+      "spent": "Dépensé",
+      "lastVisit": "Dernière visite",
+      "points": "Points"
+    }
+  },
+  "inventory": {
+    "title": "Gestion des stocks",
+    "addItem": "Ajouter un article",
+    "importCsv": "Importer",
+    "export": "Exporter",
+    "moreActions": "Plus d'actions",
+    "import": {
+      "title": "Importer des articles",
+      "uploadHint": "Vous avez déjà une liste de prix sous Excel ou CSV ? Téléchargez-la directement — BookingPro détectera les colonnes automatiquement.",
+      "dropzone": "Glissez le fichier ici ou cliquez pour parcourir",
+      "dropzoneFormats": ".xlsx  ·  .xls  ·  .csv",
+      "orSeparator": "ou",
+      "templateHint": "Vous partez de zéro ?",
+      "downloadTemplate": "Télécharger le modèle Excel",
+      "templateSubhint": "Remplissez-le et importez-le ici.",
+      "productsFound": "{count} article{count, plural, one {} other {s}} trouvé{count, plural, one {} other {s}}",
+      "importing": "Importation…",
+      "importN": "Importer {count} article{count, plural, one {} other {s}}",
+      "result": "Importation terminée",
+      "imported": "{count} importé{count, plural, one {} other {s}}",
+      "skipped": "{count} ignoré{count, plural, one {} other {s}} (doublons ou noms vides)",
+      "limitReached": "Limite du plan atteinte. Mettez à niveau pour importer plus d'articles."
+    },
+    "searchPlaceholder": "Rechercher par nom, SKU ou code-barres...",
+    "itemsTotal": "{count} articles au total",
+    "showingOf": "Affichage de {filtered} sur {total} articles",
+    "showingLowStock": "Affichage de {count} articles en stock bas",
+    "lowStockCount": "{count} en stock bas",
+    "noMatch": "Aucun article ne correspond à « {query} »",
+    "lowStockAlert": "{count} article sous le seuil d'alerte",
+    "lowStockAlertPlural": "{count} articles sous le seuil d'alerte",
+    "empty": {
+      "icon": "📦",
+      "heading": "Aucun article pour le moment",
+      "action": "Ajouter votre premier article"
+    },
+    "table": {
+      "name": "Nom",
+      "category": "Catégorie",
+      "stock": "Stock",
+      "cost": "Coût",
+      "sellPrice": "Prix de vente",
+      "status": "Statut"
+    },
+    "status": {
+      "outOfStock": "Rupture",
+      "lowStock": "Stock bas",
+      "ok": "OK"
+    },
+    "units": {
+      "pcs": "pcs",
+      "g": "g",
+      "kg": "kg",
+      "ml": "ml",
+      "l": "l",
+      "bottle": "bouteille",
+      "box": "boîte",
+      "pack": "pack",
+      "other": "autre…",
+      "enterUnit": "Saisir l'unité"
+    },
+    "barcode": "Code-barres",
+    "scanToAdd": "Scanner un code-barres pour ajouter ou modifier",
+    "scanWithCamera": "Scanner avec la caméra",
+    "cameraNotSupported": "Le scan par caméra n'est pas pris en charge par ce navigateur",
+    "itemNotFound": "Article introuvable",
+    "itemFound": "Article trouvé",
+    "currentStock": "Stock actuel",
+    "addStockQty": "Quantité à ajouter",
+    "addStock": "Ajouter du stock",
+    "createNewInstead": "Créer un nouvel article",
+    "addNewItem": "Ajouter comme nouvel article",
+    "photo": "Photo",
+    "uploadPhoto": "Télécharger une photo",
+    "filterLowStockLabel": "Afficher uniquement les stocks bas",
+    "filterClear": "Effacer le filtre",
+    "tabs": {
+      "items": "Articles",
+      "sales": "Chiffre d'affaires"
+    },
+    "sales": {
+      "revenue": "Revenus",
+      "unitsSold": "Unités vendues",
+      "transactions": "Transactions",
+      "topItems": "Meilleurs articles",
+      "recentSales": "Ventes récentes",
+      "noSales": "Aucune vente sur cette période",
+      "colDate": "Date",
+      "colReceipt": "Reçu",
+      "colItems": "Articles",
+      "colTotal": "Total",
+      "periods": {
+        "today": "Aujourd'hui",
+        "7d": "7 jours",
+        "30d": "30 jours"
+      },
+      "customRange": "Période personnalisée",
+      "from": "Du",
+      "to": "Au",
+      "apply": "Appliquer",
+      "exportExcel": "Exporter vers Excel"
     }
   },
   "booking": {
-    "heading": "Réservation en ligne",
-    "title": "Réservation",
-    "selectService": "Sélectionnez une prestation",
-    "selectEmployee": "Sélectionnez un membre de l'équipe",
-    "selectDate": "Choisissez une date",
-    "selectTime": "Choisissez un créneau horaire",
-    "clientDetails": "Vos coordonnées",
-    "name": "Nom et prénom",
-    "phone": "Numéro de téléphone",
-    "email": "Adresse e-mail",
-    "submit": "Valider la réservation",
-    "success": "Votre rendez-vous a été confirmé avec succès !",
-    "errorSlotUnavailable": "Ce créneau vient d'être réservé par un autre client. Veuillez en sélectionner un autre.",
-    "errorClosed": "L'établissement est fermé à la date sélectionnée."
+    "title": "Agenda",
+    "newAppointment": "Nouveau rendez-vous",
+    "emptyState": {
+      "heading": "Aucun rendez-vous cette semaine",
+      "sub": "Cliquez sur un créneau dans le calendrier ou utilisez le bouton pour en ajouter un"
+    },
+    "calendar": {
+      "today": "Aujourd'hui",
+      "publicPage": "Page de réservation publique",
+      "days": [
+        "Lun",
+        "Mar",
+        "Mer",
+        "Jeu",
+        "Ven",
+        "Sam",
+        "Dim"
+      ],
+      "colorLegend": "Légende des couleurs",
+      "teamColors": "Couleurs de l'équipe",
+      "noTeamMembers": "Aucun membre dans l'équipe",
+      "appointmentStatus": "Statut du rendez-vous"
+    },
+    "status": {
+      "pending": "en attente",
+      "confirmed": "confirmé",
+      "completed": "terminé",
+      "paid": "payé",
+      "cancelled": "annulé",
+      "no_show": "absent"
+    },
+    "walkIn": "Sans RDV",
+    "form": {
+      "heading": "Nouveau rendez-vous",
+      "serviceLabel": "Prestation *",
+      "servicePlaceholder": "Sélectionner une prestation…",
+      "datetimeLabel": "Date & heure *",
+      "clientLabel": "Client",
+      "employeeLabel": "Employé",
+      "anyEmployee": "Indifférent",
+      "notesLabel": "Notes",
+      "notesPlaceholder": "Note optionnelle…",
+      "cancel": "Annuler",
+      "saving": "Enregistrement…",
+      "save": "Enregistrer",
+      "closedDayError": "Ce jour est fermé dans les horaires de travail. Mettez d'abord à jour votre planning dans les Paramètres."
+    },
+    "detail": {
+      "statusLabel": "Statut",
+      "employeeLabel": "Employé :",
+      "chargeButton": "Encaisser",
+      "close": "Fermer",
+      "deleteButton": "Supprimer le rendez-vous",
+      "onlineLabel": "En ligne",
+      "deleteConfirm": "Supprimer ce rendez-vous ?",
+      "deleteConfirmYes": "Supprimer",
+      "unassigned": "Non assigné"
+    }
   },
   "settings": {
-    "heading": "Paramètres de l'établissement",
     "title": "Paramètres",
     "tabs": {
       "general": "Général",
       "services": "Prestations",
-      "employees": "Équipe",
+      "employees": "Employés",
       "notifications": "Notifications",
-      "billing": "Facturation & Plan",
-      "modules": "Modules",
-      "account": "Compte"
+      "billing": "Facturation",
+      "account": "Compte",
+      "modules": "Modules"
+    },
+    "billing": {
+      "heading": "Plan actuel",
+      "planSuffix": "plan",
+      "freePlan": "Gratuit",
+      "activePlan": "Actif",
+      "renewsOn": "Renouvellement le",
+      "employees": "Employés",
+      "clients": "Clients",
+      "manageSubscription": "Gérer l'abonnement",
+      "mostPopular": "Le plus populaire",
+      "upgrade": "Mettre à niveau →",
+      "currentPlan": "Plan actuel",
+      "successMessage": "Abonnement activé ! Merci pour votre mise à niveau.",
+      "errorMessage": "Une erreur est survenue. Veuillez réessayer ou contacter le support."
+    },
+    "account": {
+      "heading": "Mon compte",
+      "currentEmailLabel": "E-mail actuel",
+      "newEmailLabel": "Nouvel e-mail",
+      "newEmailPlaceholder": "Entrez la nouvelle adresse e-mail",
+      "changeEmailButton": "Modifier l'e-mail",
+      "emailHint": "Un lien de confirmation sera envoyé à la nouvelle adresse. Le changement prendra effect après validation.",
+      "passwordHeading": "Changer le mot de passe",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
+      "confirmPasswordPlaceholder": "Répétez le nouveau mot de passe",
+      "changePasswordButton": "Mettre à jour le mot de passe",
+      "saving": "Enregistrement…",
+      "pwMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "pwNoMatch": "Les mots de passe ne correspondent pas",
+      "pwSuccess": "Mot de passe mis à jour avec succès",
+      "emailInvalid": "Entrez une adresse e-mail valide",
+      "emailConfirmSent": "Confirmation envoyée à {email}. Cliquez sur le lien dans l'e-mail pour finaliser le changement."
+    },
+    "workingHours": {
+      "heading": "Horaires de travail",
+      "dayNames": [
+        "Dim",
+        "Lun",
+        "Mar",
+        "Mer",
+        "Jeu",
+        "Ven",
+        "Sam"
+      ],
+      "from": "De",
+      "to": "À",
+      "closed": "Fermé",
+      "addBreak": "Ajouter une pause",
+      "breakInvalidRange": "{day} : l'heure de fin de pause doit être postérieure à l'heure de début",
+      "breakOutsideHours": "{day} : la pause doit être comprise dans les horaires de travail",
+      "saveButton": "Enregistrer les horaires",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré ✓"
     },
     "general": {
-      "heading": "Informations générales",
+      "heading": "Informations de l'entreprise",
       "fields": {
-        "name": "Nom de l'établissement",
+        "name": "Nom de l'entreprise",
         "phone": "Téléphone",
         "email": "E-mail",
         "address": "Adresse",
         "timezone": "Fuseau horaire",
         "currency": "Devise (ISO)",
-        "slug": "Identifiant URL (Slug)"
+        "slug": "Slug URL"
       },
-      "typeLabel": "Secteur",
-      "typeDefault": "Sélectionner le secteur...",
+      "typeLabel": "Type d'activité",
+      "typeDefault": "— sélectionner —",
       "types": {
-        "salon": "Salon de coiffure",
-        "barbershop": "Barbershop",
-        "auto_repair": "Garage automobile",
-        "cafe": "Café / Restaurant",
-        "dental": "Cabinet dentaire",
-        "fitness": "Salle de sport / Fitness",
-        "massage": "Salon de massage / Spa",
-        "other": "Autre activité"
+        "salon": "💇 Beauté / Salon",
+        "barbershop": "✂️ Barbershop",
+        "auto_repair": "🔧 Garage automobile",
+        "cafe": "☕ Café / Restaurant",
+        "dental": "🦷 Clinique dentaire",
+        "fitness": "💪 Fitness / Salle de sport",
+        "massage": "💆 Massage / Spa",
+        "other": "🏢 Autre"
       },
-      "slugLabel": "Identifiant URL (Slug)",
-      "slugHint": "Personnalisez l'adresse web de votre page de réservation publique",
-      "slugError": "Le slug contient des caractères non autorisés",
-      "brandColorLabel": "Couleur principale de la marque",
-      "brandColorHint": "Harmonisez l'interface de votre widget de réservation",
+      "notificationLanguageLabel": "Langue des notifications",
+      "notificationLanguageHint": "Langue utilisée dans les confirmations et rappels de rendez-vous envoyés aux clients.",
+      "bookingUrlLabel": "URL de réservation publique",
+      "slugHint": "Uniquement des lettres minuscules, chiffres et tirets. Modifier ceci cassera les liens de réservation existants.",
+      "slugError": "Seules les lettres minuscules, chiffres et tirets sont autorisés",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré",
+      "saveButton": "Enregistrer les modifications",
+      "planLabel": "Plan :",
+      "brandColorLabel": "Couleur de la marque",
+      "brandColorHint": "Utilisée sur votre page de réservation publique — vos clients verront cette couleur.",
       "logoLabel": "Logo de l'entreprise",
-      "logoHint": "Fichier PNG, JPG ou SVG (2 Mo maximum)",
-      "logoUpload": "Importer un logo",
-      "logoUploading": "Téléversement en cours...",
-      "logoRemove": "Retirer le logo",
-      "logoRemoving": "Suppression...",
-      "logoFormats": "Formats supportés : PNG, JPEG, WebP, SVG",
-      "logoErrorRemove": "Erreur lors de la suppression du logo",
-      "logoErrorNetwork": "Erreur réseau : {message}",
-      "notificationLanguageLabel": "Langue des communications clients",
-      "notificationLanguageHint": "Langue utilisée pour les e-mails, SMS et rappels envoyés à vos clients",
-      "bookingUrlLabel": "Lien de réservation public",
-      "saving": "Enregistrement...",
-      "saved": "Modifications enregistrées",
-      "planLabel": "Abonnement actif :",
-      "saveButton": "Enregistrer les modifications"
-    },
-    "workingHours": {
-      "heading": "Horaires d'ouverture",
-      "dayNames": ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
-      "from": "De",
-      "to": "À",
-      "closed": "Fermé",
-      "addBreak": "Ajouter une pause",
-      "breakInvalidRange": "{day} : l'heure de fin de pause doit être après l'heure de début",
-      "breakOutsideHours": "{day} : la pause doit être comprise dans les horaires d'ouverture",
-      "saveButton": "Enregistrer les horaires",
-      "saving": "Enregistrement...",
-      "saved": "Enregistré ✓"
+      "logoHint": "Téléchargez votre logo pour remplacer l'avatar textuel sur votre page de réservation.",
+      "logoUploadArea": "Zone de téléchargement",
+      "logoRemove": "Supprimer le logo",
+      "logoRemoving": "Suppression…",
+      "logoUpload": "Cliquez pour télécharger ou glisser-déposer",
+      "logoUploading": "Téléchargement…",
+      "logoFormats": "PNG, JPG, WebP, SVG · max 2Mo",
+      "logoProOnly": "Disponible sur le plan Pro →",
+      "logoErrorRemove": "Échec de la suppression du logo.",
+      "logoErrorNetwork": "Erreur réseau : {message}"
     },
     "services": {
-      "empty": "Aucune prestation configurée",
+      "empty": "Aucune prestation pour le moment",
       "table": {
-        "name": "Intitulé",
-        "price": "Tarif",
-        "duration": "Durée",
+        "name": "Nom",
         "category": "Catégorie",
-        "capacity": "Capacité"
+        "price": "Prix",
+        "duration": "Durée",
+        "capacity": "Capacuité"
       },
       "addHeading": "Ajouter une prestation",
       "editHeading": "Modifier la prestation",
-      "addButton": "Ajouter",
+      "fields": {
+        "name": "Nom",
+        "category": "Catégorie",
+        "price": "Prix",
+        "duration": "Durée (min)",
+        "capacity": "Capacité"
+      },
+      "capacityHint": "Max clients par créneau (1 = individuel, >1 = cours collectif)",
+      "addButton": "Ajouter la prestation",
       "updateButton": "Mettre à jour",
       "cancelButton": "Annuler",
-      "deleteConfirm": "Confirmer la suppression ?",
+      "deleteConfirm": "Supprimer ?",
       "deleteYes": "Supprimer",
-      "deleteNo": "Conserver",
-      "fields": {
-        "name": "Intitulé de la prestation",
-        "category": "Catégorie",
-        "price": "Tarif (€)",
-        "duration": "Durée (minutes)",
-        "capacity": "Capacité simultanée"
-      },
-      "capacityHint": "Nombre maximum de clients pour cette prestation"
+      "deleteNo": "Annuler"
     },
     "employees": {
-      "empty": "Aucun membre d'équipe enregistré",
+      "empty": "Aucun employé pour le moment",
       "table": {
-        "name": "Collaborateur",
-        "role": "Rôle / Habilitation",
+        "name": "Nom",
+        "role": "Rôle",
         "contact": "E-mail",
         "phone": "Téléphone"
       },
-      "addHeading": "Ajouter un collaborateur",
-      "editHeading": "Modifier le collaborateur",
-      "addButton": "Ajouter",
-      "updateButton": "Mettre à jour",
-      "cancelButton": "Annuler",
-      "deleteConfirm": "Confirmer la suppression ?",
-      "deleteYes": "Supprimer",
-      "deleteNo": "Conserver",
+      "addHeading": "Ajouter un employé",
+      "editHeading": "Modifier l'employé",
       "fields": {
         "name": "Nom complet",
         "role": "Rôle",
-        "email": "Adresse e-mail",
+        "email": "E-mail",
         "phone": "Téléphone"
-      }
+      },
+      "addButton": "Ajouter l'employé",
+      "updateButton": "Mettre à jour",
+      "cancelButton": "Annuler",
+      "deleteConfirm": "Retirer ?",
+      "deleteYes": "Retirer",
+      "deleteNo": "Annuler",
+      "limitBannerTitle": "Limite de membres d'équipe atteinte.",
+      "limitBannerDesc": "Passez au plan Starter pour ajouter jusqu'à 5 membres."
     },
     "notifications": {
-      "heading": "Canaux de notification & Passerelles",
+      "heading": "Canaux de notification",
+      "email": {
+        "label": "E-mail",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "smtpOption": "Serveur SMTP",
+        "resendOption": "API Resend",
+        "smtpHost": "Hôte SMTP",
+        "smtpPort": "Port SMTP",
+        "smtpUser": "Nom d'utilisateur",
+        "smtpPass": "Mot de passe",
+        "smtpPassHint": "Pour Gmail : utilisez un mot de passe d'application — myaccount.google.com → Sécurité → Validation en 2 étapes → Mots de passe des applications",
+        "smtpFrom": "Adresse d'expédition",
+        "smtpHostPlaceholder": "smtp.gmail.com",
+        "smtpFromPlaceholder": "bonjour@monentreprise.fr",
+        "resendApiKey": "Clé API",
+        "resendApiKeyPlaceholder": "re_...",
+        "resendSignup": "Obtenez une clé API gratuite sur resend.com"
+      },
+      "telegram": {
+        "label": "Bot Telegram",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "description": "Créez un bot via @BotFather et collez le jeton ci-dessous.",
+        "placeholder": "123456789:AAABBB...",
+        "connectButton": "Connecter",
+        "step1": "Ouvrez <a href=\"https://t.me/BotFather\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">@BotFather</a> sur Telegram → <code class=\"bg-gray-100 px-1 rounded\">/newbot</code> → copiez le jeton",
+        "step2": "Collez le jeton ci-dessous et cliquez sur Connecter",
+        "step3": "Ouvrez votre nouveau bot sur Telegram depuis votre compte professionnel et envoyez <code class=\"bg-gray-100 px-1 rounded\">/start</code> — cela enregistre le chat pour recevoir les notifications"
+      },
+      "viber": {
+        "label": "Bot Viber",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "description": "Créez un bot sur partners.viber.com et collez le jeton d'authentification.",
+        "placeholder": "Jeton d'authentification Viber",
+        "connectButton": "Connecter",
+        "step1": "Allez sur <a href=\"https://developers.viber.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.viber.com</a> → créez un bot → copiez le jeton",
+        "step2": "Collez le jeton ci-dessous et cliquez sur Connecter",
+        "step3": "Ouvrez votre bot sur Viber depuis votre compte professionnel et envoyez <code class=\"bg-gray-100 px-1 rounded\">/start</code> — cela enregistre le chat pour recevoir les notifications"
+      },
+      "whatsapp": {
+        "label": "WhatsApp (Meta Cloud API)",
+        "connected": "Connecté",
+        "notSet": "Non configuré",
+        "description": "Envoie des messages directement aux clients dont le numéro WhatsApp est enregistré dans le CRM.",
+        "phoneNumberId": "ID du numéro de téléphone",
+        "phoneNumberIdPlaceholder": "1234567890",
+        "accessToken": "Jeton d'accès",
+        "accessTokenPlaceholder": "EAABs...",
+        "saveButton": "Enregistrer les identifiants",
+        "step1": "Allez sur <a href=\"https://developers.facebook.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:underline\">developers.facebook.com</a> → créez une application Meta → ajoutez le produit <strong>WhatsApp</strong>",
+        "step2": "Dans <strong>WhatsApp → API Setup</strong>, copiez l'<em>ID du numéro de téléphone</em> et un <strong>jeton d'accès permanent</strong> (créé via un utilisateur système dans Meta Business Manager — recommandé)",
+        "step3": "Collez les deux ci-dessous et cliquez sur {saveButton}",
+        "step4": "Ajoutez le numéro WhatsApp d'un client dans CRM → page client — il recevra les notifications automatiquement"
+      },
+      "ownerWhatsapp": {
+        "label": "Votre numéro WhatsApp (pour les alertes)",
+        "description": "Entrez votre numéro WhatsApp personnel pour recevoir les alertes de stock bas et autres notifications de propriétaire. Format : +33612345678",
+        "placeholder": "+33612345678"
+      },
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré ✓",
       "triggersHeading": "Déclencheurs automatiques",
       "triggers": {
-        "confirmation": "Confirmation de rendez-vous — immédiate",
+        "confirmation": "Confirmation de réservation — instantanée",
         "reminder24h": "Rappel — 24 heures avant",
         "reminder1h": "Rappel — 1 heure avant",
         "thankYou": "Remerciement — après la visite",
@@ -366,165 +725,59 @@
         "birthday": "Message d'anniversaire",
         "lowStock": "Alerte stock bas (e-mail)"
       },
-      "email": {
-        "label": "Passerelle e-mail",
-        "connected": "Opérationnel",
-        "notSet": "Non configuré",
-        "smtpOption": "Serveur SMTP dédié",
-        "resendOption": "Service Resend (API)",
-        "smtpHost": "Serveur SMTP (Hôte)",
-        "smtpHostPlaceholder": "smtp.votre-fournisseur.fr",
-        "smtpPort": "Port",
-        "smtpUser": "Identifiant SMTP",
-        "smtpPass": "Mot de passe SMTP",
-        "smtpPassHint": "Chiffré et stocké de manière sécurisée",
-        "smtpFrom": "E-mail de l'expéditeur",
-        "smtpFromPlaceholder": "rdv@votre-etablissement.fr",
-        "resendApiKey": "Clé API Resend",
-        "resendApiKeyPlaceholder": "re_...",
-        "resendSignup": "Créer un compte sur resend.com"
-      },
-      "telegram": {
-        "label": "Bot Telegram",
-        "connected": "Opérationnel",
-        "notSet": "Non configuré",
-        "step1": "Recherchez <strong>@BotFather</strong> sur Telegram",
-        "step2": "Envoyez la commande /newbot pour créer votre bot",
-        "step3": "Copiez le jeton d'accès HTTP fourni et collez-le ci-dessous",
-        "placeholder": "123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ",
-        "connectButton": "Connecter Telegram"
-      },
-      "viber": {
-        "label": "Bot Viber",
-        "connected": "Opérationnel",
-        "notSet": "Non configuré",
-        "step1": "Accédez au portail Viber Admin",
-        "step2": "Créez votre compte Bot et récupérez votre token",
-        "step3": "Collez le jeton d'authentification ci-dessous",
-        "placeholder": "viber-bot-token...",
-        "connectButton": "Connecter Viber"
-      },
-      "whatsapp": {
-        "label": "API WhatsApp Business",
-        "connected": "Opérationnel",
-        "notSet": "Non configuré",
-        "description": "Automatisez l'envoi de confirmations et de rappels via l'infrastructure officielle WhatsApp Cloud.",
-        "step1": "Rendez-vous sur le portail <strong>Meta for Developers</strong> (developers.facebook.com)",
-        "step2": "Configurez une application WhatsApp Business et récupérez vos identifiants",
-        "step3": "Renseignez l'ID de votre numéro et votre jeton d'accès, puis cliquez sur {saveButton}",
-        "step4": "Vos clients bénéficieront de notifications certifiées et professionnelles",
-        "phoneNumberIdPlaceholder": "ID du numéro de téléphone WhatsApp",
-        "accessTokenPlaceholder": "Jeton d'accès permanent Meta",
-        "saveButton": "Enregistrer les paramètres WhatsApp"
-      },
-      "ownerWhatsapp": {
-        "label": "WhatsApp personnel du responsable",
-        "description": "Recevez une notification instantanée sur votre téléphone pour chaque nouvelle réservation enregistrée",
-        "placeholder": "+33612345678"
-      },
       "waTemplates": {
-        "heading": "Modèles de messages WhatsApp",
-        "description": "Personnalisez la formulation des messages automatisés",
-        "confirmation": "Confirmation de rendez-vous",
-        "confirmationPlaceholder": "Bonjour [Nom], votre rendez-vous est confirmé le [Date] à [Heure].",
-        "reminder": "Rappel de rendez-vous",
-        "reminderPlaceholder": "Rappel : Votre rendez-vous demain à [Heure].",
-        "reengagement": "Campagne de réactivation",
-        "reengagementPlaceholder": "Cela fait un moment ! Venez nous rendre visite.",
-        "birthday": "Message d'anniversaire",
-        "birthdayPlaceholder": "Joyeux anniversaire de toute l'équipe !",
-        "thankyou": "Message de remerciement",
-        "thankyouPlaceholder": "Merci pour votre visite aujourd'hui !",
-        "language": "Langue des modèles WhatsApp"
-      },
-      "save": "Enregistrer les notifications"
+        "heading": "Modèles WhatsApp",
+        "description": "Entrez les noms des modèles approuvés dans votre Meta Business Manager. Laissez vide pour ignorer WhatsApp pour cet événement.",
+        "confirmation": "Nom du modèle de confirmation",
+        "confirmationPlaceholder": "ex. booking_confirmation",
+        "reminder": "Nom du modèle de rappel",
+        "reminderPlaceholder": "ex. appointment_reminder",
+        "thankyou": "Nom du modèle de remerciement",
+        "thankyouPlaceholder": "ex. visit_thankyou",
+        "reengagement": "Nom du modèle de réengagement",
+        "reengagementPlaceholder": "ex. client_reactivation",
+        "birthday": "Nom du modèle d'anniversaire",
+        "birthdayPlaceholder": "ex. happy_birthday",
+        "language": "Langue du modèle"
+      }
     },
     "modules": {
       "heading": "Modules fonctionnels",
-      "description": "Activez ou désactivez les briques applicatives selon vos besoins opérationnels",
-      "saveButton": "Enregistrer les modules",
-      "saved": "Modules mis à jour",
-      "turnOffButton": "Désactiver",
-      "cancelButton": "Annuler",
-      "presetsLabel": "Préréglages recommandés",
+      "description": "Choisissez les fonctionnalités actives pour votre entreprise. Vos données ne sont jamais supprimées lorsqu'un module est désactivé — elles réapparaissent dès sa réactivation.",
+      "presetsLabel": "Préréglages rapides",
       "presets": {
-        "salon": "Salon / Beauté",
-        "shop": "Commerce / Boutique",
-        "cafe": "Café / Restauration",
-        "all": "Tous les modules"
+        "salon": "💇 Salon / Barbershop",
+        "shop": "🏪 Commerce / Kiosque",
+        "cafe": "☕ Café",
+        "all": "✳️ Tous les modules"
       },
-      "confirmOff": "Êtes-vous sûr de vouloir désactiver le module {label} ?",
+      "confirmOff": "Les données ne sont jamais supprimées — elles réapparaîtront lors de la réactivation. Désactiver {label} ?",
+      "cancelButton": "Annuler",
+      "turnOffButton": "Désactiver",
+      "saveButton": "Enregistrer les modules",
+      "saved": "Enregistré !",
       "items": {
         "bookings": {
           "label": "Réservations & Agenda",
-          "description": "Gestion des rendez-vous et calendrier en ligne"
+          "description": "Rendez-vous, planning, affectation du personnel"
         },
         "crm": {
           "label": "CRM & Clients",
-          "description": "Fichiers clients, historique et notes"
+          "description": "Fiches clients, historique des visites, tags et notes"
         },
         "pos": {
-          "label": "Caisse / POS",
-          "description": "Encaissement des ventes et historique des transactions"
+          "label": "POS & Caisse",
+          "description": "Ventes, paiements, reçus"
         },
         "inventory": {
           "label": "Gestion des stocks",
-          "description": "Suivi des articles, alertes de rupture et inventaire"
+          "description": "Stock, articles, alertes de rupture"
         },
         "notifications": {
-          "label": "Notifications omnicanales",
-          "description": "Rappels automatiques par e-mail, Telegram, Viber et WhatsApp"
+          "label": "Notifications",
+          "description": "Rappels Telegram, WhatsApp, Viber, E-mail"
         }
       }
-    },
-    "account": {
-      "heading": "Paramètres du compte utilisateur",
-      "currentEmailLabel": "E-mail actuel",
-      "newEmailLabel": "Nouvelle adresse e-mail",
-      "newEmailPlaceholder": "nouveau@exemple.fr",
-      "changeEmailButton": "Mettre à jour l'e-mail",
-      "emailHint": "Un lien de vérification sera adressé à votre nouvelle boîte mail.",
-      "passwordHeading": "Sécurité & Mot de passe",
-      "newPasswordLabel": "Nouveau mot de passe",
-      "saving": "Enregistrement...",
-      "pwMinLength": "Le mot de passe doit contenir au moins 8 caractères",
-      "pwNoMatch": "Les mots de passe ne correspondent pas",
-      "pwSuccess": "Mot de passe mis à jour avec succès",
-      "emailInvalid": "Adresse e-mail invalide",
-      "emailConfirmSent": "E-mail de confirmation envoyé à {email}",
-      "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
-      "confirmPasswordPlaceholder": "Répétez le nouveau mot de passe",
-      "changePasswordButton": "Modifier le mot de passe"
-    },
-    "pos": {
-      "title": "Caisse / POS",
-      "history": "Historique des ventes",
-      "searchService": "Rechercher une prestation ou un article...",
-      "cart": "Panier",
-      "emptyCart": "Votre panier est vide",
-      "total": "Total",
-      "pay": "Encaisser",
-      "cash": "Espèces",
-      "card": "Carte bancaire",
-      "other": "Autre",
-      "success": "Paiement validé avec succès !"
-    },
-    "inventory": {
-      "title": "Gestion des stocks",
-      "addItem": "Ajouter un article",
-      "search": "Rechercher par nom, SKU ou code-barres...",
-      "allCategories": "Toutes les catégories",
-      "lowStockOnly": "Stock bas uniquement",
-      "export": "Exporter",
-      "import": "Importer",
-      "empty": "Aucun article en stock"
-    },
-    "crm": {
-      "title": "Clients & CRM",
-      "addClient": "Ajouter un client",
-      "search": "Rechercher par nom, téléphone ou e-mail...",
-      "import": "Importer des clients",
-      "empty": "Aucun client enregistré"
     }
   },
   "sidebar": {
@@ -539,6 +792,426 @@
     "shareFeedback": "Partager un avis",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
+  },
+  "publicBooking": {
+    "bookAnAppointment": "Prendre un rendez-vous",
+    "stepSelectService": "Sélectionner une prestation",
+    "stepChooseSpecialist": "Choisir un spécialiste",
+    "stepDatetime": "Date & heure",
+    "stepYourDetails": "Vos coordonnées",
+    "addToGoogleCalendar": "Ajouter à Google Agenda",
+    "slotTaken": "⚠ Ce créneau vient d'être réservé par quelqu'un d'autre. Veuillez en choisir un autre.",
+    "noStaffAvailable": "Aucun personnel n'est disponible pour le moment. Veuillez contacter directement l'entreprise.",
+    "demoNotificationsHeading": "Vos clients reçoivent des notifications instantanées via :",
+    "demoNotificationsFooter": "Configurez les notifications en 5 minutes · Sans surcoût",
+    "selectService": {
+      "heading": "Sélectionner une prestation",
+      "empty": "Aucune prestation disponible pour la réservation en ligne.",
+      "minutes": "{duration} min"
+    },
+    "selectEmployee": {
+      "heading": "Choisir un spécialiste",
+      "sub": "Vous pouvez choisir n'importe qui — ils sont tous excellents",
+      "anyone": "Indifférent",
+      "back": "← Retour"
+    },
+    "datetime": {
+      "heading": "Choisir la date & l'heure",
+      "back": "← Retour",
+      "dateLabel": "Date",
+      "timeLabel": "Heure",
+      "continue": "Continuer"
+    },
+    "contact": {
+      "heading": "Vos coordonnées",
+      "back": "← Retour",
+      "nameLabel": "Nom *",
+      "namePlaceholder": "Votre nom",
+      "phoneLabel": "Téléphone",
+      "phonePlaceholder": "+33 6 12 34 56 78",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "vous@exemple.fr",
+      "booking": "Confirmation…",
+      "confirm": "Confirmer le rendez-vous — {price}",
+      "noRegistration": "Aucune inscription requise"
+    },
+    "success": {
+      "heading": "Rendez-vous confirmé !",
+      "body": "Votre rendez-vous est confirmé. À très bientôt !",
+      "bookAnother": "Prendre un autre rendez-vous",
+      "optInHeading": "Recevez des rappels dans votre messagerie",
+      "optInSub": "Appuyez ci-dessous pour recevoir des rappels de rendez-vous sur Telegram ou Viber — sans inscription.",
+      "telegramButton": "Recevoir les rappels sur Telegram",
+      "viberButton": "Recevoir les rappels sur Viber"
+    },
+    "loadingTimes": "Chargement des horaires disponibles…",
+    "dayClosed": "Ce jour est en dehors des horaires de travail. Veuillez choisir une autre date.",
+    "noSlots": "Aucun créneau disponible pour ce jour. Veuillez choisir une autre date.",
+    "spotsLeft": "{count} places restantes",
+    "continueButton": "Continuer →",
+    "at": "à",
+    "errorContactRequired": "Veuillez entrer au moins un numéro de téléphone ou un e-mail pour que nous puissions confirmer votre rendez-vous.",
+    "errorPhone": "Veuillez entrer un numéro de téléphone valide (chiffres uniquement, ex. +33 6 12 34 56 78).",
+    "errorEmail": "Veuillez entrer une adresse e-mail valide (ex. nom@exemple.fr).",
+    "errorRateLimit": "Trop de tentatives de réservation. Veuillez patienter quelques minutes et réessayer.",
+    "errorGeneric": "Une erreur est survenue. Veuillez réessayer ou contacter directement l'entreprise."
+  },
+  "contact": {
+    "heading": "Contactez-nous",
+    "subheading": "Un vrai support, sans robots — généralement plus rapide que prévu",
+    "namePlaceholder": "Votre nom",
+    "emailPlaceholder": "votre@email.fr",
+    "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+    "sendButton": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "success": "✓ Message envoyé ! Nous vous répondrons rapidement.",
+    "error": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "csvImport": {
+    "importCsvButton": "Importer CSV",
+    "importClients": "Importer des clients",
+    "upgradeToImport": "Mettez à niveau pour importer plus de clients",
+    "title": "Importer des clients depuis un CSV",
+    "selectPlatform": "Sélectionnez votre source pour obtenir les instructions d'exportation :",
+    "howToExport": "Comment exporter : ",
+    "dropZone": "Glissez le fichier CSV ici ou cliquez pour parcourir",
+    "dropZoneFormats": "Prend en charge les fichiers .csv",
+    "rowsFound": "{count} ligne{count, plural, one {} other {s}} trouvée{count, plural, one {} other {s}}",
+    "changeFile": "Changer de fichier",
+    "noPhoneWarn": "Aucune colonne de téléphone détectée. Les clients seront importés sans numéro de téléphone (pas de déduplication).",
+    "previewName": "Nom",
+    "previewPhone": "Téléphone",
+    "previewEmail": "E-mail",
+    "moreRows": "…et {count} autre{count, plural, one {} other {s}} ligne{count, plural, one {} other {s}}",
+    "back": "Retour",
+    "importing": "Importation…",
+    "importButton": "Importer {count} client{count, plural, one {} other {s}}",
+    "doneTitle": "Importation terminée",
+    "imported": "{count} client{count, plural, one {} other {s}} importé{count, plural, one {} other {s}}",
+    "skipped": "{count} ignoré{count, plural, one {} other {s}} (doublons ou noms vides)",
+    "done": "Terminé",
+    "platformHints": {
+      "fresha": "Clients → Options (en haut à droite) → Exporter → CSV",
+      "vagaro": "Plus → Rapports → Clients → Action → Exporter Excel, puis enregistrer en CSV",
+      "booksy": "Clients → Plus d'options → Exporter → CSV",
+      "mindbody": "Rapports → Clients → Listes de diffusion → Exporter → CSV",
+      "square": "Clients → Répertoire clients → Exporter",
+      "other": "Exportez votre liste de clients au format CSV avec les colonnes : name, phone, email"
+    }
+  },
+  "datePicker": {
+    "today": "Aujourd'hui",
+    "months": [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre"
+    ],
+    "days": [
+      "Lu",
+      "Ma",
+      "Me",
+      "Je",
+      "Ve",
+      "Sa",
+      "Di"
+    ]
+  },
+  "feedback": {
+    "heading": "Partagez votre avis",
+    "subheading": "Aidez-nous à améliorer BookingPro",
+    "placeholder": "Qu'avez-vous à l'esprit ?",
+    "placeholderGood": "Qu'est-ce qui vous plaît le plus ?",
+    "placeholderBad": "Qu'est-ce qui ne vous convient pas ?",
+    "cancel": "Annuler",
+    "submit": "Envoyer",
+    "sending": "Envoi…",
+    "thanks": "Merci pour votre retour !",
+    "thanksSub": "Cela nous aide à rendre BookingPro meilleur.",
+    "close": "Fermer"
+  },
+  "clientDetail": {
+    "backToClients": "← Clients",
+    "editButton": "Modifier",
+    "saveButton": "Enregistrer",
+    "cancelButton": "Annuler",
+    "deleteButton": "Supprimer le client",
+    "deleteConfirm": "Supprimer ce client ? Cette action est irréversible.",
+    "fields": {
+      "name": "Nom",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "birthday": "Anniversaire",
+      "notes": "Notes",
+      "notesPlaceholder": "Ajouter une note…",
+      "tags": "Tags",
+      "tagsPlaceholder": "vip, régulier…",
+      "whatsappNumber": "WhatsApp",
+      "messengers": "Messageries",
+      "connected": "Connecté ✓",
+      "notConnected": "Non connecté",
+      "telegram": "Telegram",
+      "viber": "Viber",
+      "telegramShareTitle": "Partagez ce lien avec le client pour connecter les notifications Telegram",
+      "telegramConnectFirst": "Connectez d'abord le bot Telegram dans les Paramètres",
+      "copiedLink": "✓ Copié",
+      "copyLink": "Copier le lien"
+    },
+    "phoneInvalid": "Veuillez entrer un numéro de téléphone valide (chiffres uniquement)",
+    "dateInvalid": "Veuillez entrer une date valide",
+    "stats": {
+      "totalVisits": "Total des visites",
+      "totalSpent": "Total dépensé",
+      "lastVisit": "Dernière visite",
+      "never": "Jamais",
+      "clientSince": "Client depuis"
+    },
+    "appointments": {
+      "heading": "Historique des visites",
+      "empty": "Aucune visite pour le moment"
+    },
+    "status": {
+      "pending": "en attente",
+      "confirmed": "confirmé",
+      "completed": "terminé",
+      "paid": "payé",
+      "cancelled": "annulé",
+      "no_show": "absent"
+    }
+  },
+  "transactions": {
+    "title": "Transactions",
+    "filters": {
+      "allMethods": "Tous les modes",
+      "cash": "Espèces",
+      "card": "Carte",
+      "transfer": "Virement",
+      "online": "En ligne",
+      "from": "Du",
+      "to": "Au",
+      "clientPlaceholder": "Nom du client ou de l'article..."
+    },
+    "paymentMethods": {
+      "card": "Carte",
+      "cash": "Espèces",
+      "transfer": "Virement",
+      "online": "En ligne"
+    },
+    "table": {
+      "receipt": "Reçu",
+      "client": "Client",
+      "employee": "Employé",
+      "items": "Prestations / Articles",
+      "method": "Mode",
+      "amount": "Montant",
+      "date": "Date"
+    },
+    "walkIn": "Client de passage",
+    "unassigned": "—",
+    "empty": "Aucune vente pour le moment",
+    "total": "Total pour la période :",
+    "itemCount": "{count} article",
+    "itemCountPlural": "{count} articles",
+    "moreItems": "+ {count} de plus"
+  },
+  "inventoryDetail": {
+    "backToInventory": "← Stocks",
+    "editButton": "Modifier",
+    "saveButton": "Enregistrer",
+    "cancelButton": "Annuler",
+    "deleteButton": "Supprimer l'article",
+    "deleteConfirm": "Supprimer cet article du stock ?",
+    "fields": {
+      "name": "Nom",
+      "sku": "SKU",
+      "barcode": "Code-barres",
+      "description": "Description",
+      "category": "Catégorie",
+      "unit": "Unité",
+      "costPrice": "Prix de revient",
+      "sellPrice": "Prix de vente",
+      "lowStockThreshold": "Alerte stock bas à",
+      "uploadPhoto": "Télécharger une photo"
+    },
+    "stock": {
+      "current": "Stock actuel",
+      "addMovement": "Ajouter un mouvement",
+      "type": "Type",
+      "typeIn": "Entrée (+)",
+      "typeOut": "Sortie (−)",
+      "typeAdjustment": "Ajustement",
+      "quantity": "Quantité",
+      "note": "Note",
+      "notePlaceholder": "ex. Livraison fournisseur, Utilisé en prestation…",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…"
+    },
+    "movements": {
+      "heading": "Historique des mouvements",
+      "empty": "Aucun mouvement pour le moment",
+      "table": {
+        "date": "Date",
+        "type": "Type",
+        "quantity": "Qté",
+        "note": "Note"
+      },
+      "typeIn": "entrée",
+      "typeOut": "sortie",
+      "typeAdjustment": "ajust."
+    }
+  },
+  "billing": {
+    "heading": "Votre plan",
+    "planSuffix": "plan",
+    "freePlan": "Gratuit",
+    "activePlan": "Actif",
+    "renewsOn": "Renouvellement le",
+    "employees": "Employés",
+    "clients": "Clients",
+    "manageSubscription": "Gérer l'abonnement",
+    "mostPopular": "Le plus populaire",
+    "upgrade": "Mettre à niveau →",
+    "currentPlan": "Plan actuel",
+    "successMessage": "🎉 Abonnement activé ! Merci pour votre mise à niveau.",
+    "errorMessage": "Une erreur est survenue. Veuillez réessayer ou contacter le support.",
+    "currentPlanBadge": "Plan actuel",
+    "upgradeButton": "Mettre à niveau",
+    "downgradeButton": "rétrograder",
+    "cancelNote": "Pour annuler votre abonnement, gérez-le directement sur",
+    "plans": {
+      "free": {
+        "name": "Gratuit",
+        "price": "0 €",
+        "features": [
+          "1 employé",
+          "100 clients",
+          "50 réservations/mois",
+          "POS · CRM · Stocks",
+          "Toutes les notifications"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "19 €/mois",
+        "features": [
+          "5 employés",
+          "Clients illimités",
+          "Réservations illimitées"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "39 €/mois",
+        "features": [
+          "15 employés",
+          "Clients illimités",
+          "Analytique",
+          "Programme de fidélité",
+          "Domaine personnalisé"
+        ]
+      },
+      "agency": {
+        "name": "Agence",
+        "price": "79 €/mois",
+        "features": [
+          "Employés illimités",
+          "Multi-sites",
+          "Marque blanche",
+          "Accès API"
+        ]
+      }
+    }
+  },
+  "newClient": {
+    "title": "Nouveau client",
+    "backToClients": "← Clients",
+    "fields": {
+      "name": "Nom complet *",
+      "namePlaceholder": "Jeanne Martin",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+33 6 12 34 56 78",
+      "email": "E-mail",
+      "emailPlaceholder": "jeanne@exemple.fr",
+      "whatsapp": "WhatsApp",
+      "whatsappPlaceholder": "+33612345678",
+      "birthday": "Anniversaire",
+      "notes": "Notes",
+      "notesPlaceholder": "Notes diverses…",
+      "tags": "Tags",
+      "tagsPlaceholder": "vip, régulier…"
+    },
+    "submitButton": "Ajouter le client",
+    "cancelButton": "Annuler"
+  },
+  "analytics": {
+    "title": "Analytique",
+    "proFeatureTitle": "Analytique — Fonctionnalité Pro",
+    "proFeatureDesc": "Suivez le chiffre d'affaires, les prestations phares et la croissance de la clientèle. Disponible sur les plans Pro et Agence.",
+    "upgradeButton": "Passer à Pro →",
+    "seePlansButton": "Voir tous les plans →",
+    "periods": {
+      "7d": "7 jours",
+      "30d": "30 jours",
+      "month": "Ce mois-ci",
+      "3m": "3 mois"
+    },
+    "kpi": {
+      "totalRevenue": "Chiffre d'affaires total",
+      "totalBookings": "Total des réservations",
+      "newClients": "Nouveaux clients",
+      "avgPerBooking": "Moyenne par réservation"
+    },
+    "chart": {
+      "heading": "Chiffre d'affaires",
+      "noData": "Aucune donnée pour cette période",
+      "tooltip": "Revenus"
+    },
+    "topServices": {
+      "heading": "Prestations phares",
+      "colService": "Prestation",
+      "colBookings": "Réservations",
+      "colRevenue": "Chiffre d'affaires",
+      "noData": "Aucune donnée"
+    },
+    "topClients": {
+      "heading": "Meilleurs clients",
+      "colClient": "Client",
+      "colVisits": "Visites",
+      "colSpent": "Total dépensé",
+      "noData": "Aucune donnée"
+    }
+  },
+  "newInventoryItem": {
+    "title": "Nouvel article",
+    "backToInventory": "← Stocks",
+    "fields": {
+      "name": "Nom *",
+      "namePlaceholder": "Shampooing 500ml",
+      "sku": "SKU",
+      "skuPlaceholder": "SKU-001",
+      "barcode": "Code-barres",
+      "barcodePlaceholder": "Scanner ou saisir le code-barres",
+      "description": "Description",
+      "descriptionPlaceholder": "Notes optionnelles sur cet article",
+      "category": "Catégorie",
+      "categoryPlaceholder": "Soins capillaires",
+      "unit": "Unité",
+      "unitPlaceholder": "pcs",
+      "quantity": "Quantité initiale",
+      "costPrice": "Prix de revient",
+      "sellPrice": "Prix de vente",
+      "lowStockThreshold": "Alerte stock bas à"
+    },
+    "submitButton": "Ajouter l'article",
+    "cancelButton": "Annuler"
   },
   "errors": {
     "unauthorized": "Accès non autorisé. Veuillez vous connecter.",
