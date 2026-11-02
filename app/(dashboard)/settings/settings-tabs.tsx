@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Plus, Pencil, Trash2, Check, Loader2, CheckCircle2, AlertCircle, Users, Eye, EyeOff } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { MODULES, ModuleKey } from '@/lib/modules'
+import { GDPRSection } from './gdpr-section'
 
 const clean = (s: string, max = 500) => s?.trim().slice(0, max) ?? ''
 
@@ -54,14 +55,14 @@ const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
 })
 
 interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string }
-type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'modules'
+type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'modules' | 'gdpr'
 
 export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('settings')
   const searchParams = useSearchParams()
-  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules'].includes(searchParams.get('tab') ?? '')
+  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules', 'gdpr'].includes(searchParams.get('tab') ?? '')
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
@@ -361,6 +362,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     { key: 'billing', label: t('tabs.billing') },
     { key: 'modules', label: t('tabs.modules') },
     { key: 'account', label: t('tabs.account') },
+    { key: 'gdpr', label: 'RGPD & Vie privée' },
   ]
 
   const generalFields: { key: keyof Business; label: string; type: string }[] = [
@@ -1471,6 +1473,9 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           </div>
         </div>
       )}
+
+      {/* GDPR */}
+      {tab === 'gdpr' && <GDPRSection />}
     </div>
   )
 }
