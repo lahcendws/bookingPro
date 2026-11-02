@@ -320,7 +320,15 @@
       "cancelButton": "Annuleren",
       "deleteConfirm": "Verwijdering bevestigen?",
       "deleteYes": "Verwijderen",
-      "deleteNo": "Behouden"
+      "deleteNo": "Behouden",
+      "fields": {
+        "name": "Naam van de dienst",
+        "category": "Categorie",
+        "price": "Prijs (€)",
+        "duration": "Duur (minuten)",
+        "capacity": "Gelijktijdige capaciteit"
+      },
+      "capacityHint": "Maximaal aantal klanten voor deze dienst"
     },
     "employees": {
       "empty": "Geen medewerkers toegevoegd",
@@ -410,7 +418,8 @@
       },
       "ownerWhatsapp": {
         "label": "WhatsApp-nummer van eigenaar",
-        "description": "Ontvang direct een melding op je eigen WhatsApp bij elke nieuwe boeking"
+        "description": "Ontvang direct een melding op je eigen WhatsApp bij elke nieuwe boeking",
+        "placeholder": "+31612345678"
       },
       "waTemplates": {
         "heading": "WhatsApp berichtsjablonen",
@@ -418,17 +427,54 @@
         "confirmation": "Afspraakbevestiging",
         "confirmationPlaceholder": "Hallo {name}, je afspraak is bevestigd voor {date} om {time}.",
         "reminder": "Afspraakherinnering",
+        "reminderPlaceholder": "Herinnering: Je afspraak morgen om {time}.",
         "reengagement": "Heractivatiebericht",
+        "reengagementPlaceholder": "Het is al even geleden! Kom snel weer langs.",
         "birthday": "Verjaardagsbericht",
-        "thankyou": "Bedankbericht"
-      }
+        "birthdayPlaceholder": "Van harte gefeliciteerd namens het hele team!",
+        "thankyou": "Bedankbericht",
+        "thankyouPlaceholder": "Hartelijk dank voor je bezoek vandaag!",
+        "language": "Taal voor WhatsApp-sjablonen"
+      },
+      "save": "Notificaties opslaan"
     },
     "modules": {
       "heading": "Applicatiemodules",
       "description": "Schakel functies in of uit op basis van je bedrijfsbehoeften",
       "saveButton": "Modules opslaan",
       "saved": "Modules bijgewerkt",
-      "turnOffButton": "Uitschakelen"
+      "turnOffButton": "Uitschakelen",
+      "cancelButton": "Annuleren",
+      "presetsLabel": "Aanbevolen presets",
+      "presets": {
+        "salon": "Salon / Beauty",
+        "shop": "Winkel / Retail",
+        "cafe": "Café / Horeca",
+        "all": "Alle modules"
+      },
+      "confirmOff": "Weet je zeker dat je module {label} wilt uitschakelen?",
+      "items": {
+        "bookings": {
+          "label": "Boekingen & Agenda",
+          "description": "Afsprakenbeheer en online kalender"
+        },
+        "crm": {
+          "label": "CRM & Klanten",
+          "description": "Klantenbestand, geschiedenis en notities"
+        },
+        "pos": {
+          "label": "Kassasysteem / POS",
+          "description": "Verkoopafhandeling en transactiehistorie"
+        },
+        "inventory": {
+          "label": "Voorraadbeheer",
+          "description": "Artikelbeheer, voorraadmeldingen en inventaris"
+        },
+        "notifications": {
+          "label": "Omnichannel notificaties",
+          "description": "Automatische herinneringen via e-mail, Telegram, Viber en WhatsApp"
+        }
+      }
     },
     "account": {
       "heading": "Accountinstellingen",
@@ -439,7 +485,15 @@
       "emailHint": "Er wordt een verificatielink naar je nieuwe e-mailadres gestuurd.",
       "passwordHeading": "Wachtwoord & Beveiliging",
       "newPasswordLabel": "Nieuw wachtwoord",
-      "saving": "Opslaan..."
+      "saving": "Opslaan...",
+      "pwMinLength": "Wachtwoord moet minimaal 8 tekens bevatten",
+      "pwNoMatch": "Wachtwoorden komen niet overeen",
+      "pwSuccess": "Wachtwoord succesvol bijgewerkt",
+      "emailInvalid": "Ongeldig e-mailadres",
+      "emailConfirmSent": "Bevestigingsmail verzonden naar {email}",
+      "confirmPasswordLabel": "Bevestig nieuw wachtwoord",
+      "confirmPasswordPlaceholder": "Herhaal het nieuwe wachtwoord",
+      "changePasswordButton": "Wachtwoord wijzigen"
     }
   },
   "sidebar": {

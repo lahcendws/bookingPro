@@ -320,7 +320,15 @@
       "cancelButton": "Annuler",
       "deleteConfirm": "Confirmer la suppression ?",
       "deleteYes": "Supprimer",
-      "deleteNo": "Conserver"
+      "deleteNo": "Conserver",
+      "fields": {
+        "name": "Intitulé de la prestation",
+        "category": "Catégorie",
+        "price": "Tarif (€)",
+        "duration": "Durée (minutes)",
+        "capacity": "Capacité simultanée"
+      },
+      "capacityHint": "Nombre maximum de clients pour cette prestation"
     },
     "employees": {
       "empty": "Aucun membre d'équipe enregistré",
@@ -410,7 +418,8 @@
       },
       "ownerWhatsapp": {
         "label": "WhatsApp personnel du responsable",
-        "description": "Recevez une notification instantanée sur votre téléphone pour chaque nouvelle réservation enregistrée"
+        "description": "Recevez une notification instantanée sur votre téléphone pour chaque nouvelle réservation enregistrée",
+        "placeholder": "+33612345678"
       },
       "waTemplates": {
         "heading": "Modèles de messages WhatsApp",
@@ -418,17 +427,54 @@
         "confirmation": "Confirmation de rendez-vous",
         "confirmationPlaceholder": "Bonjour {name}, votre rendez-vous est confirmé le {date} à {time}.",
         "reminder": "Rappel de rendez-vous",
+        "reminderPlaceholder": "Rappel : Votre rendez-vous demain à {time}.",
         "reengagement": "Campagne de réactivation",
+        "reengagementPlaceholder": "Cela fait un moment ! Venez nous rendre visite.",
         "birthday": "Message d'anniversaire",
-        "thankyou": "Message de remerciement"
-      }
+        "birthdayPlaceholder": "Joyeux anniversaire de toute l'équipe !",
+        "thankyou": "Message de remerciement",
+        "thankyouPlaceholder": "Merci pour votre visite aujourd'hui !",
+        "language": "Langue des modèles WhatsApp"
+      },
+      "save": "Enregistrer les notifications"
     },
     "modules": {
       "heading": "Modules fonctionnels",
       "description": "Activez ou désactivez les briques applicatives selon vos besoins opérationnels",
       "saveButton": "Enregistrer les modules",
       "saved": "Modules mis à jour",
-      "turnOffButton": "Désactiver"
+      "turnOffButton": "Désactiver",
+      "cancelButton": "Annuler",
+      "presetsLabel": "Préréglages recommandés",
+      "presets": {
+        "salon": "Salon / Beauté",
+        "shop": "Commerce / Boutique",
+        "cafe": "Café / Restauration",
+        "all": "Tous les modules"
+      },
+      "confirmOff": "Êtes-vous sûr de vouloir désactiver le module {label} ?",
+      "items": {
+        "bookings": {
+          "label": "Réservations & Agenda",
+          "description": "Gestion des rendez-vous et calendrier en ligne"
+        },
+        "crm": {
+          "label": "CRM & Clients",
+          "description": "Fichiers clients, historique et notes"
+        },
+        "pos": {
+          "label": "Caisse / POS",
+          "description": "Encaissement des ventes et historique des transactions"
+        },
+        "inventory": {
+          "label": "Gestion des stocks",
+          "description": "Suivi des articles, alertes de rupture et inventaire"
+        },
+        "notifications": {
+          "label": "Notifications omnicanales",
+          "description": "Rappels automatiques par e-mail, Telegram, Viber et WhatsApp"
+        }
+      }
     },
     "account": {
       "heading": "Paramètres du compte utilisateur",
@@ -439,7 +485,15 @@
       "emailHint": "Un lien de vérification sera adressé à votre nouvelle boîte mail.",
       "passwordHeading": "Sécurité & Mot de passe",
       "newPasswordLabel": "Nouveau mot de passe",
-      "saving": "Enregistrement..."
+      "saving": "Enregistrement...",
+      "pwMinLength": "Le mot de passe doit contenir au moins 8 caractères",
+      "pwNoMatch": "Les mots de passe ne correspondent pas",
+      "pwSuccess": "Mot de passe mis à jour avec succès",
+      "emailInvalid": "Adresse e-mail invalide",
+      "emailConfirmSent": "E-mail de confirmation envoyé à {email}",
+      "confirmPasswordLabel": "Confirmer le nouveau mot de passe",
+      "confirmPasswordPlaceholder": "Répétez le nouveau mot de passe",
+      "changePasswordButton": "Modifier le mot de passe"
     }
   },
   "sidebar": {
