@@ -129,6 +129,25 @@
       "firstService": "Premier service",
       "notifications": "Notifications"
     },
+    "checklist": {
+      "title": "Guide de démarrage",
+      "subtitle": "Complétez ces étapes pour optimiser votre utilisation",
+      "dismiss": "Masquer",
+      "allDone": "Tout est configuré !",
+      "completed": "complété",
+      "businessInfo": "Renseigner les informations de l'établissement",
+      "businessInfoDesc": "Nom, adresse, horaires d'ouverture",
+      "addService": "Ajouter une première prestation",
+      "addServiceDesc": "Définir vos services et leurs tarifs",
+      "addEmployee": "Ajouter un membre de l'équipe",
+      "addEmployeeDesc": "Inviter vos collaborateurs",
+      "setupNotifications": "Configurer les notifications",
+      "setupNotificationsDesc": "Activer les rappels automatiques",
+      "addClient": "Ajouter un premier client",
+      "addClientDesc": "Créer votre base de contacts",
+      "testBooking": "Tester la réservation en ligne",
+      "testBookingDesc": "Vérifier le parcours client"
+    },
     "businessTypes": {
       "salon": "💇 Coiffure & Beauté",
       "barbershop": "✂️ Barbershop",
@@ -169,6 +188,7 @@
   },
   "dashboard": {
     "heading": "Tableau de bord",
+    "title": "Tableau de bord",
     "subtitle": "Synthèse de votre activité et suivi des rendez-vous du jour",
     "todayAppointments": "Rendez-vous du jour",
     "revenueToday": "Chiffre d'affaires journalier",
@@ -178,10 +198,30 @@
     "quickActions": "Actions rapides",
     "newAppointment": "Nouveau rendez-vous",
     "newClient": "Nouveau client",
-    "posTerminal": "Terminal de Caisse (POS)"
+    "posTerminal": "Terminal de Caisse (POS)",
+    "stats": {
+      "revenueToday": "Aujourd'hui",
+      "appointmentsToday": "Aujourd'hui",
+      "totalClients": "Clients inscrits",
+      "lowStock": "Articles en rupture",
+      "lowStockOk": "OK"
+    },
+    "upcomingAppointments": {
+      "heading": "Rendez-vous à venir",
+      "viewAll": "Voir tout l'agenda",
+      "empty": "Aucun rendez-vous prévu pour le moment.",
+      "addOne": "Ajouter un rendez-vous"
+    },
+    "recentSales": {
+      "heading": "Ventes récentes",
+      "viewAll": "Voir l'historique complet",
+      "empty": "Aucune vente enregistrée.",
+      "makeFirst": "Enregistrer une vente"
+    }
   },
   "booking": {
     "heading": "Réservation en ligne",
+    "title": "Réservation",
     "selectService": "Sélectionnez une prestation",
     "selectEmployee": "Sélectionnez un membre de l'équipe",
     "selectDate": "Choisissez une date",
@@ -197,6 +237,7 @@
   },
   "settings": {
     "heading": "Paramètres de l'établissement",
+    "title": "Paramètres",
     "tabs": {
       "general": "Général",
       "services": "Prestations",
@@ -306,6 +347,16 @@
     },
     "notifications": {
       "heading": "Canaux de notification & Passerelles",
+      "triggersHeading": "Déclencheurs automatiques",
+      "triggers": {
+        "confirmation": "Confirmation de rendez-vous — immédiate",
+        "reminder24h": "Rappel — 24 heures avant",
+        "reminder1h": "Rappel — 1 heure avant",
+        "thankYou": "Remerciement — après la visite",
+        "reactivation": "Réactivation — 30 jours sans visite",
+        "birthday": "Message d'anniversaire",
+        "lowStock": "Alerte stock bas (e-mail)"
+      },
       "email": {
         "label": "Passerelle e-mail",
         "connected": "Opérationnel",
@@ -390,6 +441,19 @@
       "newPasswordLabel": "Nouveau mot de passe",
       "saving": "Enregistrement..."
     }
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "pos": "POS",
+    "clients": "Clients",
+    "inventory": "Stocks",
+    "booking": "Agenda",
+    "analytics": "Analytique",
+    "settings": "Paramètres",
+    "signOut": "Déconnexion",
+    "shareFeedback": "Partager un avis",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
   },
   "errors": {
     "unauthorized": "Accès non autorisé. Veuillez vous connecter.",

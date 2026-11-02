@@ -129,6 +129,25 @@
       "firstService": "Eerste dienst",
       "notifications": "Notificaties"
     },
+    "checklist": {
+      "title": "Startgids",
+      "subtitle": "Voltooi deze stappen voor optimaal gebruik",
+      "dismiss": "Verbergen",
+      "allDone": "Alles is ingesteld!",
+      "completed": "voltooid",
+      "businessInfo": "Bedrijfsinformatie invullen",
+      "businessInfoDesc": "Naam, adres, openingstijden",
+      "addService": "Eerste dienst toevoegen",
+      "addServiceDesc": "Definieer je diensten en prijzen",
+      "addEmployee": "Teamlid toevoegen",
+      "addEmployeeDesc": "Nodig je medewerkers uit",
+      "setupNotifications": "Notificaties configureren",
+      "setupNotificationsDesc": "Activeer automatische herinneringen",
+      "addClient": "Eerste klant toevoegen",
+      "addClientDesc": "Bouw je contactenbestand op",
+      "testBooking": "Online boeking testen",
+      "testBookingDesc": "Controleer het klanttraject"
+    },
     "businessTypes": {
       "salon": "💇 Kapsalon & Schoonheid",
       "barbershop": "✂️ Barbershop",
@@ -169,6 +188,7 @@
   },
   "dashboard": {
     "heading": "Dashboard",
+    "title": "Dashboard",
     "subtitle": "Overzicht van je bedrijfsactiviteit en de afspraken van vandaag",
     "todayAppointments": "Afspraken vandaag",
     "revenueToday": "Omzet vandaag",
@@ -178,10 +198,30 @@
     "quickActions": "Snelle acties",
     "newAppointment": "Nieuwe afspraak",
     "newClient": "Nieuwe klant",
-    "posTerminal": "Kassaterminal (POS)"
+    "posTerminal": "Kassaterminal (POS)",
+    "stats": {
+      "revenueToday": "Vandaag",
+      "appointmentsToday": "Vandaag",
+      "totalClients": "Geregistreerde klanten",
+      "lowStock": "Artikelen bijna op",
+      "lowStockOk": "OK"
+    },
+    "upcomingAppointments": {
+      "heading": "Komende afspraken",
+      "viewAll": "Bekijk volledige agenda",
+      "empty": "Geen geplande afspraken op dit moment.",
+      "addOne": "Afspraak toevoegen"
+    },
+    "recentSales": {
+      "heading": "Recente verkopen",
+      "viewAll": "Bekijk volledige geschiedenis",
+      "empty": "Geen verkopen geregistreerd.",
+      "makeFirst": "Registreer een verkoop"
+    }
   },
   "booking": {
     "heading": "Online reserveren",
+    "title": "Boeking",
     "selectService": "Selecteer een dienst",
     "selectEmployee": "Selecteer een medewerker",
     "selectDate": "Kies een datum",
@@ -197,6 +237,7 @@
   },
   "settings": {
     "heading": "Bedrijfsinstellingen",
+    "title": "Instellingen",
     "tabs": {
       "general": "Algemeen",
       "services": "Diensten",
@@ -306,6 +347,16 @@
     },
     "notifications": {
       "heading": "Notificatiekanalen & Koppelingen",
+      "triggersHeading": "Automatische triggers",
+      "triggers": {
+        "confirmation": "Afspraakbevestiging — direct",
+        "reminder24h": "Herinnering — 24 uur van tevoren",
+        "reminder1h": "Herinnering — 1 uur van tevoren",
+        "thankYou": "Bedankt — na afloop van bezoek",
+        "reactivation": "Reactivatie — 30 dagen geen bezoek",
+        "birthday": "Verjaardagsbericht",
+        "lowStock": "Lage voorraad melding (e-mail)"
+      },
       "email": {
         "label": "E-mailprovider",
         "connected": "Verbonden",
@@ -390,6 +441,19 @@
       "newPasswordLabel": "Nieuw wachtwoord",
       "saving": "Opslaan..."
     }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "pos": "POS",
+    "clients": "Klanten",
+    "inventory": "Voorraad",
+    "booking": "Agenda",
+    "analytics": "Analytica",
+    "settings": "Instellingen",
+    "signOut": "Uitloggen",
+    "shareFeedback": "Feedback delen",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten"
   },
   "errors": {
     "unauthorized": "Niet geautoriseerd. Log alstublieft in.",
