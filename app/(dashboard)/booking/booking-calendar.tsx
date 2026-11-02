@@ -105,6 +105,13 @@ interface Props {
 // ─── Draggable appointment card ────────────────────────────────────────────────
 function DraggableAppt({ id, children }: { id: string; children: React.ReactNode }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id })
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  if (!mounted) {
+    return <div>{children}</div>
+  }
+
   return (
     <div
       ref={setNodeRef}
