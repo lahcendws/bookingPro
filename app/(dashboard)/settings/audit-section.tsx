@@ -11,7 +11,8 @@ interface AuditLog {
   entity_id: string | null
   metadata: Record<string, any>
   created_at: string
-  users?: { email?: string } | null
+  user_id: string | null
+  user_email?: string | null
 }
 
 export function AuditSection({ businessId }: { businessId: string }) {
@@ -28,7 +29,30 @@ export function AuditSection({ businessId }: { businessId: string }) {
         .eq('business_id', businessId)
         .order('created_at', { ascending: false })
         .limit(50)
-      if (data) setLogs(data)
+
+      if (data) {
+        // Fetch user emails if user_id is present
+        const userIds = [...new Set(data.map((l: any) => l.user_id).filter(Boolean))]
+        let userMap: Record<string, string> = {}
+        if (userIds.length > 0) {
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, email, full_name')
+            .in('id', userIds)
+
+          if (profiles) {
+            profiles.forEach((p: any) => {
+              userMap[p.id] = p.full_name || p.email || 'Utilisateur'
+            })
+          }
+        }
+
+        const enriched = data.map((l: any) => ({
+          ...l,
+          user_email: l.metadata?.actor_name || (l.user_id ? (userMap[l.user_id] || 'Utilisateur') : 'Système'),
+        }))
+        setLogs(enriched)
+      }
       setLoading(false)
     }
     loadLogs()
@@ -63,15 +87,35 @@ export function AuditSection({ businessId }: { businessId: string }) {
                 return (
                   <div key={log.id} className="py-3.5 flex items-start justify-between gap-4 text-sm">
                     <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 shrink-0 mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 mt-0.5">
                         <User className="w-4 h-4" />
                       </div>
                       <div>
                         <p className="text-gray-900 font-medium">
-                          Action <span className="font-mono text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">{log.action}</span> sur <span className="text-gray-700">{log.entity_type}</span>
+                          {(() => {
+                            const actor = log.user_email || 'Un utilisateur'
+                            const entityName =
+                              log.entity_type === 'client' ? 'le client' :
+                              log.entity_type === 'inventory_item' ? 'le produit' :
+                              log.entity_type === 'appointment' ? 'le rendez-vous' :
+                              log.entity_type === 'employee' ? 'l\'employé' : log.entity_type
+
+                            const shortId = log.entity_id ? `#${log.entity_id.slice(0, 6)}` : ''
+
+                            if (log.action.endsWith('_CREATED')) {
+                              return `${actor} a créé ${entityName} ${shortId}`
+                            }
+                            if (log.action.endsWith('_UPDATED')) {
+                              return `${actor} a modifié ${entityName} ${shortId}`
+                            }
+                            if (log.action.endsWith('_DELETED')) {
+                              return `${actor} a supprimé ${entityName} ${shortId}`
+                            }
+                            return `${actor} : Action ${log.action} sur ${log.entity_type} ${shortId}`
+                          })()}
                         </p>
-                        <p className="text-xs text-gray-500 mt-0.5">
-                          {log.metadata?.description || `Entité ID: ${log.entity_id ?? 'N/A'}`}
+                        <p className="text-xs text-gray-500 mt-0.5 font-mono">
+                          ID: {log.entity_id ?? 'N/A'}
                         </p>
                       </div>
                     </div>

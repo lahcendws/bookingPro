@@ -18,6 +18,7 @@ create index if not exists idx_audit_logs_created_at on public.audit_logs(create
 -- Enable RLS on audit_logs
 alter table public.audit_logs enable row level security;
 
+drop policy if exists "Users can view audit logs of their business" on public.audit_logs;
 create policy "Users can view audit logs of their business"
   on public.audit_logs for select
   to authenticated
@@ -27,6 +28,7 @@ create policy "Users can view audit logs of their business"
     )
   );
 
+drop policy if exists "Users can insert audit logs for their business" on public.audit_logs;
 create policy "Users can insert audit logs for their business"
   on public.audit_logs for insert
   to authenticated
@@ -48,6 +50,8 @@ declare
   v_entity_type text;
   v_entity_id uuid;
   v_metadata jsonb;
+  v_user_email text;
+  v_actor_name text;
 begin
   -- Determine entity type based on table name
   if TG_TABLE_NAME = 'clients' then
@@ -82,6 +86,21 @@ begin
     v_metadata := to_jsonb(OLD);
   end if;
 
+  -- Fetch user email / name from auth.users if available
+  if auth.uid() is not null then
+    select email, coalesce(raw_user_meta_data->>'full_name', raw_user_meta_data->>'name', email)
+    into v_user_email, v_actor_name
+    from auth.users
+    where id = auth.uid();
+  end if;
+
+  if v_actor_name is null then
+    v_actor_name := coalesce(v_user_email, 'Utilisateur');
+  end if;
+
+  -- Inject actor_name into metadata
+  v_metadata := jsonb_set(coalesce(v_metadata, '{}'::jsonb), '{actor_name}', to_jsonb(v_actor_name), true);
+
   -- Insert into audit_logs
   if v_business_id is not null then
     insert into public.audit_logs (business_id, user_id, action, entity_type, entity_id, metadata)
@@ -91,7 +110,7 @@ begin
       v_action,
       v_entity_type,
       v_entity_id,
-      coalesce(v_metadata, '{}'::jsonb)
+      v_metadata
     );
   end if;
 

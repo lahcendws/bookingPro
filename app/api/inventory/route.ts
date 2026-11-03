@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { logAudit } from '@/lib/audit'
 
 export async function POST(request: Request) {
   const supabase = await createClient()
@@ -33,6 +34,16 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await logAudit({
+    businessId: business.id,
+    userId: user.id,
+    action: 'INVENTORY_ITEM_CREATED',
+    entityType: 'inventory_item',
+    entityId: item.id,
+    metadata: { name: body.name, quantity: body.quantity },
+    req: request,
+  })
 
   return NextResponse.json({ id: item.id }, { status: 201 })
 }

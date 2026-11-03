@@ -459,11 +459,11 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   ]
 
   return (
-    <div className="p-3 sm:p-6 max-w-3xl">
-      <div className="flex flex-nowrap overflow-x-auto sm:flex-wrap sm:overflow-x-visible gap-1 bg-gray-100 p-1 rounded-lg mb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="p-3 sm:p-6 max-w-5xl min-h-[750px]">
+      <div className="flex flex-nowrap overflow-x-auto gap-1 bg-gray-100 p-1 rounded-xl mb-8 no-scrollbar scroll-smooth">
         {tabs.map((tb) => (
           <button key={tb.key} onClick={() => setTab(tb.key)}
-            className={`shrink-0 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${tab === tb.key ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
+            className={`shrink-0 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${tab === tb.key ? 'bg-white shadow-sm text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/60'}`}>
             {tb.label}
           </button>
         ))}
