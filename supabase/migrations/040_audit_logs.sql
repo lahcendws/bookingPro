@@ -1,4 +1,4 @@
--- Migration 040: Audit Logs for Professional Activity Tracking
+-- Migration 040: Audit Logs for Professional Activity Tracking & Triggers
 
 create table if not exists public.audit_logs (
   id uuid primary key default gen_random_uuid(),
@@ -23,7 +23,7 @@ create policy "Users can view audit logs of their business"
   to authenticated
   using (
     business_id in (
-      select business_id from public.business_users where user_id = auth.uid()
+      select id from public.businesses where owner_id = auth.uid()
     )
   );
 
@@ -32,6 +32,90 @@ create policy "Users can insert audit logs for their business"
   to authenticated
   with check (
     business_id in (
-      select business_id from public.business_users where user_id = auth.uid()
+      select id from public.businesses where owner_id = auth.uid()
     )
   );
+
+-- Generic audit trigger function
+create or replace function public.fn_log_audit_event()
+returns trigger
+security definer
+set search_path = public
+as $$
+declare
+  v_business_id uuid;
+  v_action text;
+  v_entity_type text;
+  v_entity_id uuid;
+  v_metadata jsonb;
+begin
+  -- Determine entity type based on table name
+  if TG_TABLE_NAME = 'clients' then
+    v_entity_type := 'client';
+    v_business_id := coalesce(NEW.business_id, OLD.business_id);
+    v_entity_id := coalesce(NEW.id, OLD.id);
+  elsif TG_TABLE_NAME = 'inventory_items' then
+    v_entity_type := 'inventory_item';
+    v_business_id := coalesce(NEW.business_id, OLD.business_id);
+    v_entity_id := coalesce(NEW.id, OLD.id);
+  elsif TG_TABLE_NAME = 'appointments' then
+    v_entity_type := 'appointment';
+    v_business_id := coalesce(NEW.business_id, OLD.business_id);
+    v_entity_id := coalesce(NEW.id, OLD.id);
+  elsif TG_TABLE_NAME = 'employees' then
+    v_entity_type := 'employee';
+    v_business_id := coalesce(NEW.business_id, OLD.business_id);
+    v_entity_id := coalesce(NEW.id, OLD.id);
+  else
+    return coalesce(NEW, OLD);
+  end if;
+
+  -- Determine action
+  if TG_OP = 'INSERT' then
+    v_action := upper(v_entity_type) || '_CREATED';
+    v_metadata := to_jsonb(NEW);
+  elsif TG_OP = 'UPDATE' then
+    v_action := upper(v_entity_type) || '_UPDATED';
+    v_metadata := jsonb_build_object('old', to_jsonb(OLD), 'new', to_jsonb(NEW));
+  elsif TG_OP = 'DELETE' then
+    v_action := upper(v_entity_type) || '_DELETED';
+    v_metadata := to_jsonb(OLD);
+  end if;
+
+  -- Insert into audit_logs
+  if v_business_id is not null then
+    insert into public.audit_logs (business_id, user_id, action, entity_type, entity_id, metadata)
+    values (
+      v_business_id,
+      auth.uid(),
+      v_action,
+      v_entity_type,
+      v_entity_id,
+      coalesce(v_metadata, '{}'::jsonb)
+    );
+  end if;
+
+  return coalesce(NEW, OLD);
+end;
+$$ language plpgsql;
+
+-- Attach triggers to tables
+drop trigger if exists tr_audit_clients on public.clients;
+create trigger tr_audit_clients
+  after insert or update or delete on public.clients
+  for each row execute function public.fn_log_audit_event();
+
+drop trigger if exists tr_audit_inventory on public.inventory_items;
+create trigger tr_audit_inventory
+  after insert or update or delete on public.inventory_items
+  for each row execute function public.fn_log_audit_event();
+
+drop trigger if exists tr_audit_appointments on public.appointments;
+create trigger tr_audit_appointments
+  after insert or update or delete on public.appointments
+  for each row execute function public.fn_log_audit_event();
+
+drop trigger if exists tr_audit_employees on public.employees;
+create trigger tr_audit_employees
+  after insert or update or delete on public.employees
+  for each row execute function public.fn_log_audit_event();
