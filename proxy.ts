@@ -1,110 +1,22 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export async function proxy(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl
-
-  // SaaS subdomain routing: rewrite openyoga.bookingpro.app/book → /book/openyoga
-  if (process.env.NEXT_PUBLIC_DEPLOYMENT_MODE === 'saas' && pathname === '/book') {
-    const hostname = request.headers.get('host') ?? ''
-    const match = hostname.match(/^([a-z0-9-]+)\.bookingpro\.app/)
-    const tenantSlug = match?.[1]
-    if (tenantSlug && tenantSlug !== 'www') {
-      const rewriteUrl = request.nextUrl.clone()
-      rewriteUrl.pathname = `/book/${tenantSlug}`
-      return NextResponse.rewrite(rewriteUrl)
-    }
-  }
-
+export function proxy(request: NextRequest) {
+  const requestId = request.headers.get('x-request-id') || crypto.randomUUID()
   const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('x-pathname', pathname)
+  requestHeaders.set('x-request-id', requestId)
 
-  let supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  // Handle Supabase email confirmation code on root path
-  const code = searchParams.get('code')
-  if (code && pathname === '/') {
-    const callbackUrl = request.nextUrl.clone()
-    callbackUrl.pathname = '/auth/callback'
-    return NextResponse.redirect(callbackUrl)
-  }
-
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // Forward the already-validated user to Server Components, same mechanism
-  // as x-pathname, so dashboard pages don't each repeat this auth round-trip
-  // (see lib/auth-user.ts). Must recreate supabaseResponse to pick up the
-  // new header — NextResponse.next() snapshots requestHeaders at call time —
-  // while preserving any cookies getUser() already set (e.g. a token refresh).
-  requestHeaders.set('x-user-id', user?.id ?? '')
-  requestHeaders.set('x-user-email', user?.email ?? '')
-  const cookiesSoFar = supabaseResponse.cookies.getAll()
-  supabaseResponse = NextResponse.next({ request: { headers: requestHeaders } })
-  cookiesSoFar.forEach((c) => supabaseResponse.cookies.set(c))
-
-  // Authenticated user on root → dashboard
-  if (user && pathname === '/') {
-    const dashboardUrl = request.nextUrl.clone()
-    dashboardUrl.pathname = '/dashboard'
-    return NextResponse.redirect(dashboardUrl)
-  }
-
-  // Protected routes — redirect unauthenticated users to login
-  const protectedPaths = ['/dashboard', '/pos', '/crm', '/inventory', '/booking', '/settings']
-  const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
-
-  if (isProtected && !user) {
-    const loginUrl = request.nextUrl.clone()
-    loginUrl.pathname = '/login'
-    loginUrl.searchParams.set('redirectTo', pathname)
-    return NextResponse.redirect(loginUrl)
-  }
-
-  // Redirect authenticated users away from auth pages
-  if (user && (pathname === '/login' || pathname === '/register')) {
-    const dashboardUrl = request.nextUrl.clone()
-    dashboardUrl.pathname = '/dashboard'
-    return NextResponse.redirect(dashboardUrl)
-  }
-
-  // Auto-detect locale from Accept-Language on first visit (no cookie yet)
-  if (!request.cookies.get('dashboard_locale')?.value) {
-    const acceptLang = request.headers.get('accept-language') ?? ''
-    const lang = acceptLang.toLowerCase()
-    const detected = lang.startsWith('pt') ? 'pt' : lang.startsWith('es') ? 'es' : lang.startsWith('it') ? 'it' : null
-    if (detected) {
-      supabaseResponse.cookies.set('dashboard_locale', detected, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 365,
-        sameSite: 'lax',
-      })
-    }
-  }
-
-  return supabaseResponse
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
+  response.headers.set('x-request-id', requestId)
+  return response
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }
