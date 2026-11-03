@@ -495,7 +495,9 @@
       "notifications": "Notifiche",
       "billing": "Fatturazione",
       "account": "Account",
-      "modules": "Moduli"
+      "modules": "Moduli",
+      "gdpr": "GDPR e Privacy",
+      "audit": "Registro attività"
     },
     "billing": {
       "heading": "Piano attuale",

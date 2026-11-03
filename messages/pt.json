@@ -496,7 +496,9 @@
       "notifications": "Notificações",
       "billing": "Faturamento",
       "account": "Conta",
-      "modules": "Módulos"
+      "modules": "Módulos",
+      "gdpr": "RGPD e Privacidade",
+      "audit": "Registo de atividade"
     },
     "billing": {
       "heading": "Plano atual",
