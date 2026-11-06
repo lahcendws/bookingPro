@@ -12,22 +12,25 @@ import { LangSwitcher } from './lang-switcher'
 
 interface SidebarProps {
   businessName: string
+  enabledModules?: string[]
 }
 
-export function Sidebar({ businessName }: SidebarProps) {
+export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
   const t = useTranslations('sidebar')
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
   const [open, setOpen] = useState(false)
 
-  const nav = [
-    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
-    { href: '/pos', label: t('pos'), icon: ShoppingCart },
-    { href: '/crm', label: t('clients'), icon: Users },
-    { href: '/inventory', label: t('inventory'), icon: Package },
-    { href: '/booking', label: t('booking'), icon: CalendarDays },
+  const allNavItems = [
+    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, module: 'dashboard' },
+    { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos' },
+    { href: '/crm', label: t('clients'), icon: Users, module: 'crm' },
+    { href: '/inventory', label: t('inventory'), icon: Package, module: 'inventory' },
+    { href: '/booking', label: t('booking'), icon: CalendarDays, module: 'bookings' },
   ]
+
+  const nav = allNavItems.filter(item => item.module === 'dashboard' || enabledModules.includes(item.module))
 
   async function handleLogout() {
     await supabase.auth.signOut()
