@@ -1,23 +1,23 @@
 export const MODULES = {
   bookings: {
-    label: 'Bookings & Calendar',
-    description: 'Appointments, schedule, staff assignments',
+    label: 'Réservations',
+    description: 'Rendez-vous, planning et affectation employés',
   },
   crm: {
-    label: 'CRM & Clients',
-    description: 'Client cards, visit history, tags and notes',
+    label: 'Clients',
+    description: 'Fiches clients, historique et notes',
   },
   pos: {
-    label: 'POS & Checkout',
-    description: 'Sales, payments, receipts',
+    label: 'Paiements',
+    description: 'Factures, acomptes et liens de paiement',
   },
   inventory: {
-    label: 'Inventory',
-    description: 'Stock, products, low-stock alerts',
+    label: 'Produits',
+    description: 'Stock, inventaire et alertes',
   },
   notifications: {
     label: 'Notifications',
-    description: 'Telegram, WhatsApp, Viber, Email reminders',
+    description: 'WhatsApp et rappels par email',
   },
 } as const
 

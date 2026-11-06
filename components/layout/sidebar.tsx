@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, Settings, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, Settings, LogOut, Menu, X, Car, Ruler, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -24,6 +24,9 @@ export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
 
   const allNavItems = [
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, module: 'dashboard' },
+    { href: '/vehicles', label: 'Garage & Véhicules', icon: Car, module: 'crm' },
+    { href: '/inventory-rolls', label: 'Rouleaux & PPF', icon: Ruler, module: 'inventory' },
+    { href: '/warranties', label: 'Garanties', icon: ShieldCheck, module: 'inventory' },
     { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos' },
     { href: '/crm', label: t('clients'), icon: Users, module: 'crm' },
     { href: '/inventory', label: t('inventory'), icon: Package, module: 'inventory' },

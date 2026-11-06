@@ -1227,7 +1227,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   </div>
                 ))}
                 <div>
-                  <label className="text-xs font-medium text-gray-500">{t('notifications.waTemplates.language')}</label>
+                  <label className="text-xs font-medium text-gray-500">{t('notifications.waTemplates.language')} </label>
                   <input
                     type="text"
                     value={biz.wa_template_language ?? ''}
