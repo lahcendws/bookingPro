@@ -26,6 +26,7 @@ export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, module: 'dashboard' },
     { href: '/vehicles', label: 'Garage & Véhicules', icon: Car, module: 'crm' },
     { href: '/quotes', label: 'Devis', icon: FileText, module: 'crm' },
+    { href: '/invoices', label: 'Factures & Acomptes', icon: FileText, module: 'pos' },
     { href: '/inventory-rolls', label: 'Rouleaux & PPF', icon: Ruler, module: 'inventory' },
     { href: '/warranties', label: 'Garanties', icon: ShieldCheck, module: 'inventory' },
     { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos' },

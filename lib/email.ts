@@ -233,6 +233,36 @@ export async function sendLowStockAlert(opts: {
   })
 }
 
+// ─── Quote Email ─────────────────────────────────────────────────────────────
+
+export async function sendQuoteEmail(opts: {
+  to: string
+  clientName: string
+  businessName: string
+  quoteId: string
+  quoteNumber: string
+  totalAmount: number
+  validUntil: string
+  lines: { description: string; total_price: number }[]
+}) {
+  const rows = opts.lines.map((l) => [l.description, `${l.total_price} €`] as [string, string])
+  const publicUrl = `${APP_URL}/quote/${opts.quoteId}`
+  const body = `
+    ${h1(`Devis #${opts.quoteNumber}`)}
+    ${p(`Bonjour ${firstName(opts.clientName)}, voici votre devis estimatif émis par ${opts.businessName}.`)}
+    ${info(rows)}
+    ${p(`<strong>Total TTC : ${opts.totalAmount} €</strong>`)}
+    ${p(`Ce devis est valable jusqu'au ${opts.validUntil}.`)}
+    ${btn('Consulter & Accepter le devis en ligne', publicUrl)}
+  `
+  return sendMail({
+    from: getFromAddress(opts.businessName),
+    to: opts.to,
+    subject: `Votre devis #${opts.quoteNumber} — ${opts.businessName}`,
+    html: layout(opts.businessName, body),
+  })
+}
+
 // ─── Name helpers ─────────────────────────────────────────────────────────────
 
 /** "KONSTANTIN UMNOV" → "Konstantin Umnov", "kostya" → "Kostya" */
