@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
-import { Plus, Search, Pencil, Car, ClipboardCheck, History, FileText } from 'lucide-react'
+import { Plus, Search, Pencil, Car, History, ClipboardCheck, FileText, CheckCircle2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 interface Vehicle {
@@ -15,6 +15,8 @@ interface Vehicle {
   year: number | null
   color: string | null
   vin: string | null
+  size_class: 'citadine' | 'berline' | 'suv' | 'utilitaire'
+  client_id: string
   clients: { name: string; phone: string | null } | null
 }
 
@@ -27,9 +29,13 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
   const [isOpen, setIsOpen] = useState(false)
   const [search, setSearch] = useState(searchParamQuery || '')
 
-  // Advanced feature modals state
-  const [activeTab, setActiveTab] = useState<'list' | 'history' | 'inspection' | 'quote'>('list')
-  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null)
+  // Quick Quote Generator Modal State
+  const [quoteOpen, setQuoteOpen] = useState(false)
+  const [quoteVehicle, setQuoteVehicle] = useState<Vehicle | null>(null)
+  const [quoteServices, setQuoteServices] = useState<any[]>([])
+  const [selectedServiceId, setSelectedServiceId] = useState('')
+  const [quoteLines, setQuoteLines] = useState<any[]>([])
+  const [quoteSuccessMsg, setQuoteSuccessMsg] = useState('')
 
   const filteredVehicles = vehicles.filter(v =>
     v.plate_number.toLowerCase().includes(search.toLowerCase()) ||
@@ -46,7 +52,8 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
       model: form.model,
       year: form.year ? Number(form.year) : null,
       color: form.color || null,
-      vin: form.vin || null,
+      vin: form.vin ? form.vin.toUpperCase().trim() : null,
+      size_class: form.size_class || 'berline',
       business_id: businessId,
     }
     if (form.client_id) {
@@ -58,7 +65,7 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
       if (data) {
         setVehicles(vehicles.map(v => v.id === editingId ? data : v))
       } else if (error) {
-        alert('Erreur lors de la modification: ' + error.message)
+        alert('Erreur: ' + error.message)
         return
       }
     } else {
@@ -66,7 +73,7 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
       if (data) {
         setVehicles([data, ...vehicles])
       } else if (error) {
-        alert('Erreur lors de la création: ' + error.message)
+        alert('Erreur: ' + error.message)
         return
       }
     }
@@ -76,13 +83,79 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
     router.refresh()
   }
 
+  async function openQuickQuote(v: Vehicle) {
+    setQuoteVehicle(v)
+    const { data: svcs } = await supabase.from('services').select('*').eq('business_id', businessId).eq('is_active', true)
+    setQuoteServices(svcs || [])
+    setQuoteLines([])
+    setQuoteSuccessMsg('')
+    setQuoteOpen(true)
+  }
+
+  function addServiceToQuote() {
+    const svc = quoteServices.find(s => s.id === selectedServiceId)
+    if (!svc) return
+    const sizeClass = quoteVehicle?.size_class || 'berline'
+    const pricingMatrix = svc.pricing_by_size || {}
+    const classPrice = pricingMatrix[sizeClass]?.price ?? svc.price
+    const classDuration = pricingMatrix[sizeClass]?.duration_min ?? svc.duration_min
+
+    setQuoteLines([...quoteLines, {
+      service_id: svc.id,
+      description: `${svc.name} (${sizeClass.toUpperCase()}) - ${classDuration} min`,
+      quantity: 1,
+      unit_price: classPrice,
+      total_price: classPrice,
+      material_estimated_m: pricingMatrix[sizeClass]?.material_m ?? 2.5
+    }])
+    setSelectedServiceId('')
+  }
+
+  async function createQuoteRecord() {
+    if (!quoteVehicle || quoteLines.length === 0) return
+    const totalAmount = quoteLines.reduce((acc, l) => acc + l.total_price, 0)
+    const validUntil = new Date()
+    validUntil.setDate(validUntil.getDate() + 30)
+
+    const { data: quote, error } = await (supabase.from('quotes') as any).insert({
+      business_id: businessId,
+      client_id: quoteVehicle.client_id,
+      vehicle_id: quoteVehicle.id,
+      status: 'envoye',
+      valid_until: validUntil.toISOString().split('T')[0],
+      total_amount: totalAmount,
+    }).select('id').single()
+
+    if (error || !quote) {
+      alert('Erreur création devis: ' + error?.message)
+      return
+    }
+
+    const linesPayload = quoteLines.map(l => ({
+      quote_id: quote.id,
+      service_id: l.service_id,
+      description: l.description,
+      quantity: l.quantity,
+      unit_price: l.unit_price,
+      total_price: l.total_price,
+      material_estimated_m: l.material_estimated_m,
+    }))
+
+    await (supabase.from('quote_lines') as any).insert(linesPayload)
+    setQuoteSuccessMsg(`Devis # ${quote.id.substring(0, 8).toUpperCase()} créé avec succès (Total: ${totalAmount} €) !`)
+    setTimeout(() => {
+      setQuoteOpen(false)
+      router.push('/quotes')
+    }, 1500)
+  }
+
   return (
     <>
       <Header
-        title="Véhicules & Spécialisation PPF / Detailing"
+        title="Véhicules & Grille Tarifaire par Classe"
         actions={
           <div className="flex gap-2">
-            <Button size="sm" onClick={() => { setForm({}); setEditingId(null); setIsOpen(true) }}>
+            <Button size="sm" onClick={() => { setForm({ size_class: 'berline' }); setEditingId(null); setIsOpen(true) }}>
               <Plus className="w-4 h-4 mr-1" /> Ajouter un véhicule
             </Button>
           </div>
@@ -118,6 +191,15 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
                 <input type="text" value={form.plate_number || ''} onChange={e => setForm(f => ({ ...f, plate_number: e.target.value.toUpperCase() }))} placeholder="AB-123-CD" className="w-full mt-1 border rounded-lg px-3 py-2 text-sm uppercase bg-white" />
               </div>
               <div>
+                <label className="text-xs font-medium text-gray-500">Classe de Taille</label>
+                <select value={form.size_class || 'berline'} onChange={e => setForm(f => ({ ...f, size_class: e.target.value as any }))} className="w-full mt-1 border rounded-lg px-3 py-2 text-sm bg-white">
+                  <option value="citadine">Citadine (Mini / Smart)</option>
+                  <option value="berline">Berline / Coupé</option>
+                  <option value="suv">SUV / 4x4 / Break</option>
+                  <option value="utilitaire">Utilitaire / Van</option>
+                </select>
+              </div>
+              <div>
                 <label className="text-xs font-medium text-gray-500">Marque</label>
                 <input type="text" value={form.brand || ''} onChange={e => setForm(f => ({ ...f, brand: e.target.value }))} placeholder="Porsche" className="w-full mt-1 border rounded-lg px-3 py-2 text-sm bg-white" />
               </div>
@@ -133,7 +215,7 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
                 <label className="text-xs font-medium text-gray-500">Couleur</label>
                 <input type="text" value={form.color || ''} onChange={e => setForm(f => ({ ...f, color: e.target.value }))} placeholder="Gris Nardo" className="w-full mt-1 border rounded-lg px-3 py-2 text-sm bg-white" />
               </div>
-              <div className="sm:col-span-3">
+              <div className="sm:col-span-2">
                 <label className="text-xs font-medium text-gray-500">Numéro de Châssis (VIN)</label>
                 <input type="text" value={form.vin || ''} onChange={e => setForm(f => ({ ...f, vin: e.target.value.toUpperCase() }))} placeholder="WP0ZZZ99ZTS..." className="w-full mt-1 border rounded-lg px-3 py-2 text-sm uppercase bg-white font-mono" />
               </div>
@@ -145,107 +227,74 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
           </div>
         )}
 
-        {/* Modal / Section for Advanced Modules */}
-        {activeTab !== 'list' && selectedVehicle && (
-          <div className="bg-white border-2 border-green-500 rounded-xl p-6 space-y-4 shadow-md">
-            <div className="flex justify-between items-center border-b pb-3">
-              <div>
-                <h3 className="font-bold text-lg text-gray-950 flex items-center gap-2">
-                  <Car className="w-5 h-5 text-green-600" />
-                  {selectedVehicle.brand} {selectedVehicle.model} (<span className="uppercase font-mono">{selectedVehicle.plate_number}</span>)
-                </h3>
-                <p className="text-xs text-gray-500">Client : {selectedVehicle.clients?.name || 'Inconnu'}</p>
+        {/* Quick Quote Modal (< 2 mins target) */}
+        {quoteOpen && quoteVehicle && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full p-6 space-y-4">
+              <div className="flex justify-between items-center border-b pb-3">
+                <div>
+                  <h3 className="font-bold text-lg text-gray-950">Devis Rapide & Personnalisé</h3>
+                  <p className="text-xs text-gray-500">Véhicule : {quoteVehicle.brand} {quoteVehicle.model} ({quoteVehicle.plate_number}) • Classe : <strong className="uppercase text-blue-600">{quoteVehicle.size_class}</strong></p>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => setQuoteOpen(false)}>Fermer</Button>
               </div>
-              <Button variant="outline" size="sm" onClick={() => { setActiveTab('list'); setSelectedVehicle(null) }}>Fermer</Button>
+
+              {quoteSuccessMsg ? (
+                <div className="py-8 text-center space-y-2">
+                  <CheckCircle2 className="w-12 h-12 mx-auto text-green-600" />
+                  <p className="font-semibold text-gray-900">{quoteSuccessMsg}</p>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <select value={selectedServiceId} onChange={e => setSelectedServiceId(e.target.value)} className="flex-1 border rounded-lg p-2 text-sm bg-white">
+                        <option value="">Sélectionner une prestation du catalogue</option>
+                        {quoteServices.map(s => <option key={s.id} value={s.id}>{s.name} ({s.price} €)</option>)}
+                      </select>
+                      <Button onClick={addServiceToQuote}>Ajouter</Button>
+                    </div>
+
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
+                          <tr>
+                            <th className="text-left px-3 py-2">Prestation</th>
+                            <th className="text-right px-3 py-2">Métrage Est.</th>
+                            <th className="text-right px-3 py-2">Prix</th>
+                            <th className="px-3 py-2" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {quoteLines.length === 0 ? (
+                            <tr><td colSpan={4} className="text-center py-6 text-gray-400 text-xs">Aucune prestation ajoutée au devis</td></tr>
+                          ) : (
+                            quoteLines.map((l, i) => (
+                              <tr key={i} className="border-t">
+                                <td className="px-3 py-2 font-medium">{l.description}</td>
+                                <td className="px-3 py-2 text-right text-gray-600">{l.material_estimated_m} m</td>
+                                <td className="px-3 py-2 text-right font-semibold">{l.total_price} €</td>
+                                <td className="px-3 py-2 text-right">
+                                  <button onClick={() => setQuoteLines(quoteLines.filter((_, idx) => idx !== i))} className="text-red-500 text-xs hover:underline">Supprimer</button>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-3 border-t">
+                    <span className="font-bold text-gray-900">Total : {quoteLines.reduce((a, b) => a + b.total_price, 0)} € TTC</span>
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={() => setQuoteOpen(false)}>Annuler</Button>
+                      <Button onClick={createQuoteRecord} disabled={quoteLines.length === 0}>Créer & Envoyer le Devis</Button>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
-
-            {activeTab === 'history' && (
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                  <History className="w-4 h-4 text-blue-600" /> Historique des poses & interventions detailing
-                </h4>
-                <div className="bg-gray-50 p-4 rounded-lg space-y-2 text-sm">
-                  <div className="flex justify-between border-b pb-2">
-                    <div>
-                      <span className="font-medium text-gray-900">Pose PPF Face Avant complète (XPEL Ultimate)</span>
-                      <p className="text-xs text-gray-500">Lot: LOT-8832-XP • Film 200 microns</p>
-                    </div>
-                    <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded">Terminé (Il y a 3 mois)</span>
-                  </div>
-                  <div className="flex justify-between pb-2">
-                    <div>
-                      <span className="font-medium text-gray-900">Traitement Céramique Gyeon Quartz 5 ans</span>
-                      <p className="text-xs text-gray-500">Application carrosserie + jantes</p>
-                    </div>
-                    <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded">Terminé (Il y a 3 mois)</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'inspection' && (
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                  <ClipboardCheck className="w-4 h-4 text-amber-600" /> État des Lieux Avant/Après & Signature Client
-                </h4>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="border p-4 rounded-lg space-y-2">
-                    <span className="text-xs font-bold text-gray-700 uppercase">Photos Avant (Réception)</span>
-                    <div className="h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-xs text-gray-400 bg-gray-50">
-                      Glisser les photos de contrôle carrosserie (0 impacts / rayures relevées)
-                    </div>
-                  </div>
-                  <div className="border p-4 rounded-lg space-y-2">
-                    <span className="text-xs font-bold text-gray-700 uppercase">Photos Après (Restitution)</span>
-                    <div className="h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-xs text-gray-400 bg-gray-50">
-                      Photos de pose PPF / Céramique terminée
-                    </div>
-                  </div>
-                </div>
-                <div className="border p-4 rounded-lg space-y-2">
-                  <span className="text-xs font-bold text-gray-700 uppercase">Signature Numérique du Client</span>
-                  <div className="h-24 border bg-gray-50 rounded-lg flex items-center justify-center text-sm text-gray-500 italic">
-                    [ Zone de signature tactile / numérique validant l&apos;état du véhicule ]
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'quote' && (
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-purple-600" /> Devis Rapide & Personnalisé par Véhicule
-                </h4>
-                <div className="bg-gray-50 p-4 rounded-lg space-y-3 text-sm">
-                  <div className="grid sm:grid-cols-3 gap-3">
-                    <div>
-                      <label className="text-xs text-gray-500">Forfait PPF</label>
-                      <select className="w-full mt-1 border rounded p-2 text-sm bg-white">
-                        <option>Face Avant (Bouclier + Ailes + Capot)</option>
-                        <option>Full Body PPF Intégral</option>
-                        <option>Kit Seuil & Bas de caisse</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-500">Traitement Céramique</label>
-                      <select className="w-full mt-1 border rounded p-2 text-sm bg-white">
-                        <option>Céramique Carrosserie 5 ans</option>
-                        <option>Vitres & Pare-brise Hydrofuge</option>
-                        <option>Jantes & Étriers</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-500">Remise / Option</label>
-                      <input type="text" placeholder="Ex: -10% pack complet" className="w-full mt-1 border rounded p-2 text-sm bg-white" />
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center pt-2 border-t">
-                    <span className="font-bold text-gray-900">Total estimé : 2 450,00 € TTC</span>
-                    <Button size="sm">Générer & Envoyer le Devis par Lien</Button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )}
 
@@ -260,10 +309,10 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50 text-xs text-gray-500 uppercase">
                   <th className="text-left px-4 py-3 font-medium">Immatriculation</th>
-                  <th className="text-left px-4 py-3 font-medium">Véhicule</th>
+                  <th className="text-left px-4 py-3 font-medium">Véhicule & Taille</th>
                   <th className="text-left px-4 py-3 font-medium">Propriétaire</th>
                   <th className="text-left px-4 py-3 font-medium">Couleur</th>
-                  <th className="text-left px-4 py-3 font-medium">Spécialisation PPF / Detailing</th>
+                  <th className="text-left px-4 py-3 font-medium">Actions Phase 1</th>
                   <th className="px-4 py-3" />
                 </tr>
               </thead>
@@ -271,19 +320,20 @@ export function VehiclesClient({ initialVehicles, clients, businessId, searchPar
                 {filteredVehicles.map(v => (
                   <tr key={v.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors last:border-0">
                     <td className="px-4 py-3 font-bold text-gray-900 font-mono uppercase">{v.plate_number}</td>
-                    <td className="px-4 py-3 font-medium text-gray-900">{v.brand} {v.model} <span className="text-gray-400 font-normal">({v.year || '—'})</span></td>
+                    <td className="px-4 py-3 font-medium text-gray-900">
+                      {v.brand} {v.model} <span className="text-gray-400 font-normal">({v.year || '—'})</span>
+                      <div className="mt-0.5">
+                        <span className="inline-flex items-center text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 rounded px-1.5 py-0.5 uppercase">
+                          {v.size_class || 'berline'}
+                        </span>
+                      </div>
+                    </td>
                     <td className="px-4 py-3 text-gray-600">{v.clients?.name || 'Inconnu'}</td>
                     <td className="px-4 py-3 text-gray-500">{v.color || '—'}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => { setSelectedVehicle(v); setActiveTab('history') }}>
-                          <History className="w-3 h-3 mr-1 text-blue-600" /> Historique
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => { setSelectedVehicle(v); setActiveTab('inspection') }}>
-                          <ClipboardCheck className="w-3 h-3 mr-1 text-amber-600" /> État des Lieux
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => { setSelectedVehicle(v); setActiveTab('quote') }}>
-                          <FileText className="w-3 h-3 mr-1 text-purple-600" /> Devis PPF
+                        <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => openQuickQuote(v)}>
+                          <FileText className="w-3 h-3 mr-1 text-purple-600" /> Devis Express (&lt;2 min)
                         </Button>
                       </div>
                     </td>
