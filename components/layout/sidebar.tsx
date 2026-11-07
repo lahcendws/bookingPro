@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, Settings, LogOut, Menu, X, Car, Ruler, ShieldCheck, FileText } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Users, Package, CalendarDays, Settings, LogOut, Menu, X, Car, Ruler, ShieldCheck, FileText, Layers } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -27,6 +27,8 @@ export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
     { href: '/vehicles', label: 'Garage & Véhicules', icon: Car, module: 'crm' },
     { href: '/quotes', label: 'Devis', icon: FileText, module: 'crm' },
     { href: '/invoices', label: 'Factures & Acomptes', icon: FileText, module: 'pos' },
+    { href: '/workstations', label: 'Postes de Travail', icon: Layers, module: 'bookings' },
+    { href: '/planning', label: 'Planning Postes', icon: CalendarDays, module: 'bookings' },
     { href: '/inventory-rolls', label: 'Rouleaux & PPF', icon: Ruler, module: 'inventory' },
     { href: '/warranties', label: 'Garanties', icon: ShieldCheck, module: 'inventory' },
     { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos' },
