@@ -16,28 +16,47 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(data || [])
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'internal error' }, { status: 500 })
+    return NextResponse.json({ error: err?.message || 'internal error' }, { status: 500 })
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}))
-    const { name, description } = body
-    if (!name) return NextResponse.json({ error: 'missing name' }, { status: 400 })
+    let body: any = {}
+    try {
+      body = await req.json()
+    } catch {
+      // empty body
+    }
+
+    const name = body?.name
+    const description = body?.description
+
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return NextResponse.json({ error: 'missing or invalid name' }, { status: 400 })
+    }
 
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+    const { data: { user }, error: authErr } = await supabase.auth.getUser()
+    if (authErr || !user) {
+      return NextResponse.json({ error: 'unauthorized: ' + (authErr?.message || 'no user') }, { status: 401 })
+    }
 
-    const { data: business } = await supabase.from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
-    if (!business) return NextResponse.json({ error: 'business not found' }, { status: 404 })
+    const { data: business, error: bizErr } = await supabase
+      .from('businesses')
+      .select('id')
+      .eq('owner_id', user.id)
+      .maybeSingle()
+
+    if (bizErr || !business) {
+      return NextResponse.json({ error: 'business not found: ' + (bizErr?.message || '') }, { status: 404 })
+    }
 
     const { data, error } = await (supabase.from('workstations') as any)
       .insert({
         business_id: business.id,
-        name,
-        description: description || null
+        name: name.trim(),
+        description: description ? String(description).trim() : null
       })
       .select()
       .single()
@@ -52,12 +71,12 @@ export async function POST(req: NextRequest) {
       action: 'CREATE_WORKSTATION',
       entityType: 'workstation',
       entityId: data.id,
-      details: { name }
+      details: { name: name.trim() }
     })
 
     return NextResponse.json(data)
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'internal error' }, { status: 500 })
+    return NextResponse.json({ error: err?.message || 'internal server error' }, { status: 500 })
   }
 }
 
@@ -87,6 +106,6 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'internal error' }, { status: 500 })
+    return NextResponse.json({ error: err?.message || 'internal error' }, { status: 500 })
   }
 }
