@@ -102,7 +102,7 @@ export default function PublicQuotePage() {
             <div>
               <div className="text-xs font-semibold text-gray-400 uppercase">Validité & Statut</div>
               <div className="font-semibold text-gray-900 mt-1 flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-gray-500" /> Valide jusqu'au {quote.valid_until ? new Date(quote.valid_until).toLocaleDateString() : '—'}
+                <Calendar className="w-4 h-4 text-gray-500" /> Valide jusqu&apos;au {quote.valid_until ? new Date(quote.valid_until).toLocaleDateString() : '—'}
               </div>
               <div className="mt-1">
                 <span className={`inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase ${isAccepted ? 'bg-green-100 text-green-800' : isRefused ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
