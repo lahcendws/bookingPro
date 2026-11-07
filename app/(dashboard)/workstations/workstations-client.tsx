@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Header } from '@/components/layout/header'
-import { Layers, Plus, Trash2, Edit2, CheckCircle2, Wrench } from 'lucide-react'
+import { Layers, Plus, Trash2, CheckCircle2, Wrench } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function WorkstationsClient({ initialWorkstations }: { initialWorkstations: any[] }) {
@@ -23,7 +23,14 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, description })
       })
-      const data = await res.json()
+      const text = await res.text()
+      let data: any = {}
+      try {
+        data = text ? JSON.parse(text) : {}
+      } catch (parseErr) {
+        throw new Error('Réponse serveur invalide (non-JSON)')
+      }
+
       if (res.ok) {
         setWorkstations([data, ...workstations])
         setName('')
@@ -33,7 +40,7 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
         alert('Erreur: ' + (data.error || 'Impossible de créer le poste'))
       }
     } catch (err: any) {
-      alert('Erreur réseau: ' + err.message)
+      alert('Erreur: ' + err.message)
     } finally {
       setLoading(false)
     }
@@ -56,11 +63,18 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
 
   return (
     <>
-      <Header title="Gestion des Postes de Travail" />
-      <main className="p-6 space-y-6 max-w-6xl mx-auto">
+      <Header
+        title="Postes de Travail"
+        actions={
+          <div className="text-xs text-gray-500">
+            Gestion des postes techniques & cabines
+          </div>
+        }
+      />
+      <main className="p-6 space-y-6 max-w-7xl mx-auto">
         {message && (
-          <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-xl flex items-center gap-2 text-sm">
-            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-2 text-sm shadow-sm">
+            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
             <span>{message}</span>
           </div>
         )}
@@ -75,10 +89,10 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
               <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Nom du poste</label>
               <input
                 type="text"
-                placeholder="Ex: Poste PPF 1, Cabine 2"
+                placeholder="Ex: Poste PPF 1, Cabine Peinture"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 text-sm"
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -89,11 +103,11 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
                 placeholder="Ex: Équipé découpe laser & éclairage LED"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full border rounded-lg px-3 py-2 text-sm"
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+              <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium">
                 <Plus className="w-4 h-4 mr-1.5" /> {loading ? 'Création...' : 'Créer le poste'}
               </Button>
             </div>
@@ -103,10 +117,14 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
         {/* Workstations List */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
           <div className="p-4 border-b bg-gray-50 font-semibold text-sm text-gray-700 flex items-center gap-2">
-            <Layers className="w-4 h-4 text-gray-500" /> Postes enregistrés ({workstations.length})
+            <Layers className="w-4 h-4 text-blue-600" /> Postes enregistrés ({workstations.length})
           </div>
           {workstations.length === 0 ? (
-            <div className="py-12 text-center text-gray-500 text-sm">Aucun poste de travail configuré.</div>
+            <div className="py-16 text-center text-gray-500">
+              <Layers className="w-10 h-10 mx-auto text-gray-300 mb-2" />
+              <div className="font-medium text-gray-900">Aucun poste de travail</div>
+              <p className="text-xs text-gray-400 mt-1">Créez votre premier poste ci-dessus pour planifier vos interventions.</p>
+            </div>
           ) : (
             <div className="divide-y">
               {workstations.map((w: any) => (
@@ -116,10 +134,10 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
                     <div className="text-xs text-gray-500 mt-0.5">{w.description || 'Aucune description'}</div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
+                    <span className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                       Actif
                     </span>
-                    <Button size="sm" variant="outline" onClick={() => handleDelete(w.id)} className="text-red-600 border-red-200 hover:bg-red-50 h-8 px-2.5">
+                    <Button size="sm" variant="outline" onClick={() => handleDelete(w.id)} className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 h-8 px-2.5">
                       <Trash2 className="w-3.5 h-3.5" />
                     </Button>
                   </div>
