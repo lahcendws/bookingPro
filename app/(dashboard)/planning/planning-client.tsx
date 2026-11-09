@@ -10,7 +10,7 @@ export function PlanningClient({ workstations, appointments }: { workstations: a
   return (
     <>
       <Header
-        title="Planning Postes &amp; Multi-jours"
+        title="Planning Postes et Multi-jours"
         actions={
           <div className="text-xs text-gray-500">
             Vue d&apos;ensemble par poste de travail
