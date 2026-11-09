@@ -1,12 +1,3 @@
----
-supersedes: none
-linked_from: Phase 4 Implementation Plan (`docs/superpowers/plans/2026-11-09-jobs-inspections-plan.md`) Task 1
-caller: Supabase database migration runner / supabase db push
-no_existing_file: No existing migration file covers Phase 4 jobs and inspections schema.
-schemas: Reads/writes `public.jobs` and `public.job_inspections` tables.
-user_instruction: "planifie, developpe implemente, teste et review le code de la phase 5 (Phase 4 : chantier, état des lieux et suivi client)"
----
-
 -- Migration 055: Phase 4 Jobs & Inspections
 create table if not exists public.jobs (
   id uuid primary key default gen_random_uuid(),
@@ -56,3 +47,6 @@ create policy "Public can view inspections via tracking token"
   on public.job_inspections for select
   to anon, authenticated
   using (true);
+
+GRANT ALL ON TABLE public.jobs TO anon, authenticated;
+GRANT ALL ON TABLE public.job_inspections TO anon, authenticated;

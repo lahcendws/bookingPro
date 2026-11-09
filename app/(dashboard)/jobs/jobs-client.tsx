@@ -39,6 +39,7 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
         setSelectedClient('')
         setSelectedVehicle('')
         setNotes('')
+        window.location.reload()
       }
     } finally {
       setLoading(false)
@@ -109,7 +110,7 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
                         </div>
                         <div className="text-xs text-gray-600 flex items-center gap-1.5">
                           <Car className="w-3.5 h-3.5 text-gray-400" />
-                          <span className="font-medium text-gray-800">{j.vehicles?.brand} {j.vehicles?.model} ({j.vehicles?.plate})</span>
+                          <span className="font-medium text-gray-800">{j.vehicles?.brand} {j.vehicles?.model} ({j.vehicles?.plate_number || j.vehicles?.plate})</span>
                         </div>
                         {j.notes && <p className="text-xs text-gray-500 italic bg-gray-50 p-2 rounded">{j.notes}</p>}
 
@@ -149,7 +150,10 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Client</label>
                   <select
                     value={selectedClient}
-                    onChange={(e) => setSelectedClient(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedClient(e.target.value)
+                      setSelectedVehicle('')
+                    }}
                     required
                     className="w-full text-xs border rounded-xl p-2.5 bg-white"
                   >
@@ -170,9 +174,12 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
                   >
                     <option value="">Sélectionner un véhicule...</option>
                     {filteredVehicles.map((v: any) => (
-                      <option key={v.id} value={v.id}>{v.brand} {v.model} ({v.plate})</option>
+                      <option key={v.id} value={v.id}>{v.brand} {v.model} ({v.plate_number || v.plate})</option>
                     ))}
                   </select>
+                  {selectedClient && filteredVehicles.length === 0 && (
+                    <p className="text-[11px] text-amber-600 mt-1">Ce client n&apos;a aucun véhicule enregistré. Veuillez d&apos;abord lui ajouter un véhicule dans le Garage.</p>
+                  )}
                 </div>
 
                 <div>

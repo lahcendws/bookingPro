@@ -21,7 +21,7 @@ export default async function JobsPage() {
 
   const { data: jobs } = await supabase
     .from('jobs')
-    .select('*, clients(name, phone), vehicles(brand, model, plate), job_inspections(*)')
+    .select('*, clients(name, phone), vehicles(brand, model, plate_number, plate), job_inspections(*)')
     .eq('business_id', business.id)
     .order('created_at', { ascending: false })
 
@@ -32,7 +32,7 @@ export default async function JobsPage() {
 
   const { data: vehicles } = await supabase
     .from('vehicles')
-    .select('id, brand, model, plate, client_id')
+    .select('id, brand, model, plate_number, plate, client_id')
     .eq('business_id', business.id)
 
   return (
