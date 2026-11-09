@@ -32,7 +32,7 @@ export default async function JobsPage() {
 
   const { data: vehicles } = await supabase
     .from('vehicles')
-    .select('id, brand, model, plate_number, plate, client_id')
+    .select('id, brand, model, plate_number, plate, client_id, clients(name)')
     .eq('business_id', business.id)
 
   return (

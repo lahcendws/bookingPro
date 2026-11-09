@@ -13,7 +13,8 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const filteredVehicles = vehicles.filter((v: any) => !selectedClient || v.client_id === selectedClient)
+  const filteredVehicles = vehicles.filter((v: any) => !selectedClient || String(v.client_id) === String(selectedClient))
+  const availableVehicles = filteredVehicles.length > 0 ? filteredVehicles : vehicles
 
   async function handleCreateJob(e: React.FormEvent) {
     e.preventDefault()
@@ -173,11 +174,16 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
                     className="w-full text-xs border rounded-xl p-2.5 bg-white"
                   >
                     <option value="">Sélectionner un véhicule...</option>
-                    {filteredVehicles.map((v: any) => (
-                      <option key={v.id} value={v.id}>{v.brand} {v.model} ({v.plate_number || v.plate})</option>
+                    {availableVehicles.map((v: any) => (
+                      <option key={v.id} value={v.id}>
+                        {v.brand} {v.model} ({v.plate_number || v.plate}) {v.clients?.name ? `(${v.clients.name})` : ''}
+                      </option>
                     ))}
                   </select>
-                  {selectedClient && filteredVehicles.length === 0 && (
+                  {selectedClient && filteredVehicles.length === 0 && vehicles.length > 0 && (
+                    <p className="text-[11px] text-amber-600 mt-1">Note : Aucun véhicule directement lié à ce client n&apos;a été trouvé. Affichage de tous les véhicules du garage.</p>
+                  )}
+                  {selectedClient && vehicles.length === 0 && (
                     <p className="text-[11px] text-amber-600 mt-1">Ce client n&apos;a aucun véhicule enregistré. Veuillez d&apos;abord lui ajouter un véhicule dans le Garage.</p>
                   )}
                 </div>
