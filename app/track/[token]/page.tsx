@@ -12,7 +12,7 @@ export default async function TrackJobPage(props: { params: Promise<{ token: str
 
   const { data: job } = await supabase
     .from('jobs' as any)
-    .select('*, clients(name), vehicles(brand, model, plate), job_inspections(*)')
+    .select('*, clients(name), vehicles(brand, model, plate_number), job_inspections(*)')
     .eq('tracking_token', token)
     .single()
 
@@ -50,7 +50,7 @@ export default async function TrackJobPage(props: { params: Promise<{ token: str
             <div>
               <span className="text-xs text-gray-400 block font-medium">Véhicule</span>
               <h2 className="text-base font-bold text-gray-900 flex items-center gap-2 mt-0.5">
-                <Car className="w-4 h-4 text-blue-600" /> {job.vehicles?.brand} {job.vehicles?.model} ({job.vehicles?.plate})
+                <Car className="w-4 h-4 text-blue-600" /> {job.vehicles?.brand} {job.vehicles?.model} ({job.vehicles?.plate_number})
               </h2>
             </div>
             <div className="text-right">

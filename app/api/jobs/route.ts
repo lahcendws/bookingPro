@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
     const { data: jobs, error } = await supabase
       .from('jobs' as any)
-      .select('*, clients(name, email, phone), vehicles(brand, model, plate), quotes(quote_number, total_ttc)')
+      .select('*, clients(name, email, phone), vehicles(brand, model, plate_number), quotes(id, total_amount, status)')
       .eq('business_id', business.id)
       .order('created_at', { ascending: false })
 

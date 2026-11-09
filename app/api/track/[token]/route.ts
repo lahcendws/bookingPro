@@ -11,7 +11,7 @@ export async function GET(
 
     const { data: job, error } = await supabase
       .from('jobs' as any)
-      .select('*, clients(name), vehicles(brand, model, plate), job_inspections(*)')
+      .select('*, clients(name), vehicles(brand, model, plate_number), job_inspections(*)')
       .eq('tracking_token', token)
       .single()
 

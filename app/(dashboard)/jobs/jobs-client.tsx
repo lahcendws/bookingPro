@@ -176,7 +176,7 @@ export function JobsClient({ initialJobs, clients, vehicles }: { initialJobs: an
                     <option value="">Sélectionner un véhicule...</option>
                     {availableVehicles.map((v: any) => (
                       <option key={v.id} value={v.id}>
-                        {v.brand} {v.model} ({v.plate_number || v.plate}) {v.clients?.name ? `(${v.clients.name})` : ''}
+                        {v.brand} {v.model} ({v.plate_number || v.plate})
                       </option>
                     ))}
                   </select>
