@@ -10,14 +10,14 @@ export function PlanningClient({ workstations, appointments }: { workstations: a
   return (
     <>
       <Header
-        title="Planning Postes & Multi-jours"
+        title="Planning Postes &amp; Multi-jours"
         actions={
           <div className="text-xs text-gray-500">
-            Vue d'ensemble par poste de travail
+            Vue d&apos;ensemble par poste de travail
           </div>
         }
       />
-      <main className="p-6 space-y-6 max-w-7xl mx-auto">
+      <main className="p-6 space-y-6">
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm p-6 space-y-6">
           <div className="flex justify-between items-center border-b pb-4">
             <div>
