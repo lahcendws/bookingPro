@@ -67,11 +67,11 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
         title="Postes de Travail"
         actions={
           <div className="text-xs text-gray-500">
-            Gestion des postes techniques & cabines
+            Gestion des postes techniques &amp; cabines
           </div>
         }
       />
-      <main className="p-6 space-y-6 max-w-7xl mx-auto">
+      <main className="p-6 space-y-6">
         {message && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl flex items-center gap-2 text-sm shadow-sm">
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -116,9 +116,6 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
 
         {/* Workstations List */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-          <div className="p-4 border-b bg-gray-50 font-semibold text-sm text-gray-700 flex items-center gap-2">
-            <Layers className="w-4 h-4 text-blue-600" /> Postes enregistrés ({workstations.length})
-          </div>
           {workstations.length === 0 ? (
             <div className="py-16 text-center text-gray-500">
               <Layers className="w-10 h-10 mx-auto text-gray-300 mb-2" />
@@ -126,24 +123,41 @@ export function WorkstationsClient({ initialWorkstations }: { initialWorkstation
               <p className="text-xs text-gray-400 mt-1">Créez votre premier poste ci-dessus pour planifier vos interventions.</p>
             </div>
           ) : (
-            <div className="divide-y">
-              {workstations.map((w: any) => (
-                <div key={w.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                  <div>
-                    <div className="font-semibold text-gray-900">{w.name}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">{w.description || 'Aucune description'}</div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      Actif
-                    </span>
-                    <Button size="sm" variant="outline" onClick={() => handleDelete(w.id)} className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 h-8 px-2.5">
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50 text-xs text-gray-500 uppercase">
+                  <th className="text-left px-4 py-3 font-medium">Poste / Cabine</th>
+                  <th className="text-left px-4 py-3 font-medium">Description</th>
+                  <th className="text-center px-4 py-3 font-medium">Statut</th>
+                  <th className="text-right px-4 py-3 font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {workstations.map((w: any) => (
+                  <tr key={w.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors last:border-0">
+                    <td className="px-4 py-3 font-semibold text-gray-900 flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        <Layers className="w-4 h-4" />
+                      </div>
+                      {w.name}
+                    </td>
+                    <td className="px-4 py-3 text-gray-500">
+                      {w.description || <span className="text-gray-300">—</span>}
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <span className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        Actif
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Button size="sm" variant="outline" onClick={() => handleDelete(w.id)} className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 h-8 px-2.5">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </main>

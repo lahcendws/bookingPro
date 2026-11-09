@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers';
-import type { Database } from './database.types'
 
 // In SaaS mode, cookies must be shared across subdomains
 // so that a user authenticated on the main domain can access their subdomain dashboard.
@@ -18,7 +17,7 @@ export async function createClient() {
   const cookieStore = await cookies()
   const domain = cookieDomain()
 
-  return createServerClient<Database>(
+  return createServerClient<any>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {

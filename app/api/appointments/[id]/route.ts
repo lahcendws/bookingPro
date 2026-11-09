@@ -17,15 +17,24 @@ export async function PATCH(request: Request, props: { params: Promise<{ id: str
 
   if (!business) return NextResponse.json({ error: 'forbidden' }, { status: 403 })
 
-  // employee_id: empty string or null → unassign; UUID string → assign
-  const employee_id: string | null = body.employee_id || null
+  // User instruction: allow assigning workstation and duration_days from planning view
+  const updateData: any = {}
+  if (body.workstation_id !== undefined) {
+    updateData.workstation_id = body.workstation_id || null
+  }
+  if (body.employee_id !== undefined) {
+    updateData.employee_id = body.employee_id || null
+  }
+  if (body.duration_days !== undefined) {
+    updateData.duration_days = Number(body.duration_days) || 1
+  }
 
   const { data, error } = await supabase
     .from('appointments')
-    .update({ employee_id })
+    .update(updateData)
     .eq('id', params.id)
     .eq('business_id', business.id)
-    .select('id, employees(id, name)')
+    .select('id, workstation_id, duration_days, employees(id, name)')
     .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
