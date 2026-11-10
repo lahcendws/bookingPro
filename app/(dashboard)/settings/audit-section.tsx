@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Activity, ShieldCheck, User, Calendar, FileText, ArrowRight, Download, Filter } from 'lucide-react'
+import {
+  Activity, ShieldCheck, User, Calendar, Download, Filter,
+  ArrowRight, CheckCircle2, XCircle, Clock, Globe, CreditCard,
+  MapPin, RefreshCw, ChevronDown, ChevronUp, Search, Eye
+} from 'lucide-react'
+import Link from 'next/link'
 
 interface AuditLog {
   id: string
@@ -21,8 +26,16 @@ export function AuditSection({ businessId }: { businessId: string }) {
   const supabase = createClient()
   const [logs, setLogs] = useState<AuditLog[]>([])
   const [loading, setLoading] = useState(true)
+
+  // Filters
   const [filterType, setFilterType] = useState<string>('all')
   const [filterAction, setFilterAction] = useState<string>('all')
+  const [filterActor, setFilterActor] = useState<string>('all')
+  const [filterPeriod, setFilterPeriod] = useState<string>('7d')
+  const [searchQuery, setSearchQuery] = useState<string>('')
+
+  // Expanded rows for JSON diff modal/collapse
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadLogs() {
@@ -32,23 +45,63 @@ export function AuditSection({ businessId }: { businessId: string }) {
         .select('*')
         .eq('business_id', businessId)
         .order('created_at', { ascending: false })
-        .limit(100)
+        .limit(200)
 
       if (filterType !== 'all') {
         query = query.eq('entity_type', filterType)
       }
       if (filterAction !== 'all') {
-        query = query.eq('action', filterAction)
+        if (filterAction === 'status') {
+          query = query.in('action', ['status_changed', 'cancelled'])
+        } else if (filterAction === 'payment') {
+          query = query.in('action', ['deposit_paid', 'deposit_expired'])
+        } else {
+          query = query.eq('action', filterAction)
+        }
+      }
+      if (filterActor !== 'all') {
+        query = query.eq('actor_type', filterActor)
+      }
+
+      // Date filtering
+      const now = new Date()
+      if (filterPeriod === '1d') {
+        const d = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+        query = query.gte('created_at', d.toISOString())
+      } else if (filterPeriod === '7d') {
+        const d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        query = query.gte('created_at', d.toISOString())
+      } else if (filterPeriod === '30d') {
+        const d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        query = query.gte('created_at', d.toISOString())
       }
 
       const { data } = await query
       if (data) {
-        setLogs(data)
+        let filtered = data
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase()
+          filtered = data.filter(l =>
+            l.actor_label.toLowerCase().includes(q) ||
+            l.action.toLowerCase().includes(q) ||
+            (l.entity_id && l.entity_id.toLowerCase().includes(q)) ||
+            JSON.stringify(l.new_values || {}).toLowerCase().includes(q)
+          )
+        }
+        setLogs(filtered)
       }
       setLoading(false)
     }
     loadLogs()
-  }, [businessId, filterType, filterAction, supabase])
+  }, [businessId, filterType, filterAction, filterActor, filterPeriod, searchQuery, supabase])
+
+  function resetFilters() {
+    setFilterType('all')
+    setFilterAction('all')
+    setFilterActor('all')
+    setFilterPeriod('7d')
+    setSearchQuery('')
+  }
 
   function exportCSV() {
     const headers = ['ID', 'Date', 'Type', 'Action', 'Acteur', 'ID Entité', 'Anciennes valeurs', 'Nouvelles valeurs']
@@ -72,20 +125,74 @@ export function AuditSection({ businessId }: { businessId: string }) {
     document.body.removeChild(link)
   }
 
-  function formatActionLabel(action: string) {
-    switch (action) {
-      case 'created': return 'Création'
-      case 'updated': return 'Modification'
-      case 'moved': return 'Déplacement (Créneau / Poste)'
-      case 'status_changed': return 'Changement de statut'
-      case 'cancelled': return 'Annulation'
-      case 'employee_changed': return 'Changement d’employé'
-      case 'public_booking_received': return 'Réservation publique en ligne'
-      case 'deposit_paid': return 'Acompte payé'
-      case 'deposit_expired': return 'Acompte expiré'
-      default: return action
+  function statusFr(status: string) {
+    switch (status) {
+      case 'reception': return 'Réception'
+      case 'en_cours': return 'En cours'
+      case 'controle': return 'Contrôle'
+      case 'livre': return 'Livré'
+      case 'confirmed': return 'Confirmé'
+      case 'cancelled': return 'Annulé'
+      case 'pending': return 'En attente'
+      default: return status || 'Inconnu'
     }
   }
+
+  function renderIconAndColor(action: string) {
+    switch (action) {
+      case 'created':
+      case 'public_booking_received':
+        return { icon: <Globe className="w-4 h-4 text-emerald-600" />, bg: 'bg-emerald-50 border-emerald-200' }
+      case 'cancelled':
+        return { icon: <XCircle className="w-4 h-4 text-red-600" />, bg: 'bg-red-50 border-red-200' }
+      case 'moved':
+      case 'employee_changed':
+        return { icon: <RefreshCw className="w-4 h-4 text-blue-600" />, bg: 'bg-blue-50 border-blue-200' }
+      case 'deposit_paid':
+      case 'deposit_expired':
+        return { icon: <CreditCard className="w-4 h-4 text-amber-600" />, bg: 'bg-amber-50 border-amber-200' }
+      default:
+        return { icon: <Activity className="w-4 h-4 text-gray-600" />, bg: 'bg-gray-50 border-gray-200' }
+    }
+  }
+
+  function renderSentence(e: AuditLog) {
+    const actor = e.actor_label || 'Utilisateur'
+    const nv = e.new_values || {}
+    const ov = e.old_values || {}
+
+    switch (e.action) {
+      case 'created':
+        return `${actor} a créé l'élément « ${nv.title || nv.name || e.entity_type} »`
+      case 'public_booking_received':
+        return `Réservation en ligne reçue de ${actor}`
+      case 'cancelled':
+        return `${actor} a annulé ${e.entity_type === 'appointment' ? 'le rendez-vous' : 'l\'élément'}`
+      case 'moved':
+        return `${actor} a déplacé l'élément : ${ov.starts_at ? new Date(ov.starts_at).toLocaleString() : 'Créneau initial'} → ${nv.starts_at ? new Date(nv.starts_at).toLocaleString() : 'Nouveau créneau'}`
+      case 'status_changed':
+        return `${actor} a modifié le statut de « ${statusFr(ov.status)} » à « ${statusFr(nv.status)} »`
+      case 'employee_changed':
+        return `${actor} a réaffecté l'employé (ancien ID: ${ov.employee_id || 'aucun'} → nouveau ID: ${nv.employee_id || 'aucun'})`
+      case 'deposit_paid':
+        return `Acompte payé (${nv.deposit_amount || nv.amount || ''} €)`
+      case 'deposit_expired':
+        return `Acompte non payé : créneau libéré`
+      case 'updated':
+        const changedKeys = Object.keys(nv).join(', ')
+        return `${actor} a modifié les champs : ${changedKeys || 'général'}`
+      default:
+        return `${actor} a effectué l'action ${e.action}`
+    }
+  }
+
+  // Group logs by date string
+  const groupedLogs: Record<string, AuditLog[]> = {}
+  logs.forEach(l => {
+    const dateKey = new Date(l.created_at).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    if (!groupedLogs[dateKey]) groupedLogs[dateKey] = []
+    groupedLogs[dateKey].push(l)
+  })
 
   return (
     <div className="space-y-6">
@@ -96,96 +203,191 @@ export function AuditSection({ businessId }: { businessId: string }) {
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">Journal d&apos;activité (Audit Logs & Événements)</h2>
-              <p className="text-sm text-gray-500">Traçabilité complète inaltérable : créations, déplacements, statuts, acomptes et réservations.</p>
+              <h2 className="font-semibold text-gray-900">Journal d&apos;activité & Piste d&apos;audit</h2>
+              <p className="text-sm text-gray-500">Traçabilité complète par acteur, date, ancien/nouveau statut et déplacements.</p>
             </div>
           </div>
-          <button
-            onClick={exportCSV}
-            className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors"
-          >
-            <Download className="w-4 h-4" /> Exporter CSV
-          </button>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-gray-100">
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <Filter className="w-3.5 h-3.5" /> Filtrer par :
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium text-gray-500">{logs.length} résultat{logs.length > 1 ? 's' : ''}</span>
+            <button
+              onClick={exportCSV}
+              className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors"
+            >
+              <Download className="w-4 h-4" /> Exporter CSV
+            </button>
           </div>
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium"
-          >
-            <option value="all">Toutes les entités</option>
-            <option value="appointment">Rendez-vous</option>
-            <option value="client">Client</option>
-            <option value="job">Chantier</option>
-          </select>
-          <select
-            value={filterAction}
-            onChange={(e) => setFilterAction(e.target.value)}
-            className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium"
-          >
-            <option value="all">Toutes les actions</option>
-            <option value="created">Création</option>
-            <option value="moved">Déplacement</option>
-            <option value="status_changed">Statut</option>
-            <option value="cancelled">Annulation</option>
-            <option value="public_booking_received">Réservation publique</option>
-            <option value="deposit_paid">Acompte payé</option>
-          </select>
         </div>
 
+        {/* Filters Bar */}
+        <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700">
+              <Filter className="w-3.5 h-3.5 text-blue-600" /> Filtres :
+            </div>
+
+            <select
+              value={filterPeriod}
+              onChange={(e) => setFilterPeriod(e.target.value)}
+              className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium text-gray-700"
+            >
+              <option value="1d">Dernières 24h</option>
+              <option value="7d">7 derniers jours</option>
+              <option value="30d">30 derniers jours</option>
+              <option value="all">Tout l'historique</option>
+            </select>
+
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium text-gray-700"
+            >
+              <option value="all">Toutes les entités</option>
+              <option value="appointment">Rendez-vous</option>
+              <option value="client">Client</option>
+              <option value="job">Chantier</option>
+            </select>
+
+            <select
+              value={filterAction}
+              onChange={(e) => setFilterAction(e.target.value)}
+              className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium text-gray-700"
+            >
+              <option value="all">Toutes les actions</option>
+              <option value="created">Création</option>
+              <option value="moved">Déplacement</option>
+              <option value="status">Statut & Annulation</option>
+              <option value="payment">Paiements & Acomptes</option>
+              <option value="public_booking_received">Réservation en ligne</option>
+            </select>
+
+            <select
+              value={filterActor}
+              onChange={(e) => setFilterActor(e.target.value)}
+              className="text-xs border rounded-lg px-3 py-1.5 bg-white font-medium text-gray-700"
+            >
+              <option value="all">Tous les acteurs</option>
+              <option value="user">Utilisateur (Employé/Admin)</option>
+              <option value="client">Client</option>
+              <option value="system">Système</option>
+            </select>
+
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Rechercher acteur, action, ID..."
+                className="w-full text-xs border rounded-lg pl-8 pr-3 py-1.5 bg-white font-medium"
+              />
+            </div>
+
+            <button
+              onClick={resetFilters}
+              className="text-xs text-blue-600 font-semibold hover:underline px-2 py-1"
+            >
+              Réinitialiser
+            </button>
+          </div>
+        </div>
+
+        {/* Activity Timeline List */}
         <div>
           {loading ? (
-            <div className="py-12 text-center text-sm text-gray-400">Chargement du journal...</div>
-          ) : logs.length === 0 ? (
-            <div className="py-16 text-center">
+            <div className="py-16 text-center text-sm text-gray-400">Chargement de la piste d&apos;audit...</div>
+          ) : Object.keys(groupedLogs).length === 0 ? (
+            <div className="py-20 text-center">
               <ShieldCheck className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">Aucun événement enregistré pour ces critères.</p>
+              <p className="text-sm text-gray-500">Aucun événement ne correspond à vos critères.</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
-              {logs.map((log) => {
-                const time = new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                const date = new Date(log.created_at).toLocaleDateString()
-                return (
-                  <div key={log.id} className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm">
-                    <div className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0 mt-0.5">
-                        <User className="w-4 h-4" />
-                      </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-semibold text-gray-900">{log.actor_label}</span>
-                          <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md font-medium">
-                            {formatActionLabel(log.action)}
-                          </span>
-                          <span className="text-xs text-gray-400 uppercase font-mono">
-                            [{log.entity_type}]
-                          </span>
-                        </div>
-                        {log.old_values || log.new_values ? (
-                          <div className="text-xs text-gray-600 font-mono bg-gray-50 p-2 rounded-lg space-y-1 max-w-xl overflow-x-auto">
-                            {log.old_values && Object.keys(log.old_values).length > 0 && (
-                              <div><span className="text-red-500 font-semibold">Ancien :</span> {JSON.stringify(log.old_values)}</div>
-                            )}
-                            {log.new_values && Object.keys(log.new_values).length > 0 && (
-                              <div><span className="text-emerald-600 font-semibold">Nouveau :</span> {JSON.stringify(log.new_values)}</div>
-                            )}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <span className="text-xs font-semibold text-gray-900">{time}</span>
-                      <p className="text-[11px] text-gray-400">{date}</p>
-                    </div>
+            <div className="space-y-8">
+              {Object.entries(groupedLogs).map(([dateLabel, dayLogs]) => (
+                <div key={dateLabel} className="space-y-3">
+                  <div className="sticky top-0 bg-white/90 backdrop-blur-sm py-2 border-b border-gray-100 flex items-center justify-between z-10">
+                    <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{dateLabel}</h3>
+                    <span className="text-[11px] font-medium text-gray-400">{dayLogs.length} événement{dayLogs.length > 1 ? 's' : ''}</span>
                   </div>
-                )
-              })}
+
+                  <div className="space-y-3 pl-2">
+                    {dayLogs.map((log) => {
+                      const timeStr = new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                      const fullDateStr = new Date(log.created_at).toLocaleString()
+                      const { icon, bg } = renderIconAndColor(log.action)
+                      const isExpanded = expandedId === log.id
+
+                      return (
+                        <div key={log.id} className="bg-white rounded-xl border border-gray-200/80 p-4 shadow-sm hover:border-blue-200 transition-all space-y-2">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                              <div className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${bg}`}>
+                                {icon}
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-xs font-bold text-gray-900 capitalize">{log.action.replace('_', ' ')}</span>
+                                  <span className="text-[10px] font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md uppercase">
+                                    {log.entity_type}
+                                  </span>
+                                  {log.entity_id && (
+                                    <span className="text-[10px] text-gray-400 font-mono">
+                                      #{log.entity_id.slice(0, 6)}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs font-medium text-gray-800">
+                                  {renderSentence(log)}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 shrink-0">
+                              <div className="text-right" title={fullDateStr}>
+                                <span className="text-xs font-bold text-gray-900">{timeStr}</span>
+                              </div>
+                              {(log.old_values || log.new_values) && (
+                                <button
+                                  onClick={() => setExpandedId(isExpanded ? null : log.id)}
+                                  className="text-gray-400 hover:text-blue-600 p-1 rounded-lg transition-colors"
+                                  title="Voir le détail complet (JSON / Diffs)"
+                                >
+                                  {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Collapsible JSON / Diff details */}
+                          {isExpanded && (
+                            <div className="pt-3 mt-2 border-t border-gray-100 text-xs font-mono bg-gray-50 p-3 rounded-lg space-y-2 text-gray-700">
+                              <div className="flex justify-between items-center text-[10px] text-gray-400 border-b pb-1">
+                                <span>Acteur: {log.actor_label} ({log.actor_type})</span>
+                                <span>Horodatage UTC: {log.created_at}</span>
+                              </div>
+                              {log.old_values && Object.keys(log.old_values).length > 0 && (
+                                <div>
+                                  <span className="text-red-600 font-semibold">Anciennes valeurs :</span>
+                                  <pre className="mt-1 text-[11px] text-red-700 whitespace-pre-wrap overflow-x-auto bg-red-50/50 p-2 rounded">
+                                    {JSON.stringify(log.old_values, null, 2)}
+                                  </pre>
+                                </div>
+                              )}
+                              {log.new_values && Object.keys(log.new_values).length > 0 && (
+                                <div>
+                                  <span className="text-emerald-700 font-semibold">Nouvelles valeurs :</span>
+                                  <pre className="mt-1 text-[11px] text-emerald-800 whitespace-pre-wrap overflow-x-auto bg-emerald-50/50 p-2 rounded">
+                                    {JSON.stringify(log.new_values, null, 2)}
+                                  </pre>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
