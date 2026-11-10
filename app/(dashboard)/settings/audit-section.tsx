@@ -7,24 +7,82 @@ import {
   ArrowRight, CheckCircle2, XCircle, Clock, Globe, CreditCard,
   MapPin, RefreshCw, ChevronDown, ChevronUp, Search, Eye
 } from 'lucide-react'
-import Link from 'next/link'
 
-interface AuditLog {
+export type AuditRow = {
   id: string
   action: string
-  entity_type: string
+  entity_type: 'appointment' | 'client' | 'job' | string
   entity_id: string | null
-  actor_type: string
+  actor_type: 'user' | 'client' | 'system'
   actor_label: string
   old_values: Record<string, any> | null
   new_values: Record<string, any> | null
+  metadata: Record<string, any> | null
   created_at: string
   user_id: string | null
 }
 
+const STATUS: Record<string, string> = {
+  pending: 'En attente', confirmed: 'Confirmé', in_progress: 'En cours',
+  completed: 'Terminé', cancelled: 'Annulé', no_show: 'Absent',
+  reception: 'Réception', en_cours: 'En cours', controle: 'Contrôle', livre: 'Livré'
+}
+const NOUN: Record<string, string> = { appointment: 'Rendez-vous', client: 'Client', job: 'Chantier' }
+
+// 'APPOINTMENT_UPDATED' (anciennes lignes) -> 'updated'
+const norm = (a: string) => (a || '').toLowerCase().replace(/^(appointment|client|job)_/, '')
+
+const when = (iso?: string) => iso &&
+  new Date(iso).toLocaleString('fr-FR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+
+const eur = (n: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n)
+
+export function describe(r: AuditRow) {
+  const m = r.metadata ?? {}, o = r.old_values ?? {}, n = r.new_values ?? {}
+  const who = r.actor_label || 'Utilisateur'
+  const noun = NOUN[r.entity_type] || r.entity_type || 'Élément'
+  const target = m.label ? `« ${m.label} »` : `le ${noun.toLowerCase()}`
+
+  switch (norm(r.action)) {
+    case 'created':
+      return { icon: '➕', title: `${noun} créé`, text: `${who} a créé ${target}` }
+    case 'public_booking_received':
+      return { icon: '🌐', title: 'Réservation en ligne reçue', text: `${who} · ${m.label ?? ''}` }
+    case 'moved': {
+      const from = [m.workstation_from, when(o.starts_at)].filter(Boolean).join(', ')
+      const to = [m.workstation_to, when(n.starts_at)].filter(Boolean).join(', ')
+      return { icon: '🔄', title: 'Rendez-vous déplacé', text: `${who} a déplacé ${target}`,
+               detail: `${from || '—'} → ${to || '—'}` }
+    }
+    case 'status_changed':
+      return { icon: '🔁', title: 'Statut modifié',
+               text: `${who} a passé ${target} de « ${STATUS[o.status] ?? o.status} » à « ${STATUS[n.status] ?? n.status} »` }
+    case 'cancelled':
+      return { icon: '❌', title: 'Rendez-vous annulé',
+               text: r.actor_type === 'client' ? `${m.client_name ?? 'Le client'} a annulé via le lien client`
+                                               : `${who} a annulé ${target}` }
+    case 'employee_changed':
+      return { icon: '👤', title: 'Employé changé',
+               text: `${who} a réaffecté ${target} de ${m.employee_from ?? '—'} à ${m.employee_to ?? '—'}` }
+    case 'deposit_paid':
+      return { icon: '💰', title: 'Acompte payé',
+               text: `Acompte${m.deposit_amount ? ' de ' + eur(Number(m.deposit_amount)) : ''} reçu${m.client_name ? ' (' + m.client_name + ')' : ''}` }
+    case 'deposit_expired':
+      return { icon: '⏱️', title: 'Acompte expiré', text: 'Acompte non payé : créneau libéré' }
+    case 'deleted':
+      return { icon: '🗑️', title: `${noun} supprimé`, text: `${who} a supprimé ${target}` }
+    default: {
+      const fields = Object.keys(n).join(', ')
+      return { icon: '✏️', title: `${noun} modifié`,
+               text: `${who} a modifié ${target}${fields ? ' (' + fields + ')' : ''}`,
+               detail: undefined }
+    }
+  }
+}
+
 export function AuditSection({ businessId }: { businessId: string }) {
   const supabase = createClient()
-  const [logs, setLogs] = useState<AuditLog[]>([])
+  const [logs, setLogs] = useState<AuditRow[]>([])
   const [loading, setLoading] = useState(true)
 
   // Filters
@@ -104,17 +162,21 @@ export function AuditSection({ businessId }: { businessId: string }) {
   }
 
   function exportCSV() {
-    const headers = ['ID', 'Date', 'Type', 'Action', 'Acteur', 'ID Entité', 'Anciennes valeurs', 'Nouvelles valeurs']
-    const rows = logs.map(l => [
-      l.id,
-      l.created_at,
-      l.entity_type,
-      l.action,
-      l.actor_label,
-      l.entity_id || '',
-      JSON.stringify(l.old_values || {}),
-      JSON.stringify(l.new_values || {})
-    ])
+    const headers = ['ID', 'Date', 'Type', 'Action', 'Acteur', 'ID Entité', 'Description', 'Anciennes valeurs', 'Nouvelles valeurs']
+    const rows = logs.map(l => {
+      const d = describe(l)
+      return [
+        l.id,
+        l.created_at,
+        l.entity_type,
+        l.action,
+        l.actor_label,
+        l.entity_id || '',
+        `"${d.text.replace(/"/g, '""')}"`,
+        JSON.stringify(l.old_values || {}),
+        JSON.stringify(l.new_values || {})
+      ]
+    })
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n')
     const encodedUri = encodeURI(csvContent)
     const link = document.createElement('a')
@@ -125,71 +187,10 @@ export function AuditSection({ businessId }: { businessId: string }) {
     document.body.removeChild(link)
   }
 
-  function statusFr(status: string) {
-    switch (status) {
-      case 'reception': return 'Réception'
-      case 'en_cours': return 'En cours'
-      case 'controle': return 'Contrôle'
-      case 'livre': return 'Livré'
-      case 'confirmed': return 'Confirmé'
-      case 'cancelled': return 'Annulé'
-      case 'pending': return 'En attente'
-      default: return status || 'Inconnu'
-    }
-  }
-
-  function renderIconAndColor(action: string) {
-    switch (action) {
-      case 'created':
-      case 'public_booking_received':
-        return { icon: <Globe className="w-4 h-4 text-emerald-600" />, bg: 'bg-emerald-50 border-emerald-200' }
-      case 'cancelled':
-        return { icon: <XCircle className="w-4 h-4 text-red-600" />, bg: 'bg-red-50 border-red-200' }
-      case 'moved':
-      case 'employee_changed':
-        return { icon: <RefreshCw className="w-4 h-4 text-blue-600" />, bg: 'bg-blue-50 border-blue-200' }
-      case 'deposit_paid':
-      case 'deposit_expired':
-        return { icon: <CreditCard className="w-4 h-4 text-amber-600" />, bg: 'bg-amber-50 border-amber-200' }
-      default:
-        return { icon: <Activity className="w-4 h-4 text-gray-600" />, bg: 'bg-gray-50 border-gray-200' }
-    }
-  }
-
-  function renderSentence(e: AuditLog) {
-    const actor = e.actor_label || 'Utilisateur'
-    const nv = e.new_values || {}
-    const ov = e.old_values || {}
-
-    switch (e.action) {
-      case 'created':
-        return `${actor} a créé l'élément « ${nv.title || nv.name || e.entity_type} »`
-      case 'public_booking_received':
-        return `Réservation en ligne reçue de ${actor}`
-      case 'cancelled':
-        return `${actor} a annulé ${e.entity_type === 'appointment' ? 'le rendez-vous' : 'l\'élément'}`
-      case 'moved':
-        return `${actor} a déplacé l'élément : ${ov.starts_at ? new Date(ov.starts_at).toLocaleString() : 'Créneau initial'} → ${nv.starts_at ? new Date(nv.starts_at).toLocaleString() : 'Nouveau créneau'}`
-      case 'status_changed':
-        return `${actor} a modifié le statut de « ${statusFr(ov.status)} » à « ${statusFr(nv.status)} »`
-      case 'employee_changed':
-        return `${actor} a réaffecté l'employé (ancien ID: ${ov.employee_id || 'aucun'} → nouveau ID: ${nv.employee_id || 'aucun'})`
-      case 'deposit_paid':
-        return `Acompte payé (${nv.deposit_amount || nv.amount || ''} €)`
-      case 'deposit_expired':
-        return `Acompte non payé : créneau libéré`
-      case 'updated':
-        const changedKeys = Object.keys(nv).join(', ')
-        return `${actor} a modifié les champs : ${changedKeys || 'général'}`
-      default:
-        return `${actor} a effectué l'action ${e.action}`
-    }
-  }
-
-  // Group logs by date string
-  const groupedLogs: Record<string, AuditLog[]> = {}
+  // Group logs by date string (full format: ex: lundi 10 novembre 2026)
+  const groupedLogs: Record<string, AuditRow[]> = {}
   logs.forEach(l => {
-    const dateKey = new Date(l.created_at).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    const dateKey = new Date(l.created_at).toLocaleDateString('fr-FR', { dateStyle: 'full' })
     if (!groupedLogs[dateKey]) groupedLogs[dateKey] = []
     groupedLogs[dateKey].push(l)
   })
@@ -204,7 +205,7 @@ export function AuditSection({ businessId }: { businessId: string }) {
             </div>
             <div>
               <h2 className="font-semibold text-gray-900">Journal d&apos;activité & Piste d&apos;audit</h2>
-              <p className="text-sm text-gray-500">Traçabilité complète par acteur, date, ancien/nouveau statut et déplacements.</p>
+              <p className="text-sm text-gray-500">Traçabilité complète en français : actions, acteurs, déplacements et statuts.</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -233,7 +234,7 @@ export function AuditSection({ businessId }: { businessId: string }) {
               <option value="1d">Dernières 24h</option>
               <option value="7d">7 derniers jours</option>
               <option value="30d">30 derniers jours</option>
-              <option value="all">Tout l'historique</option>
+              <option value="all">Tout l&apos;historique</option>
             </select>
 
             <select
@@ -313,31 +314,36 @@ export function AuditSection({ businessId }: { businessId: string }) {
                     {dayLogs.map((log) => {
                       const timeStr = new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                       const fullDateStr = new Date(log.created_at).toLocaleString()
-                      const { icon, bg } = renderIconAndColor(log.action)
+                      const desc = describe(log)
                       const isExpanded = expandedId === log.id
 
                       return (
                         <div key={log.id} className="bg-white rounded-xl border border-gray-200/80 p-4 shadow-sm hover:border-blue-200 transition-all space-y-2">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex items-start gap-3">
-                              <div className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${bg}`}>
-                                {icon}
+                              <div className="w-9 h-9 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center shrink-0 mt-0.5 text-base">
+                                {desc.icon}
                               </div>
                               <div className="space-y-1">
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  <span className="text-xs font-bold text-gray-900 capitalize">{log.action.replace('_', ' ')}</span>
-                                  <span className="text-[10px] font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md uppercase">
-                                    {log.entity_type}
+                                  <span className="text-xs font-bold text-gray-900">{desc.title}</span>
+                                  <span className="text-[10px] font-semibold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md">
+                                    [{NOUN[log.entity_type] || log.entity_type || 'Élément'}]
                                   </span>
-                                  {log.entity_id && (
+                                  {log.entity_id && false && (
                                     <span className="text-[10px] text-gray-400 font-mono">
                                       #{log.entity_id.slice(0, 6)}
                                     </span>
                                   )}
                                 </div>
                                 <p className="text-xs font-medium text-gray-800">
-                                  {renderSentence(log)}
+                                  {desc.text}
                                 </p>
+                                {'detail' in desc && desc.detail && (
+                                  <p className="text-[11px] text-blue-600 font-semibold bg-blue-50/60 px-2.5 py-1 rounded-md inline-block">
+                                    {desc.detail}
+                                  </p>
+                                )}
                               </div>
                             </div>
 
