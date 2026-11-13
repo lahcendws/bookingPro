@@ -1,0 +1,110 @@
+- generic [active]:
+  - generic [ref=f8e1]:
+    - complementary [ref=f8e2]:
+      - generic [ref=f8e3]:
+        - generic [ref=f8e4]: BookingPro.
+        - generic [ref=f8e5]: Auto Covring
+      - navigation [ref=f8e6]:
+        - link "Tableau de bord" [ref=f8e7] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Chantiers & Atelier" [ref=f8e13] [cursor=pointer]:
+          - /url: /jobs
+        - link "Garage & Véhicules" [ref=f8e16] [cursor=pointer]:
+          - /url: /vehicles
+        - link "Devis" [ref=f8e21] [cursor=pointer]:
+          - /url: /quotes
+        - link "Factures & Acomptes" [ref=f8e25] [cursor=pointer]:
+          - /url: /invoices
+        - link "Postes de Travail" [ref=f8e29] [cursor=pointer]:
+          - /url: /workstations
+        - link "Planning Postes" [ref=f8e34] [cursor=pointer]:
+          - /url: /planning
+        - link "Rouleaux & PPF" [ref=f8e37] [cursor=pointer]:
+          - /url: /inventory-rolls
+        - link "Garanties" [ref=f8e44] [cursor=pointer]:
+          - /url: /warranties
+        - link "POS" [ref=f8e48] [cursor=pointer]:
+          - /url: /pos
+        - link "Clients" [ref=f8e53] [cursor=pointer]:
+          - /url: /crm
+        - link "Stocks" [ref=f8e59] [cursor=pointer]:
+          - /url: /inventory
+        - link "Agenda" [ref=f8e64] [cursor=pointer]:
+          - /url: /booking
+      - generic [ref=f8e67]:
+        - generic [ref=f8e68]:
+          - button "EN" [ref=f8e72] [cursor=pointer]
+          - button "FR" [ref=f8e73] [cursor=pointer]
+          - button "NL" [ref=f8e74] [cursor=pointer]
+          - button "ES" [ref=f8e75] [cursor=pointer]
+          - button "IT" [ref=f8e76] [cursor=pointer]
+          - button "PT" [ref=f8e77] [cursor=pointer]
+        - link "Paramètres" [ref=f8e78] [cursor=pointer]:
+          - /url: /settings
+        - button "Déconnexion" [ref=f8e82] [cursor=pointer]
+    - generic [ref=f8e86]:
+      - banner [ref=f8e87]:
+        - heading "Véhicules & Grille Tarifaire par Classe" [level=1] [ref=f8e88]
+        - button "Ajouter un véhicule" [ref=f8e92] [cursor=pointer]
+        - button [ref=f8e94] [cursor=pointer]
+      - main [ref=f8e98]:
+        - searchbox "Rechercher par plaque, marque, modèle, client..." [ref=f8e104]
+        - table [ref=f8e106]:
+          - rowgroup [ref=f8e107]:
+            - row [ref=f8e108]:
+              - columnheader "Immatriculation" [ref=f8e109]
+              - columnheader "Véhicule & Taille" [ref=f8e110]
+              - columnheader "Propriétaire" [ref=f8e111]
+              - columnheader "Couleur" [ref=f8e112]
+              - columnheader "Actions Phase 1" [ref=f8e113]
+              - columnheader [ref=f8e114]
+          - rowgroup [ref=f8e115]:
+            - row [ref=f8e116]:
+              - cell "XX-123-XX" [ref=f8e117]
+              - cell "bmw serie 1 (2025) berline" [ref=f8e118]:
+                - text: bmw serie 1
+                - generic [ref=f8e119]: (2025)
+                - generic [ref=f8e120]: berline
+              - cell "test" [ref=f8e122]
+              - cell "noire" [ref=f8e123]
+              - cell [ref=f8e124]:
+                - button "Devis Express (<2 min)" [ref=f8e126] [cursor=pointer]
+              - cell [ref=f8e130]:
+                - button "Modifier" [ref=f8e131] [cursor=pointer]
+            - row [ref=f8e135]:
+              - cell "AB-123-CD" [ref=f8e136]
+              - cell "Porsh 911 gts (2024) berline" [ref=f8e137]:
+                - text: Porsh 911 gts
+                - generic [ref=f8e138]: (2024)
+                - generic [ref=f8e139]: berline
+              - cell "client2" [ref=f8e141]
+              - cell "noire" [ref=f8e142]
+              - cell [ref=f8e143]:
+                - button "Devis Express (<2 min)" [ref=f8e145] [cursor=pointer]
+              - cell [ref=f8e149]:
+                - button "Modifier" [ref=f8e150] [cursor=pointer]
+            - row [ref=f8e154]:
+              - cell "BM-690-WM" [ref=f8e155]
+              - cell "Peugeot 207 (—) berline" [ref=f8e156]:
+                - text: Peugeot 207
+                - generic [ref=f8e157]: (—)
+                - generic [ref=f8e158]: berline
+              - cell "jeannee" [ref=f8e160]
+              - cell "blanche" [ref=f8e161]
+              - cell [ref=f8e162]:
+                - button "Devis Express (<2 min)" [ref=f8e164] [cursor=pointer]
+              - cell [ref=f8e168]:
+                - button "Modifier" [ref=f8e169] [cursor=pointer]
+            - row [ref=f8e173]:
+              - cell "DF-123-SD" [ref=f8e174]
+              - cell "peuget 207 (2010) berline" [ref=f8e175]:
+                - text: peuget 207
+                - generic [ref=f8e176]: (2010)
+                - generic [ref=f8e177]: berline
+              - cell "jeannee" [ref=f8e179]
+              - cell "blanche" [ref=f8e180]
+              - cell [ref=f8e181]:
+                - button "Devis Express (<2 min)" [ref=f8e183] [cursor=pointer]
+              - cell [ref=f8e187]:
+                - button "Modifier" [ref=f8e188] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=f8e197] [cursor=pointer]

@@ -1,0 +1,87 @@
+- generic:
+  - generic [ref=f22e1]:
+    - complementary [ref=f22e2]:
+      - generic [ref=f22e3]:
+        - generic [ref=f22e4]: BookingPro.
+        - generic [ref=f22e5]: Auto Covring
+      - navigation [ref=f22e6]:
+        - link "Tableau de bord" [ref=f22e7] [cursor=pointer]:
+          - /url: /dashboard
+        - link "Chantiers & Atelier" [ref=f22e13] [cursor=pointer]:
+          - /url: /jobs
+        - link "Garage & Véhicules" [ref=f22e16] [cursor=pointer]:
+          - /url: /vehicles
+        - link "Devis" [ref=f22e21] [cursor=pointer]:
+          - /url: /quotes
+        - link "Factures & Acomptes" [ref=f22e25] [cursor=pointer]:
+          - /url: /invoices
+        - link "Postes de Travail" [ref=f22e29] [cursor=pointer]:
+          - /url: /workstations
+        - link "Planning Postes" [ref=f22e34] [cursor=pointer]:
+          - /url: /planning
+        - link "Rouleaux & PPF" [ref=f22e37] [cursor=pointer]:
+          - /url: /inventory-rolls
+        - link "Garanties" [ref=f22e44] [cursor=pointer]:
+          - /url: /warranties
+        - link "POS" [ref=f22e48] [cursor=pointer]:
+          - /url: /pos
+        - link "Clients" [ref=f22e53] [cursor=pointer]:
+          - /url: /crm
+        - link "Stocks" [ref=f22e59] [cursor=pointer]:
+          - /url: /inventory
+        - link "Agenda" [ref=f22e64] [cursor=pointer]:
+          - /url: /booking
+      - generic [ref=f22e67]:
+        - generic [ref=f22e68]:
+          - button "EN" [ref=f22e72] [cursor=pointer]
+          - button "FR" [ref=f22e73] [cursor=pointer]
+          - button "NL" [ref=f22e74] [cursor=pointer]
+          - button "ES" [ref=f22e75] [cursor=pointer]
+          - button "IT" [ref=f22e76] [cursor=pointer]
+          - button "PT" [ref=f22e77] [cursor=pointer]
+        - link "Paramètres" [ref=f22e78] [cursor=pointer]:
+          - /url: /settings
+        - button "Déconnexion" [ref=f22e82] [cursor=pointer]
+    - generic [ref=f22e86]:
+      - banner [ref=f22e87]:
+        - heading "Gestion des Chantiers" [level=1] [ref=f22e88]
+        - button "Nouveau Chantier" [active] [ref=f22e91] [cursor=pointer]
+        - button [ref=f22e93] [cursor=pointer]
+      - main [ref=f22e97]:
+        - generic [ref=f22e98]:
+          - generic [ref=f22e99]:
+            - generic [ref=f22e100]: Réception (0)
+            - generic [ref=f22e102]: Aucun chantier
+          - generic [ref=f22e104]:
+            - generic [ref=f22e105]: En cours (0)
+            - generic [ref=f22e107]: Aucun chantier
+          - generic [ref=f22e109]:
+            - generic [ref=f22e110]: Contrôle (0)
+            - generic [ref=f22e112]: Aucun chantier
+          - generic [ref=f22e114]:
+            - generic [ref=f22e115]: Livré (0)
+            - generic [ref=f22e117]: Aucun chantier
+        - generic [ref=f22e130]:
+          - heading "Nouveau Chantier" [level=3] [ref=f22e131]
+          - generic [ref=f22e132]:
+            - generic [ref=f22e133]:
+              - generic [ref=f22e134]: Client
+              - combobox [ref=f22e135]:
+                - option "Sélectionner un client..."
+                - option "test" [selected]
+                - option "jgfhjfgh"
+                - option "client2"
+                - option "jeannee"
+            - generic [ref=f22e136]:
+              - generic [ref=f22e137]: Véhicule
+              - combobox [ref=f22e138]:
+                - option "Sélectionner un véhicule..." [selected]
+              - paragraph [ref=f22e139]: Ce client n'a aucun véhicule enregistré. Veuillez d'abord lui ajouter un véhicule dans le Garage.
+            - generic [ref=f22e140]:
+              - generic [ref=f22e141]: Notes / Instructions
+              - textbox "Instructions particulières..." [ref=f22e142]
+            - generic [ref=f22e143]:
+              - button "Annuler" [ref=f22e144] [cursor=pointer]
+              - button "Créer le chantier" [ref=f22e145] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=f22e124] [cursor=pointer]
+  - alert [ref=f22e128]

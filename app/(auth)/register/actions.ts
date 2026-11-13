@@ -66,7 +66,7 @@ export async function register(formData: FormData) {
     .single()
 
   if (newBusiness) {
-    await insertOwnerAsEmployee(admin, newBusiness.id, authData.user)
+    await insertOwnerAsEmployee(admin, newBusiness.id, { id: authData.user.id, email: authData.user.email, user_metadata: authData.user.user_metadata })
   }
 
   // В selfhosted-режиме: принудительно логиним сразу после регистрации,

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
-import { Users, Package, CalendarDays, TrendingUp, ArrowUpRight } from 'lucide-react'
+import { Users, Package, CalendarDays, TrendingUp, ArrowUpRight, DollarSign, AlertCircle, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
@@ -102,6 +102,164 @@ export default async function DashboardPage() {
   const breakdownParts = (['confirmed', 'pending', 'completed'] as const)
     .filter((s) => (statusBreakdown[s] ?? 0) > 0)
     .map((s) => `${statusBreakdown[s]} ${s}`)
+
+  // ========================
+  // RENTABILITY METRICS (Phase 2 - Qlyo)
+  // ========================
+
+  // Use sevenDaysAgo already defined above (uses slice(0,10))
+  const sevenDaysAgoDate = sevenDaysAgo // already defined
+
+  // Calculate monthly totals for comparison
+  const firstDayOfMonth = new Date().toISOString().split('T')[0] + '-01'
+
+  // Get all completed transactions for the last 7 days (CA Facturé)
+  const { data: caFactureRaw } = await supabase
+    .from('transactions')
+    .select('amount, tax_amount, created_at')
+    .eq('business_id', business.id)
+    .eq('status', 'completed')
+    .gte('created_at', sevenDaysAgoDate)
+
+  // Calculate monthly totals for comparison
+  const { data: caFactureMonth } = await supabase
+    .from('transactions')
+    .select('amount, tax_amount, created_at')
+    .eq('business_id', business.id)
+    .eq('status', 'completed')
+    .gte('created_at', firstDayOfMonth)
+
+  const caFactureHT = caFactureRaw?.reduce((sum, tx) => sum + (tx.amount - tx.tax_amount), 0) ?? 0
+  const caFactureHTMonth = caFactureMonth?.reduce((sum, tx) => sum + (tx.amount - tx.tax_amount), 0) ?? 0
+
+  // Get paid transactions (CA Encaissé)
+  const { data: caEncaisseRaw } = await supabase
+    .from('transactions')
+    .select('amount, tax_amount, created_at, payment_method')
+    .eq('business_id', business.id)
+    .eq('status', 'paid')
+    .gte('created_at', sevenDaysAgoDate)
+
+  const caEncaisseeTTC = caEncaisseRaw?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0
+
+  // Get expenses for the month
+  const { data: expenses } = await supabase
+    .from('expenses')
+    .select('amount_ht, tax_rate, category, expense_date')
+    .eq('business_id', business.id)
+    .gte('expense_date', firstDayOfMonth)
+
+  const chargesTotalHT = expenses?.reduce((sum, e) => sum + (e.amount_ht ?? 0), 0) ?? 0
+  const chargesTotalTTC = expenses?.reduce((sum, e) => sum + (e.amount_ht ?? 0) * (1 + (e.tax_rate ?? 20) / 100), 0) ?? 0
+
+  // Calculate net benefit
+  const beneficeNet = caEncaisseeTTC - chargesTotalTTC
+
+  // Outstanding invoices (impayés)
+  const { data: unpaidInvoices } = await supabase
+    .from('invoices')
+    .select('id, total_ttc, due_date, status')
+    .eq('business_id', business.id)
+    .eq('status', 'sent')
+    .lt('due_date', new Date().toISOString().split('T')[0])
+
+  const impayesCount = unpaidInvoices?.length ?? 0
+
+  // Break-even calculation: find minimum revenue needed to cover expenses
+  const breakEvenPoint = chargesTotalTTC
+  const dailyAverage = caEncaisseeTTC / 7
+  const daysToBreakEven = dailyAverage > 0 ? Math.ceil(breakEvenPoint / dailyAverage) : 0
+  const breakEvenProgress = Math.min(100, (caEncaisseeTTC / Math.max(breakEvenPoint, 1)) * 100)
+
+  // Revenue by service category
+  const { data: revenueByService } = await supabase
+    .from('transactions')
+    .select('amount, services(name, category)')
+    .eq('business_id', business.id)
+    .eq('status', 'completed')
+    .gte('created_at', sevenDaysAgo)
+
+  const revenueByCategory: Record<string, number> = {}
+  for (const tx of revenueByService ?? []) {
+    const category = (tx.services as any)?.category ?? 'other'
+    revenueByCategory[category] = (revenueByCategory[category] ?? 0) + tx.amount
+  }
+
+  // Revenue by vehicle body type (through appointments with vehicles)
+  const { data: appointmentsWithVehicles } = await supabase
+    .from('appointments')
+    .select('id, vehicles!inner(body_type_id), transactions(amount)')
+    .eq('appointments.business_id', business.id)
+    .eq('appointments.status', 'completed')
+    .gte('appointments.starts_at', sevenDaysAgo)
+
+  const revenueByBodyType: Record<string, number> = {}
+  const bodyTypeLabels: Record<string, string> = {
+    moto: 'Moto',
+    citadine: 'Citadine',
+    berline: 'Berline',
+    break: 'Break',
+    suv: 'SUV/4x4',
+    monospace: 'Monospace',
+    utilitaire: 'Utilitaire',
+    camping_car: 'Camping-car',
+    poids_lourd: 'Poids lourd',
+    autre: 'Autre'
+  }
+  for (const appt of appointmentsWithVehicles ?? []) {
+    const bodyType = (appt.vehicles as any)?.body_type_id
+    const amount = (appt.transactions as any)?.amount ?? 0
+    if (bodyType) {
+      revenueByBodyType[bodyType] = (revenueByBodyType[bodyType] ?? 0) + amount
+    }
+  }
+
+  // Top clients (last 12 months)
+  const oneYearAgo = new Date(Date.now() - 365 * 86400000).toISOString().split('T')[0]
+  const { data: clientRevenue } = await supabase
+    .from('transactions')
+    .select('amount, clients(name)')
+    .eq('business_id', business.id)
+    .eq('status', 'completed')
+    .gte('created_at', oneYearAgo)
+
+  const clientRevenueMap: Record<string, { name: string; total: number; visits: number }> = {}
+  for (const tx of clientRevenue ?? []) {
+    const clientId = (tx.clients as any)?.id ?? 'walkin'
+    const clientName = (tx.clients as any)?.name ?? 'Client occasionnel'
+    if (!clientRevenueMap[clientId]) {
+      clientRevenueMap[clientId] = { name: clientName, total: 0, visits: 0 }
+    }
+    clientRevenueMap[clientId].total += tx.amount
+    clientRevenueMap[clientId].visits += 1
+  }
+  const topClients = Object.entries(clientRevenueMap)
+    .map(([client_id, data]) => ({ client_id, ...data }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5)
+
+  // Calculate margin by service (revenue - cost_price)
+  const { data: servicesWithMargin } = await supabase
+    .from('services')
+    .select('id, name, price, cost_price_ht, category')
+    .eq('business_id', business.id)
+
+  const marginByService: Array<{ service_id: string; service_name: string; revenue: number; cost: number; margin: number; margin_percent: number }> = []
+  for (const s of servicesWithMargin ?? []) {
+    const sAny = s as any
+    const serviceRevenue = revenueByCategory[sAny.category] ?? 0
+    const cost = sAny.cost_price_ht ?? 0
+    const margin = serviceRevenue - cost
+    const marginPercent = serviceRevenue > 0 ? (margin / serviceRevenue) * 100 : 0
+    marginByService.push({
+      service_id: s.id,
+      service_name: s.name,
+      revenue: serviceRevenue,
+      cost,
+      margin: Math.round(margin * 100) / 100,
+      margin_percent: Math.round(marginPercent * 100) / 100
+    })
+  }
 
   const statusColors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-700',
@@ -205,7 +363,88 @@ export default async function DashboardPage() {
               </CardContent>
             </Card>
           </Link>
+
+          {/* CA Encaissé card */}
+          <Link href="/pos/history">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-emerald-50">
+                    <DollarSign className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(caEncaisseeTTC, business.currency)}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.revenueToday')}</div>
+                <div className="text-xs text-gray-400 mt-1">CA Encaissé TTC</div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* CA Facturé HT card */}
+          <Link href="/pos/history">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-lg bg-blue-50">
+                    <BarChart3 className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-400" />
+                </div>
+                <div className="text-2xl font-bold text-gray-900">{formatCurrency(caFactureHT, business.currency)}</div>
+                <div className="text-sm text-gray-500 mt-0.5">{t('stats.revenueToday')}</div>
+                <div className="text-xs text-gray-400 mt-1">CA Facturé HT</div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          {/* Bénéfice Net card */}
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div className="p-2 rounded-lg bg-green-50">
+                  <TrendingUp className="w-4 h-4 text-green-600" />
+                </div>
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{formatCurrency(beneficeNet, business.currency)}</div>
+              <div className="text-sm text-gray-500 mt-0.5">Bénéfice Net</div>
+              {breakEvenProgress > 0 && (
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="h-2 rounded-full transition-all"
+                    style={{
+                      width: `${Math.min(100, breakEvenProgress)}%`,
+                      backgroundColor: breakEvenProgress >= 100 ? '#22c55e' : breakEvenProgress >= 80 ? '#eab308' : '#f97316'
+                    }}
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
+
+        {/* Rentabilité Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Rentabilité</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <div className="text-sm text-gray-600">Charges (HT)</div>
+                <div className="text-xl font-semibold">{formatCurrency(chargesTotalHT, business.currency)}</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600">Seuil de rentabilité</div>
+                <div className="text-xl font-semibold">{formatCurrency(breakEvenPoint, business.currency)}</div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600">Impayés</div>
+                <div className="text-xl font-semibold text-red-600">{impayesCount}</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid lg:grid-cols-2 gap-6">
           <Card>
