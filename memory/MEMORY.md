@@ -1,0 +1,1 @@
+- [Settings tabs employee role fix](memory/settings-tabs-employees-role.md) — reverted to default 'employee' for new employees; admin role comes from migration/trigger.

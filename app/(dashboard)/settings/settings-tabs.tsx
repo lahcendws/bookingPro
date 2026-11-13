@@ -37,7 +37,7 @@ interface Business {
   enabled_modules: string[] | null
 }
 interface Service { id: string; name: string; description: string | null; price: number; duration_min: number; category: string | null; is_active: boolean; capacity: number }
-interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean }
+interface Employee { id: string; name: string; role: string; email: string | null; phone: string | null; is_active: boolean; user_id?: string | null; isOwner?: boolean }
 interface DayHours { day_of_week: number; is_open: boolean; open_time: string; close_time: string; break_start?: string | null; break_end?: string | null }
 
 const DEFAULT_HOURS: DayHours[] = [0, 1, 2, 3, 4, 5, 6].map((dow) => ({
@@ -67,6 +67,13 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
+
+  function handleTabChange(newTab: Tab) {
+    setTab(newTab)
+    const params = new URLSearchParams(window.location.search)
+    params.set('tab', newTab)
+    router.replace(`?${params.toString()}`, { scroll: false })
+  }
   const [webhookStatus, setWebhookStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
   const [webhookMsg, setWebhookMsg] = useState('')
   const [viberWebhookStatus, setViberWebhookStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle')
@@ -286,16 +293,30 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     if (!empForm.name) return
     const empName = clean(empForm.name, 100)
     if (!empName) return
-    const sanitizedEmp = { ...empForm, name: empName }
+    const targetEmp = editingEmp ? employees.find(e => e.id === editingEmp) : null
+    const isOwner = targetEmp?.isOwner
+    const empRole = isOwner ? 'admin' : 'employee'
+    const sanitizedEmp = { ...empForm, name: empName, role: empRole }
     if (editingEmp) {
-      await supabase.from('employees').update(sanitizedEmp).eq('id', editingEmp)
-      setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...sanitizedEmp } as Employee : e))
+      if (isOwner) {
+        await supabase.from('employees').update({ name: empName, email: empForm.email ?? null, phone: empForm.phone ?? null }).eq('id', editingEmp)
+        setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, name: empName, email: empForm.email ?? null, phone: empForm.phone ?? null } as Employee : e))
+      } else {
+        await supabase.from('employees').update({ name: empName, email: empForm.email ?? null, phone: empForm.phone ?? null }).eq('id', editingEmp)
+        if (targetEmp?.user_id) {
+          await supabase.from('business_members').update({ role: 'employee' }).eq('business_id', biz.id).eq('user_id', targetEmp.user_id)
+        }
+        setEmployees((prev) => prev.map((e) => e.id === editingEmp ? { ...e, ...sanitizedEmp } as Employee : e))
+      }
     } else {
       const { data } = await supabase.from('employees').insert({
-        business_id: biz.id, name: empName, role: empForm.role ?? 'employee',
+        business_id: biz.id, name: empName,
+        role: 'employee',
         email: empForm.email ?? null, phone: empForm.phone ?? null,
       }).select().single()
-      if (data) setEmployees((prev) => [...prev, data as Employee])
+      if (data) {
+        setEmployees((prev) => [...prev, { ...data as Employee, role: 'employee', isOwner: false }])
+      }
     }
     setEmpForm({}); setEditingEmp(null)
     router.refresh()
@@ -462,7 +483,7 @@ export function SettingsTabs({ business: initial, services: initServices, employ
     <div className="p-3 sm:p-6 max-w-5xl min-h-[750px]">
       <div className="flex flex-nowrap overflow-x-auto gap-1 bg-gray-100 p-1 rounded-xl mb-8 no-scrollbar scroll-smooth">
         {tabs.map((tb) => (
-          <button key={tb.key} onClick={() => setTab(tb.key)}
+          <button key={tb.key} onClick={() => handleTabChange(tb.key)}
             className={`shrink-0 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${tab === tb.key ? 'bg-white shadow-sm text-gray-900 font-semibold' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-200/60'}`}>
             {tb.label}
           </button>
@@ -829,28 +850,43 @@ export function SettingsTabs({ business: initial, services: initServices, employ
                   </tr>
                 </thead>
                 <tbody>
-                  {employees.map((e) => (
-                    <tr key={e.id} className="border-b border-gray-100 hover:bg-gray-50 last:border-0">
-                      <td className="px-4 py-3 font-medium text-gray-900">{e.name}</td>
-                      <td className="px-4 py-3 text-gray-500 hidden sm:table-cell capitalize">{e.role}</td>
-                      <td className="px-4 py-3 text-gray-500 hidden md:table-cell">{e.email ?? '—'}</td>
-                      <td className="px-4 py-3 text-gray-500 hidden lg:table-cell">{e.phone ?? '—'}</td>
-                      <td className="px-4 py-3 text-right">
-                        {confirmDeleteEmpId === e.id ? (
-                          <div className="flex justify-end items-center gap-2">
-                            <span className="text-xs text-gray-500">{t('employees.deleteConfirm')}</span>
-                            <button onClick={() => deleteEmployee(e.id)} className="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600">{t('employees.deleteYes')}</button>
-                            <button onClick={() => setConfirmDeleteEmpId(null)} className="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50">{t('employees.deleteNo')}</button>
-                          </div>
-                        ) : (
-                          <div className="flex justify-end gap-1">
-                            <button onClick={() => { setEmpForm(e); setEditingEmp(e.id) }} className="p-1.5 hover:bg-gray-100 rounded"><Pencil className="w-3.5 h-3.5 text-gray-500" /></button>
-                            <button onClick={() => setConfirmDeleteEmpId(e.id)} className="p-1.5 hover:bg-red-50 rounded"><Trash2 className="w-3.5 h-3.5 text-red-400" /></button>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                  {employees.map((e) => {
+                    const roleKey = e.role === 'admin' ? 'admin' : 'employee'
+                    const roleLabel = t(`employees.roles.${roleKey}` as Parameters<typeof t>[0]) ?? (e.role === 'admin' ? 'Administrateur' : 'Employé')
+                    return (
+                      <tr key={e.id} className="border-b border-gray-100 hover:bg-gray-50 last:border-0">
+                        <td className="px-4 py-3 font-medium text-gray-900 flex items-center gap-2">
+                          {e.name}
+                          {e.isOwner && <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-semibold">Propriétaire</span>}
+                        </td>
+                        <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${e.role === 'admin' ? 'bg-purple-50 text-purple-700 border border-purple-200' : 'bg-gray-100 text-gray-700'}`}>
+                            {roleLabel}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-gray-500 hidden md:table-cell">{e.email ?? '—'}</td>
+                        <td className="px-4 py-3 text-gray-500 hidden lg:table-cell">{e.phone ?? '—'}</td>
+                        <td className="px-4 py-3 text-right">
+                          {confirmDeleteEmpId === e.id ? (
+                            <div className="flex justify-end items-center gap-2">
+                              <span className="text-xs text-gray-500">{t('employees.deleteConfirm')}</span>
+                              <button onClick={() => deleteEmployee(e.id)} className="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600">{t('employees.deleteYes')}</button>
+                              <button onClick={() => setConfirmDeleteEmpId(null)} className="px-2 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50">{t('employees.deleteNo')}</button>
+                            </div>
+                          ) : (
+                            <div className="flex justify-end gap-1">
+                              {!e.isOwner && (
+                                <button onClick={() => { setEmpForm(e); setEditingEmp(e.id) }} className="p-1.5 hover:bg-gray-100 rounded"><Pencil className="w-3.5 h-3.5 text-gray-500" /></button>
+                              )}
+                              {!e.isOwner && (
+                                <button onClick={() => setConfirmDeleteEmpId(e.id)} className="p-1.5 hover:bg-red-50 rounded"><Trash2 className="w-3.5 h-3.5 text-red-400" /></button>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             )}
@@ -858,19 +894,24 @@ export function SettingsTabs({ business: initial, services: initServices, employ
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h3 className="text-sm font-semibold text-gray-900 mb-4">{editingEmp ? t('employees.editHeading') : t('employees.addHeading')}</h3>
             <div className="grid sm:grid-cols-2 gap-3">
-              {([
-                { key: 'name', label: t('employees.fields.name'), type: 'text' },
-                { key: 'role', label: t('employees.fields.role'), type: 'text' },
-                { key: 'email', label: t('employees.fields.email'), type: 'email' },
-                { key: 'phone', label: t('employees.fields.phone'), type: 'tel' },
-              ] as { key: keyof Employee; label: string; type: string }[]).map(({ key, label, type }) => (
-                <div key={key}>
-                  <label className="text-xs font-medium text-gray-500">{label}</label>
-                  <input type={type} value={(empForm[key] as string) ?? ''}
-                    onChange={(e) => setEmpForm((f) => ({ ...f, [key]: e.target.value }))}
-                    className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                </div>
-              ))}
+              <div>
+                <label className="text-xs font-medium text-gray-500">{t('employees.fields.name')}</label>
+                <input type="text" value={(empForm.name as string) ?? ''}
+                  onChange={(e) => setEmpForm((f) => ({ ...f, name: e.target.value }))}
+                  className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">{t('employees.fields.email')}</label>
+                <input type="email" value={(empForm.email as string) ?? ''}
+                  onChange={(e) => setEmpForm((f) => ({ ...f, email: e.target.value }))}
+                  className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">{t('employees.fields.phone')}</label>
+                <input type="tel" value={(empForm.phone as string) ?? ''}
+                  onChange={(e) => setEmpForm((f) => ({ ...f, phone: e.target.value }))}
+                  className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
             </div>
             <div className="flex gap-2 mt-4">
               {editingEmp && <Button variant="outline" onClick={() => { setEmpForm({}); setEditingEmp(null) }}>{t('employees.cancelButton')}</Button>}

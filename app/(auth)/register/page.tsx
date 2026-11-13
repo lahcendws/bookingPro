@@ -23,6 +23,28 @@ export default async function RegisterPage(
       )}
 
       <form action={register} className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="first_name">
+              Prénom
+            </label>
+            <input
+              id="first_name" name="first_name" type="text"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Jean"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="last_name">
+              Nom
+            </label>
+            <input
+              id="last_name" name="last_name" type="text"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Dupont"
+            />
+          </div>
+        </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="business_name">
             {t('businessNameLabel')}

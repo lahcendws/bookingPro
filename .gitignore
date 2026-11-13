@@ -39,6 +39,8 @@ next-env.d.ts
 # editor
 .vscode/
 .idea/
+.mcp
+.claude/
 
 # supabase
 supabase/.temp/
@@ -57,3 +59,39 @@ unpacked_docx/
 .claude/
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+# pathern from ECC skill giflow
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+*.o
+*.exe
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDEs and editors
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+
+# Cache
+.cache/
+*.tsbuildinfo
+.gitignore
+.mcp.json
