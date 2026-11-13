@@ -11,6 +11,8 @@ export async function register(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const businessName = (formData.get('business_name') as string).trim()
+  const firstName = (formData.get('first_name') as string)?.trim() || ''
+  const lastName = (formData.get('last_name') as string)?.trim() || ''
 
   if (!businessName) {
     redirect('/register?error=Business+name+is+required')
@@ -21,8 +23,7 @@ export async function register(formData: FormData) {
     email,
     password,
     options: {
-      // Сохраняем название бизнеса в метаданных пользователя
-      data: { business_name: businessName },
+      data: { business_name: businessName, first_name: firstName, last_name: lastName },
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
     },
   })
@@ -65,7 +66,7 @@ export async function register(formData: FormData) {
     .single()
 
   if (newBusiness) {
-    await insertOwnerAsEmployee(admin, newBusiness.id, authData.user)
+    await insertOwnerAsEmployee(admin, newBusiness.id, { id: authData.user.id, email: authData.user.email, user_metadata: authData.user.user_metadata })
   }
 
   // В selfhosted-режиме: принудительно логиним сразу после регистрации,

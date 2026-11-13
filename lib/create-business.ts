@@ -29,12 +29,13 @@ function deriveOwnerName(user: { email?: string | null; user_metadata?: Record<s
 export async function insertOwnerAsEmployee(
   admin: SupabaseClient,
   businessId: string,
-  user: { email?: string | null; user_metadata?: Record<string, unknown> | null }
+  user: { id: string; email?: string | null; user_metadata?: Record<string, unknown> | null }
 ): Promise<void> {
   const { error } = await admin.from('employees').insert({
     business_id: businessId,
     name: deriveOwnerName(user),
     email: user.email ?? null,
+    user_id: user.id,
     is_active: true,
   })
   if (error) console.error('[create-business] failed to auto-create owner employee:', error.message)
