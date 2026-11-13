@@ -34,9 +34,9 @@ export default async function DashboardPage() {
   if (!business.onboarding_completed) redirect('/onboarding')
 
   // eslint-disable-next-line react-hooks/purity
-  const todayStr = new Date().toISOString().slice(0, 10)
+  const todayStr = new Date().toISOString().split('T')[0]
   // eslint-disable-next-line react-hooks/purity
-  const sevenDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10)
+  const sevenDaysAgo = new Date(Date.now() - 6 * 86400000).toISOString().split('T')[0]
 
   const [
     { count: clientCount },
@@ -215,6 +215,7 @@ export default async function DashboardPage() {
   }
 
   // Top clients (last 12 months)
+  // eslint-disable-next-line react-hooks/purity
   const oneYearAgo = new Date(Date.now() - 365 * 86400000).toISOString().split('T')[0]
   const { data: clientRevenue } = await supabase
     .from('transactions')
