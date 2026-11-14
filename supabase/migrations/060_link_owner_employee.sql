@@ -45,4 +45,8 @@ from public.businesses b
 where e.business_id = b.id
   and e.user_id is null
   and b.owner_id is not null
-  and e.name = (select trim(concat_ws(' ', first_name, last_name)) from auth.users u where u.id = b.owner_id);
+  and (select count(*) from public.employees x where x.business_id = b.id) = 1
+  and not exists (
+    select 1 from public.employees o
+    where o.business_id = b.id and o.user_id = b.owner_id
+  );

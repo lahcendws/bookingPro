@@ -22,6 +22,10 @@
 -- ─────────────────────────────────────────────────────────────────────────────
 
 -- Удаляем задачу если уже существует (чтобы можно было перезапустить миграцию)
+
+create extension if not exists pg_cron with schema pg_catalog;
+create extension if not exists pg_net;
+
 select cron.unschedule('bookingpro-notify') where exists (
   select 1 from cron.job where jobname = 'bookingpro-notify'
 );
