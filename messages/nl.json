@@ -35,29 +35,23 @@
     "mostPopular": "Meest gekozen",
     "footer": "BookingPro © 2026 · MIT-licentie",
     "plans": {
-      "free": {
-        "name": "Gratis",
-        "price": "€0",
-        "limit": "1 medewerker · 100 klanten",
-        "cta": "Starten"
-      },
-      "starter": {
-        "name": "Starter",
+      "basic": {
+        "name": "Basic",
         "price": "€19/mnd",
-        "limit": "3 medewerkers · 1.000 klanten",
+        "limit": "1 medewerker · 1 vestiging · 50 afspraken/mnd",
         "cta": "Starten"
       },
       "pro": {
         "name": "Pro",
-        "price": "€39/mnd",
-        "limit": "15 medewerkers · onbeperkt",
+        "price": "€29/mnd",
+        "limit": "5 medewerkers · 1 vestiging · 500 afspraken/mnd",
         "cta": "Starten"
       },
-      "agency": {
-        "name": "Bureau",
+      "business": {
+        "name": "Business",
         "price": "€79/mnd",
-        "limit": "Meerdere vestigingen · whitelabel",
-        "cta": "Neem contact op"
+        "limit": "15 medewerkers · 3 vestigingen · Onbeperkte afspraken",
+        "cta": "Starten"
       }
     }
   },
@@ -1145,45 +1139,38 @@
     "downgradeButton": "Downgraden",
     "cancelNote": "Om je abonnement te annuleren, beheer je dit rechtstreeks op",
     "plans": {
-      "free": {
-        "name": "Gratis",
-        "price": "€0",
-        "features": [
-          "1 medewerker",
-          "100 klanten",
-          "50 boekingen/maand",
-          "POS · CRM · Voorraad",
-          "Alle notificaties"
-        ]
-      },
-      "starter": {
-        "name": "Starter",
+      "basic": {
+        "name": "Basic",
         "price": "€19/mnd",
         "features": [
-          "5 medewerkers",
-          "Onbeperkt klanten",
-          "Onbeperkt boekingen"
+          "1 medewerker",
+          "1 vestiging",
+          "50 afspraken/maand",
+          "POS · CRM · Afspraken",
+          "E-mailnotificaties"
         ]
       },
       "pro": {
         "name": "Pro",
-        "price": "€39/mnd",
+        "price": "€29/mnd",
         "features": [
-          "15 medewerkers",
-          "Onbeperkt klanten",
+          "5 medewerkers",
+          "1 vestiging",
+          "500 afspraken/maand",
+          "Voorraad",
           "Analytica",
-          "Loyaliteitsprogramma",
-          "Eigen domein"
+          "SMS & WhatsApp"
         ]
       },
-      "agency": {
-        "name": "Bureau",
+      "business": {
+        "name": "Business",
         "price": "€79/mnd",
         "features": [
-          "Onbeperkt medewerkers",
-          "Meerdere locaties",
-          "Whitelabel",
-          "API-toegang"
+          "15 medewerkers",
+          "3 vestigingen",
+          "Onbeperkte afspraken",
+          "API-toegang",
+          "Geavanceerde analytica"
         ]
       }
     }
@@ -1292,5 +1279,40 @@
       "subject": "Herinnering: Je afspraak morgen bij {businessName}",
       "body": "Dit is een herinnering voor je afspraak morgen op {date} om {time} bij {businessName}."
     }
+  },
+  "vehicles": {
+    "title": "Voertuigen & Prijsmatrix",
+    "vehiclesTab": "Voertuigen",
+    "pricingTab": "Prijsmatrix",
+    "addVehicle": "Voertuig toevoegen",
+    "editVehicle": "Voertuig bewerken",
+    "searchPlaceholder": "Zoeken op kenteken, merk, model, klant...",
+    "noVehicles": "Geen voertuigen geregistreerd",
+    "noVehiclesDesc": "Voeg het eerste voertuig van uw klanten toe om te beginnen",
+    "clientLabel": "Klant Eigenaar",
+    "selectClient": "Selecteer een klant",
+    "licensePlate": "Kenteken",
+    "bodyType": "Type Carrosserie / Klasse",
+    "selectBodyType": "Selecteer een type",
+    "brand": "Merk",
+    "brandPlaceholder": "Porsche, BMW, Renault...",
+    "model": "Model",
+    "modelPlaceholder": "911, 308, Clio...",
+    "year": "Jaar",
+    "yearPlaceholder": "2024",
+    "color": "Kleur",
+    "colorPlaceholder": "Grijs, Zwart, Blauw...",
+    "vin": "Chassisnummer (VIN)",
+    "vinPlaceholder": "WP0ZZZ99ZTS...",
+    "notes": "Notities",
+    "notesPlaceholder": "Interne notities...",
+    "save": "Opslaan",
+    "saving": "Opslaan...",
+    "cancel": "Annuleren",
+    "edit": "Bewerken",
+    "delete": "Verwijderen",
+    "vehicleAndType": "Voertuig en Type",
+    "owner": "Eigenaar",
+    "actions": "Acties"
   }
 }

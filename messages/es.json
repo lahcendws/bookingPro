@@ -35,29 +35,23 @@
     "mostPopular": "Más popular",
     "footer": "BookingPro © 2026 · Licencia MIT",
     "plans": {
-      "free": {
-        "name": "Gratis",
-        "price": "$0",
-        "limit": "1 empleado · 100 clientes",
-        "cta": "Comenzar"
-      },
-      "starter": {
-        "name": "Starter",
-        "price": "$19/mes",
-        "limit": "3 empleados · 1 000 clientes",
+      "basic": {
+        "name": "Basic",
+        "price": "€19/mes",
+        "limit": "1 empleado · 1 ubicación · 50 citas/mes",
         "cta": "Comenzar"
       },
       "pro": {
         "name": "Pro",
-        "price": "$39/mes",
-        "limit": "15 empleados · ilimitado",
+        "price": "€29/mes",
+        "limit": "5 empleados · 1 ubicación · 500 citas/mes",
         "cta": "Comenzar"
       },
-      "agency": {
-        "name": "Agency",
-        "price": "$79/mes",
-        "limit": "Multisucursal · marca blanca",
-        "cta": "Contáctanos"
+      "business": {
+        "name": "Business",
+        "price": "€79/mes",
+        "limit": "15 empleados · 3 ubicaciones · Citas ilimitadas",
+        "cta": "Comenzar"
       }
     }
   },
@@ -1147,45 +1141,38 @@
     "downgradeButton": "Degradar",
     "cancelNote": "Para cancelar tu suscripción, adminístrala directamente en",
     "plans": {
-      "free": {
-        "name": "Gratis",
-        "price": "$0",
+      "basic": {
+        "name": "Basic",
+        "price": "€19/mes",
         "features": [
           "1 empleado",
-          "100 clientes",
-          "50 reservas/mes",
-          "POS · CRM · Inventario",
-          "Todas las notificaciones"
-        ]
-      },
-      "starter": {
-        "name": "Starter",
-        "price": "$19/mes",
-        "features": [
-          "5 empleados",
-          "Clientes ilimitados",
-          "Reservas ilimitadas"
+          "1 ubicación",
+          "50 citas/mes",
+          "POS · CRM · Reservas",
+          "Notificaciones por Email"
         ]
       },
       "pro": {
         "name": "Pro",
-        "price": "$39/mes",
+        "price": "€29/mes",
         "features": [
-          "15 empleados",
-          "Clientes ilimitados",
+          "5 empleados",
+          "1 ubicación",
+          "500 citas/mes",
+          "Inventario",
           "Analítica",
-          "Programa de fidelidad",
-          "Dominio personalizado"
+          "SMS y WhatsApp"
         ]
       },
-      "agency": {
-        "name": "Agency",
-        "price": "$79/mes",
+      "business": {
+        "name": "Business",
+        "price": "€79/mes",
         "features": [
-          "Empleados ilimitados",
-          "Múltiples sucursales",
-          "Marca blanca",
-          "Acceso a API"
+          "15 empleados",
+          "3 ubicaciones",
+          "Citas ilimitadas",
+          "Acceso a API",
+          "Analítica avanzada"
         ]
       }
     }
@@ -1272,5 +1259,40 @@
     },
     "submitButton": "Agregar producto",
     "cancelButton": "Cancelar"
+  },
+  "vehicles": {
+    "title": "Vehículos y Tabla de Precios",
+    "vehiclesTab": "Vehículos",
+    "pricingTab": "Tabla de Precios",
+    "addVehicle": "Agregar Vehículo",
+    "editVehicle": "Editar Vehículo",
+    "searchPlaceholder": "Buscar por placa, marca, modelo, cliente...",
+    "noVehicles": "No hay vehículos registrados",
+    "noVehiclesDesc": "Agrega el primer vehículo de tus clientes para empezar",
+    "clientLabel": "Cliente Propietario",
+    "selectClient": "Seleccionar un cliente",
+    "licensePlate": "Matrícula",
+    "bodyType": "Tipo de Carrocería / Clase",
+    "selectBodyType": "Seleccionar un tipo",
+    "brand": "Marca",
+    "brandPlaceholder": "Porsche, BMW, Renault...",
+    "model": "Modelo",
+    "modelPlaceholder": "911, 308, Clio...",
+    "year": "Año",
+    "yearPlaceholder": "2024",
+    "color": "Color",
+    "colorPlaceholder": "Gris, Negro, Azul...",
+    "vin": "Número de Chasis (VIN)",
+    "vinPlaceholder": "WP0ZZZ99ZTS...",
+    "notes": "Notas",
+    "notesPlaceholder": "Notas internas...",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "vehicleAndType": "Vehículo y Tipo",
+    "owner": "Propietario",
+    "actions": "Acciones"
   }
 }

@@ -35,29 +35,23 @@
     "mostPopular": "Le plus populaire",
     "footer": "BookingPro © 2026 · Licence MIT",
     "plans": {
-      "free": {
-        "name": "Gratuit",
-        "price": "0 €",
-        "limit": "1 employé · 100 clients",
-        "cta": "Commencer"
-      },
-      "starter": {
-        "name": "Starter",
+      "basic": {
+        "name": "Basic",
         "price": "19 €/mois",
-        "limit": "3 employés · 1 000 clients",
+        "limit": "1 employé · 1 site · 50 rdv/mois",
         "cta": "Commencer"
       },
       "pro": {
         "name": "Pro",
-        "price": "39 €/mois",
-        "limit": "15 employés · illimité",
+        "price": "29 €/mois",
+        "limit": "5 employés · 1 site · 500 rdv/mois",
         "cta": "Commencer"
       },
-      "agency": {
-        "name": "Agence",
+      "business": {
+        "name": "Business",
         "price": "79 €/mois",
-        "limit": "Multi-sites · marque blanche",
-        "cta": "Nous contacter"
+        "limit": "15 employés · 3 sites · Rdv illimités",
+        "cta": "Commencer"
       }
     }
   },
@@ -1145,45 +1139,38 @@
     "downgradeButton": "rétrograder",
     "cancelNote": "Pour annuler votre abonnement, gérez-le directement sur",
     "plans": {
-      "free": {
-        "name": "Gratuit",
-        "price": "0 €",
-        "features": [
-          "1 employé",
-          "100 clients",
-          "50 réservations/mois",
-          "POS · CRM · Stocks",
-          "Toutes les notifications"
-        ]
-      },
-      "starter": {
-        "name": "Starter",
+      "basic": {
+        "name": "Basic",
         "price": "19 €/mois",
         "features": [
-          "5 employés",
-          "Clients illimités",
-          "Réservations illimitées"
+          "1 employé",
+          "1 site",
+          "50 rendez-vous/mois",
+          "POS · CRM · Réservations",
+          "Notifications par Email"
         ]
       },
       "pro": {
         "name": "Pro",
-        "price": "39 €/mois",
+        "price": "29 €/mois",
         "features": [
-          "15 employés",
-          "Clients illimités",
+          "5 employés",
+          "1 site",
+          "500 rendez-vous/mois",
+          "Stocks",
           "Analytique",
-          "Programme de fidélité",
-          "Domaine personnalisé"
+          "SMS & WhatsApp"
         ]
       },
-      "agency": {
-        "name": "Agence",
+      "business": {
+        "name": "Business",
         "price": "79 €/mois",
         "features": [
-          "Employés illimités",
-          "Multi-sites",
-          "Marque blanche",
-          "Accès API"
+          "15 employés",
+          "3 sites",
+          "Rendez-vous illimités",
+          "Accès API",
+          "Analytique avancée"
         ]
       }
     }
@@ -1292,5 +1279,40 @@
       "subject": "Rappel : Votre rendez-vous demain chez {businessName}",
       "body": "Ceci est un rappel concernant votre rendez-vous prévu demain {date} à {time} chez {businessName}."
     }
+  },
+  "vehicles": {
+    "title": "Véhicules & Grille Tarifaire",
+    "vehiclesTab": "Véhicules",
+    "pricingTab": "Grille Tarifaire",
+    "addVehicle": "Ajouter un véhicule",
+    "editVehicle": "Modifier le véhicule",
+    "searchPlaceholder": "Rechercher par plaque, marque, modèle, client...",
+    "noVehicles": "Auc véhicule enregistré",
+    "noVehiclesDesc": "Ajoutez le premier véhicule de vos clients pour commencer",
+    "clientLabel": "Client Propriétaire",
+    "selectClient": "Sélectionner un client",
+    "licensePlate": "Immatriculation",
+    "bodyType": "Gabarit / Classe",
+    "selectBodyType": "Sélectionner un gabarit",
+    "brand": "Marque",
+    "brandPlaceholder": "Porsche, BMW, Renault...",
+    "model": "Modèle",
+    "modelPlaceholder": "911, 308, Clio...",
+    "year": "Année",
+    "yearPlaceholder": "2024",
+    "color": "Couleur",
+    "colorPlaceholder": "Gris, Noir, Bleu...",
+    "vin": "Numéro de châssis (VIN)",
+    "vinPlaceholder": "WP0ZZZ99ZTS...",
+    "notes": "Notes",
+    "notesPlaceholder": "Notes internes...",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "vehicleAndType": "Véhicule & Gabarit",
+    "owner": "Propriétaire",
+    "actions": "Actions"
   }
 }

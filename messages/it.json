@@ -35,29 +35,23 @@
     "mostPopular": "Più popolare",
     "footer": "BookingPro © 2026 · Licenza MIT",
     "plans": {
-      "free": {
-        "name": "Free",
-        "price": "$0",
-        "limit": "1 dipendente · 100 clienti",
-        "cta": "Inizia ora"
-      },
-      "starter": {
-        "name": "Starter",
-        "price": "$19/mese",
-        "limit": "3 dipendenti · 1.000 clienti",
+      "basic": {
+        "name": "Basic",
+        "price": "€19/mese",
+        "limit": "1 dipendente · 1 sede · 50 appuntamenti/mese",
         "cta": "Inizia ora"
       },
       "pro": {
         "name": "Pro",
-        "price": "$39/mese",
-        "limit": "15 dipendenti · illimitati",
+        "price": "€29/mese",
+        "limit": "5 dipendenti · 1 sede · 500 appuntamenti/mese",
         "cta": "Inizia ora"
       },
-      "agency": {
-        "name": "Agency",
-        "price": "$79/mese",
-        "limit": "Multi-sede · white-label",
-        "cta": "Contattaci"
+      "business": {
+        "name": "Business",
+        "price": "€79/mese",
+        "limit": "15 dipendenti · 3 sedi · Appuntamenti illimitati",
+        "cta": "Inizia ora"
       }
     }
   },
@@ -617,7 +611,7 @@
     },
     "services": {
       "empty": "Ancora nessun servizio",
-          "table": {
+      "table": {
         "name": "Nome",
         "category": "Categoria",
         "price": "Prezzo",
@@ -1141,51 +1135,44 @@
     "downgradeButton": "Riduci livello",
     "cancelNote": "Per annullare l'abbonamento, gestiscilo direttamente su",
     "plans": {
-      "free": {
-        "name": "Free",
-        "price": "$0",
+      "basic": {
+        "name": "Basic",
+        "price": "€19/mese",
         "features": [
           "1 dipendente",
-          "100 clienti",
-          "50 prenotazioni/mese",
-          "POS · CRM · Inventario",
-          "Tutte le notifiche"
-        ]
-      },
-      "starter": {
-        "name": "Starter",
-        "price": "$19/mese",
-        "features": [
-          "5 dipendenti",
-          "Clienti illimitati",
-          "Prenotazioni illimitate"
+          "1 sede",
+          "50 appuntamenti/mese",
+          "POS · CRM · Prenotazioni",
+          "Notifiche Email"
         ]
       },
       "pro": {
         "name": "Pro",
-        "price": "$39/mese",
+        "price": "€29/mese",
         "features": [
-          "15 dipendenti",
-          "Clienti illimitati",
+          "5 dipendenti",
+          "1 sede",
+          "500 appuntamenti/mese",
+          "Inventario",
           "Analisi",
-          "Programma fedeltà",
-          "Dominio personalizzato"
+          "SMS & WhatsApp"
         ]
       },
-      "agency": {
-        "name": "Agency",
-        "price": "$79/mese",
+      "business": {
+        "name": "Business",
+        "price": "€79/mese",
         "features": [
-          "Dipendenti illimitati",
-          "Sedi multiple",
-          "White-label",
-          "Accesso API"
+          "15 dipendenti",
+          "3 sedi",
+          "Appuntamenti illimitati",
+          "Accesso API",
+          "Analisi avanzata"
         ]
       }
     }
   },
   "newClient": {
-      "title": "Nuovo cliente",
+    "title": "Nuovo cliente",
     "backToClients": "← Clienti",
     "fields": {
       "name": "Nome completo *",
@@ -1266,5 +1253,40 @@
     },
     "submitButton": "Aggiungi articolo",
     "cancelButton": "Annulla"
+  },
+  "vehicles": {
+    "title": "Veicoli e Griglia Prezzi",
+    "vehiclesTab": "Veicoli",
+    "pricingTab": "Griglia Prezzi",
+    "addVehicle": "Aggiungi Veicolo",
+    "editVehicle": "Modifica Veicolo",
+    "searchPlaceholder": "Cerca per targa, marca, modello, cliente...",
+    "noVehicles": "Nessun veicolo registrato",
+    "noVehiclesDesc": "Aggiungi il primo veicolo dei tuoi clienti per iniziare",
+    "clientLabel": "Cliente Proprietario",
+    "selectClient": "Seleziona un cliente",
+    "licensePlate": "Targa",
+    "bodyType": "Tipo Carrozzeria / Classe",
+    "selectBodyType": "Seleziona un tipo",
+    "brand": "Marca",
+    "brandPlaceholder": "Porsche, BMW, Renault...",
+    "model": "Modello",
+    "modelPlaceholder": "911, 308, Clio...",
+    "year": "Anno",
+    "yearPlaceholder": "2024",
+    "color": "Colore",
+    "colorPlaceholder": "Grigio, Nero, Blu...",
+    "vin": "Numero Telaio (VIN)",
+    "vinPlaceholder": "WP0ZZZ99ZTS...",
+    "notes": "Note",
+    "notesPlaceholder": "Note interne...",
+    "save": "Salva",
+    "saving": "Salvataggio...",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "vehicleAndType": "Veicolo e Tipo",
+    "owner": "Proprietario",
+    "actions": "Azioni"
   }
 }

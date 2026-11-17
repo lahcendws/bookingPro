@@ -1,15 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/service'
-import Stripe from 'stripe'
+
+let stripe: any
+try {
+  const Stripe = await import('stripe')
+  stripe = new Stripe.default(process.env.STRIPE_SECRET_KEY ?? '', { apiVersion: '2025-02-28.acacia' })
+} catch {
+  stripe = null
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', { apiVersion: '2025-02-28.acacia' })
 
-  let event: Stripe.Event
+  let event: { type: string; data: { object: Record<string, unknown> } }
   try {
     event = JSON.parse(body)
   } catch {
@@ -18,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   // In production, always verify the Stripe signature to prevent spoofed webhooks.
   // In dev, if no secret is set, we allow parsing for local testing but log a warning.
-  if (process.env.NODE_ENV === 'production' && webhookSecret && sig) {
+  if (process.env.NODE_ENV === 'production' && webhookSecret && sig && stripe) {
     try {
       event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
     } catch (err) {
@@ -27,13 +33,6 @@ export async function POST(req: NextRequest) {
     }
   } else if (process.env.NODE_ENV === 'production' && (!webhookSecret || !sig)) {
     console.warn('[stripe/webhook] Production mode: Stripe webhook secret is missing — webhook signatures are NOT verified. Set STRIPE_WEBHOOK_SECRET in production environment.')
-  }
-
-  let event: { type: string; data: { object: Record<string, unknown> } }
-  try {
-    event = JSON.parse(body)
-  } catch {
-    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
   }
 
   const supabase = createServiceClient()

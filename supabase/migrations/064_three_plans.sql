@@ -90,6 +90,9 @@ alter table public.businesses
 alter table public.businesses
   add constraint businesses_plan_check
   check (plan in ('basic', 'pro', 'business'));
+alter table public.businesses alter column plan set default 'basic';
+-- Note: plan_id default is enforced by trigger trg_enforce_plan_immutability in migration 065
+-- Cannot use subquery in DEFAULT expression in PostgreSQL
 
 -- =============================================================================
 -- STEP 4: Remove old plans (free, enterprise) AFTER migration
