@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/service-admin'
 
 export async function GET(
   request: Request,
@@ -7,20 +7,52 @@ export async function GET(
 ) {
   try {
     const { token } = await context.params
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     const { data: job, error } = await supabase
       .from('jobs' as any)
-      .select('*, clients(name), vehicles(brand, model, plate_number), job_inspections(*)')
+      .select('id, status, tracking_expires_at, tracking_revoked_at, vehicles(brand, model, plate_number), clients(name)')
       .eq('tracking_token', token)
-      .single()
+      .maybeSingle()
 
+    // Same response for unknown/expired/revoked tokens
     if (error || !job) {
-      return NextResponse.json({ error: 'Job not found or invalid token' }, { status: 404 })
+      return NextResponse.json({ found: false }, { status: 200 })
     }
 
-    return NextResponse.json({ job })
+    // Check expiry
+    if (job.tracking_expires_at && new Date(job.tracking_expires_at) < new Date()) {
+      return NextResponse.json({ found: false }, { status: 200 })
+    }
+
+    // Check revocation
+    if (job.tracking_revoked_at) {
+      return NextResponse.json({ found: false }, { status: 200 })
+    }
+
+    // Minimal payload: no phone, email, prices, internal notes, other ids
+    // signature_data and client_consent_gallery removed from public view (sensitive data)
+    return NextResponse.json({
+      found: true,
+      job: {
+        id: job.id,
+        status: job.status,
+        vehicle: job.vehicles ? {
+          brand: job.vehicles.brand,
+          model: job.vehicles.model,
+          plate_number: job.vehicles.plate_number,
+        } : null,
+        client_name: job.clients?.name,
+        inspections: (job.job_inspections || []).map((insp: any) => ({
+          type: insp.type,
+          zones: insp.zones,
+          // signature_data removed from public view (sensitive data)
+          // client_consent_gallery removed from public view (sensitive data)
+          created_at: insp.created_at,
+        })),
+      },
+    })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Internal Error' }, { status: 500 })
+    return NextResponse.json({ found: false }, { status: 200 })
   }
 }

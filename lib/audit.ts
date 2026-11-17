@@ -1,5 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 
+/**
+ * Writes an activity log entry into public.activity_logs.
+ * Kept for backward compatibility; consider migrating to logAudit only.
+ */
 export async function logActivity(opts: {
   businessId: string
   userId?: string | null
@@ -23,6 +27,10 @@ export async function logActivity(opts: {
   }
 }
 
+/**
+ * Writes an audit log entry into public.activity_logs.
+ * Single source of truth for audit logging. Prefer this over logActivity.
+ */
 export async function logAudit(opts: {
   businessId: string
   userId?: string | null
@@ -30,8 +38,6 @@ export async function logAudit(opts: {
   entityType: string
   entityId?: string | null
   details?: Record<string, any>
-  metadata?: Record<string, any>
-  req?: Request
 }) {
   try {
     const supabase = await createClient()
@@ -41,7 +47,7 @@ export async function logAudit(opts: {
       action: opts.action,
       entity_type: opts.entityType,
       entity_id: opts.entityId || null,
-      details: opts.metadata || opts.details || {},
+      details: opts.details || {},
     })
   } catch (err) {
     console.error('[AuditLog Error]', err)

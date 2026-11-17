@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
 
   // 4. Fetch transactions / sales
   const { data: transactions } = await supabase
-    .from('inventory_sales')
+    .from('transactions')
     .select('*')
     .eq('business_id', businessId)
 

@@ -76,12 +76,12 @@ export async function GET(req: NextRequest) {
   const debug: Record<string, unknown> = { now: now.toISOString() }
 
   // ── helper: dedup через notification_log ────────────────────────────────────
-  async function logged(businessId: string, refId: string, type: string): Promise<boolean> {
+  async function logged(businessId: string, refId: string, type: string, channel: string): Promise<boolean> {
     const { error } = await supabase.from('notification_log').insert({
       business_id: businessId,
       ref_id: refId,
       type,
-      channel: 'email',
+      channel,
     })
     return !error
   }
@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
     // This prevents burning a notification_log entry for a booking that can never
     // be delivered — which would permanently block retries once contact info is added.
     if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
-    if (!await logged(a.business_id, a.id, 'reminder_24h')) continue
+    if (!await logged(a.business_id, a.id, 'reminder_24h', 'email')) continue
 
     const { data: biz } = await supabase
       .from('businesses')
@@ -176,7 +176,7 @@ export async function GET(req: NextRequest) {
     // This prevents burning a notification_log entry for a booking that can never
     // be delivered — which would permanently block retries once contact info is added.
     if (!client?.telegram_id && !client?.email && !client?.viber_user_id && !client?.whatsapp_number) continue
-    if (!await logged(a.business_id, a.id, 'reminder_1h')) continue
+    if (!await logged(a.business_id, a.id, 'reminder_1h', 'email')) continue
 
     const { data: biz } = await supabase
       .from('businesses')
@@ -242,7 +242,7 @@ export async function GET(req: NextRequest) {
   debug.thankyou = { count: completed?.length ?? 0, error: errTy?.message ?? null }
 
   for (const a of completed ?? []) {
-    if (!await logged(a.business_id, a.id, 'thankyou')) continue
+    if (!await logged(a.business_id, a.id, 'thankyou', 'email')) continue
 
     const { data: biz } = await supabase
       .from('businesses')
@@ -317,7 +317,7 @@ export async function GET(req: NextRequest) {
 
   for (const c of dormant ?? []) {
     if (!c.email && !c.whatsapp_number && !c.viber_user_id && !c.telegram_id) continue
-    if (!await logged(c.business_id, c.id, 'reactivation')) continue
+    if (!await logged(c.business_id, c.id, 'reactivation', 'email')) continue
 
     const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined
@@ -377,7 +377,7 @@ export async function GET(req: NextRequest) {
   for (const c of bdays ?? []) {
     if (!c.email && !c.whatsapp_number && !c.viber_user_id && !c.telegram_id) continue
     const year = now.getFullYear()
-    if (!await logged(c.business_id, `${c.id}_bday_${year}`, 'birthday')) continue
+    if (!await logged(c.business_id, `${c.id}_bday_${year}`, 'birthday', 'email')) continue
 
     const { data: biz } = await supabase.from('businesses').select('name, slug, telegram_bot_token, telegram_chat_id, viber_bot_token, meta_whatsapp_phone_number_id, meta_whatsapp_access_token').eq('id', c.business_id).single()
     const bookingUrl = biz?.slug ? `${APP_URL}/book/${biz.slug}` : undefined

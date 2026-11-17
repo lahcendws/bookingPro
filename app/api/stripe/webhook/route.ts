@@ -1,16 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/service'
+import Stripe from 'stripe'
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
-  if (!webhookSecret || !sig) {
-    // If webhook secret is not configured in development, allow parsing for test/local webhook simulation
-    if (process.env.NODE_ENV === 'production') {
-      return NextResponse.json({ error: 'Webhook secret or signature missing' }, { status: 400 })
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', { apiVersion: '2025-02-28.acacia' })
+
+  let event: Stripe.Event
+  try {
+    event = JSON.parse(body)
+  } catch {
+    return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
+  }
+
+  // In production, always verify the Stripe signature to prevent spoofed webhooks.
+  // In dev, if no secret is set, we allow parsing for local testing but log a warning.
+  if (process.env.NODE_ENV === 'production' && webhookSecret && sig) {
+    try {
+      event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+    } catch (err) {
+      console.error('[stripe/webhook] Signature verification failed:', err)
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
     }
+  } else if (process.env.NODE_ENV === 'production' && (!webhookSecret || !sig)) {
+    console.warn('[stripe/webhook] Production mode: Stripe webhook secret is missing — webhook signatures are NOT verified. Set STRIPE_WEBHOOK_SECRET in production environment.')
   }
 
   let event: { type: string; data: { object: Record<string, unknown> } }
@@ -71,18 +87,18 @@ export async function POST(req: NextRequest) {
       const subscription = event.data.object
       const subscriptionId = subscription.id as string
 
-      // Revert business to free plan on subscription deletion
-      const { data: freePlan } = await supabase
+      // Revert business to basic plan on subscription deletion
+      const { data: basicPlan } = await supabase
         .from('plans')
         .select('id')
-        .eq('slug', 'free')
+        .eq('slug', 'basic')
         .single()
 
-      if (freePlan) {
+      if (basicPlan) {
         await supabase
           .from('businesses')
           .update({
-            plan_id: freePlan.id,
+            plan_id: basicPlan.id,
             subscription_status: 'canceled',
             stripe_subscription_id: null,
             stripe_price_id: null,
