@@ -19,7 +19,7 @@ BEGIN;
 --
 -- Existing auth users in the local DB:
 -- owner    5041b437-2b54-4827-bf0f-7eaeb160872a
--- employee eef38355-c6e2-4b92-bd31-46fd8480c8ea
+-- employee 5e5f5ce0-72c8-4bf1-8e5e-dd737dc16a0b
 
 -- ---------------------------------------------------------------------------
 -- Clean up previous E2E public data
@@ -71,7 +71,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = '5041b437-2b54-4827-bf0f-7eaeb160872a'::uuid
+    WHERE id = '14b0e481-fdd8-4626-93d5-8edd1de77c5a'::uuid
       AND email = 'e2e-owner@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E owner auth user: e2e-owner@test.invalid';
@@ -80,7 +80,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = 'eef38355-c6e2-4b92-bd31-46fd8480c8ea'::uuid
+    WHERE id = '5e5f5ce0-72c8-4bf1-8e5e-dd737dc16a0b'::uuid
       AND email = 'e2e-employee@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E employee auth user: e2e-employee@test.invalid';
@@ -103,7 +103,7 @@ INSERT INTO public.businesses (
 )
 VALUES (
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  '5041b437-2b54-4827-bf0f-7eaeb160872a'::uuid,
+  '14b0e481-fdd8-4626-93d5-8edd1de77c5a'::uuid,
   'Salon Alpha E2E',
   'salon-alpha-e2e',
   'Europe/Paris',
@@ -129,12 +129,12 @@ INSERT INTO public.business_members (business_id, user_id, role)
 VALUES
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    '5041b437-2b54-4827-bf0f-7eaeb160872a'::uuid,
+    '14b0e481-fdd8-4626-93d5-8edd1de77c5a'::uuid,
     'admin'
   ),
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    'eef38355-c6e2-4b92-bd31-46fd8480c8ea'::uuid,
+    '5e5f5ce0-72c8-4bf1-8e5e-dd737dc16a0b'::uuid,
     'employee'
   )
 ON CONFLICT (business_id, user_id) DO UPDATE SET
@@ -149,7 +149,7 @@ INSERT INTO public.employees (
 VALUES (
   'a2e00000-6666-4666-8666-666666666666'::uuid,
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  'eef38355-c6e2-4b92-bd31-46fd8480c8ea'::uuid,
+  '14b0e481-fdd8-4626-93d5-8edd1de77c5a'::uuid,
   'Alice E2E',
   'employee',
   true
