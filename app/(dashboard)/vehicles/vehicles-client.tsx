@@ -9,11 +9,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Search, Pencil, Car, Trash2, DollarSign, Settings, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plus, Search, Pencil, Car, Trash2, DollarSign, Settings, ChevronLeft, ChevronRight, FileText } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { formatCurrency } from '@/lib/utils'
 import { STANDARD_BODY_TYPES, VehicleBodyType, ServiceBodyTypePrice } from '@/lib/qlyo-types'
+import Link from 'next/link'
 
 interface Vehicle {
   id: string
@@ -89,7 +90,7 @@ export function VehiclesClient({
     async function loadServices() {
       const { data } = await supabase
         .from('services')
-        .select('*, service_body_type_prices(*)')
+        .select('*')
         .eq('business_id', businessId)
         .eq('is_active', true)
         .order('name')
@@ -110,7 +111,7 @@ export function VehiclesClient({
     const { data: prices } = await supabase
       .from('service_body_type_prices')
       .select('service_id, body_type_id, price_ht')
-      .eq('service_id', services.map(s => s.id))
+      .in('service_id', services.map(s => s.id))
 
     const grid: Record<string, Record<string, number>> = {}
     prices?.forEach(p => {
@@ -150,11 +151,11 @@ export function VehiclesClient({
 
     try {
       if (editingId) {
-        const { data, error } = await (supabase.from('vehicles') as any).update(payload).eq('id', editingId).select('*, clients(name, phone), vehicle_body_types(*)').single()
+        const { data, error } = await (supabase.from('vehicles') as any).update(payload).eq('id', editingId).select('*, clients(name, phone), body_type_id').single()
         if (error) throw error
         if (data) setVehicles(vehicles.map(v => v.id === editingId ? data : v))
       } else {
-        const { data, error } = await (supabase.from('vehicles') as any).insert(payload).select('*, clients(name, phone), vehicle_body_types(*)').single()
+        const { data, error } = await (supabase.from('vehicles') as any).insert(payload).select('*, clients(name, phone), body_type_id').single()
         if (error) throw error
         if (data) setVehicles([data, ...vehicles])
       }
@@ -204,7 +205,12 @@ export function VehiclesClient({
         actions={
           <div className="flex gap-2">
             {activeTab === 'vehicles' && (
-              <Button size="sm" onClick={() => { setForm({ size_class: 'berline', body_type_id: 'berline' }); setEditingId(null); setIsOpen(true) }}>
+              <Button size="sm" onClick={() => {
+                const defaultBodyType = bodyTypes.find(b => b.code === 'berline')
+                setForm({ size_class: 'berline', body_type_id: defaultBodyType?.id || 'berline' });
+                setEditingId(null);
+                setIsOpen(true)
+              }}>
                 <Plus className="w-4 h-4 mr-1" /> {t('addVehicle')}
               </Button>
             )}
@@ -271,10 +277,13 @@ export function VehiclesClient({
                     </div>
                     <div>
                       <Label className="text-xs font-medium text-gray-500">{t('bodyType')}</Label>
-                      <Select value={form.body_type_id || 'berline'} onValueChange={v => setForm(f => ({ ...f, body_type_id: v, size_class: v }))}>
+                      <Select value={form.body_type_id || ''} onValueChange={v => {
+                        const bt = bodyTypes.find(b => b.id === v)
+                        setForm(f => ({ ...f, body_type_id: v, size_class: bt?.code || v }))
+                      }}>
                         <SelectTrigger className="mt-1"><SelectValue placeholder={t('selectBodyType')} /></SelectTrigger>
                         <SelectContent>
-                          {bodyTypes.map(bt => <SelectItem key={bt.code} value={bt.code}>{bt.label}</SelectItem>)}
+                          {bodyTypes.map(bt => <SelectItem key={bt.id} value={bt.id}>{bt.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     </div>
@@ -342,7 +351,15 @@ export function VehiclesClient({
                         <td className="px-4 py-3 text-gray-500">{v.color || '—'}</td>
                         <td className="px-4 py-3 text-right">
                           <div className="flex items-center justify-end gap-1.5 flex-wrap">
-                            <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => { setForm(v); setEditingId(v.id); setIsOpen(true) }}>
+                            <Link href={`/quotes?vehicle_id=${v.id}`} className="text-xs h-7 px-2 inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                              <FileText className="w-3 h-3" /> Devis
+                            </Link>
+                            <Button variant="outline" size="sm" className="text-xs h-7 px-2" onClick={() => {
+                              const bt = bodyTypes.find(b => b.id === v.body_type_id)
+                              setForm({ ...v, size_class: bt?.code || v.size_class || 'berline' });
+                              setEditingId(v.id);
+                              setIsOpen(true)
+                            }}>
                               <Pencil className="w-3 h-3 mr-1" /> {t('edit')}
                             </Button>
                             <Button variant="outline" size="sm" className="text-xs h-7 px-2 text-red-500 border-red-200 hover:bg-red-50" onClick={() => deleteVehicle(v.id)}>
