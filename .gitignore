@@ -62,7 +62,6 @@ test-results/
 *.md.bak
 docs/*.md.bak
 backups/
-lib/supabase/service-admin.ts
 supabase/snippets/
 supabase/test_plan_immutability.sql
 
