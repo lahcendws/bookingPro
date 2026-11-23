@@ -18,8 +18,8 @@ BEGIN;
 -- job           a2e11111-1111-4111-8111-111111111111
 --
 -- Existing auth users in the local DB:
--- owner    e53196fa-bde6-4aff-b9f4-76c8b0f7cb32
--- employee ec38d22b-38b0-4514-9015-2a20300174ea
+-- owner    e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab
+-- employee 7ae3a5d2-5340-48a0-be08-6ca61303f4ca
 
 -- ---------------------------------------------------------------------------
 -- Clean up previous E2E public data
@@ -71,7 +71,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = 'e53196fa-bde6-4aff-b9f4-76c8b0f7cb32'::uuid
+    WHERE id = 'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid
       AND email = 'e2e-owner@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E owner auth user: e2e-owner@test.invalid';
@@ -80,12 +80,31 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = 'ec38d22b-38b0-4514-9015-2a20300174ea'::uuid
+    WHERE id = '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid
       AND email = 'e2e-employee@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E employee auth user: e2e-employee@test.invalid';
   END IF;
 END $$;
+
+-- ---------------------------------------------------------------------------
+-- Initialize reference data: vehicle body types (Qlyo standard)
+-- ---------------------------------------------------------------------------
+INSERT INTO public.vehicle_body_types (code, label, label_en, label_es, icon, display_order) VALUES
+  ('berline', 'Berline', 'Sedan', 'Berlina', '🚗', 1),
+  ('break', 'Break', 'Wagon', 'Familiar', '🚙', 2),
+  ('suv', 'SUV / 4x4', 'SUV / 4x4', 'SUV / 4x4', '🚙', 3),
+  ('citadine', 'Citadine', 'City Car', 'Urbano', '🚗', 4),
+  ('utilitaire', 'Utilitaire', 'Van / Utility', 'Furgoneta', '🚐', 5),
+  ('moto', 'Moto / Scooter', 'Motorcycle / Scooter', 'Moto / Scooter', '🏍️', 6),
+  ('camion', 'Camion', 'Truck', 'Camión', '🚛', 7),
+  ('autre', 'Autre', 'Other', 'Otro', '❓', 8)
+ON CONFLICT (code) DO UPDATE SET
+  label = EXCLUDED.label,
+  label_en = EXCLUDED.label_en,
+  label_es = EXCLUDED.label_es,
+  icon = EXCLUDED.icon,
+  display_order = EXCLUDED.display_order;
 
 -- ---------------------------------------------------------------------------
 -- Business
@@ -103,7 +122,7 @@ INSERT INTO public.businesses (
 )
 VALUES (
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  'e53196fa-bde6-4aff-b9f4-76c8b0f7cb32'::uuid,
+  'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
   'Salon Alpha E2E',
   'salon-alpha-e2e',
   'Europe/Paris',
@@ -129,19 +148,19 @@ INSERT INTO public.business_members (business_id, user_id, role)
 VALUES
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    'e53196fa-bde6-4aff-b9f4-76c8b0f7cb32'::uuid,
+    'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
     'admin'
   ),
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    'ec38d22b-38b0-4514-9015-2a20300174ea'::uuid,
+    '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid,
     'employee'
   )
 ON CONFLICT (business_id, user_id) DO UPDATE SET
   role = EXCLUDED.role;
 
 -- ---------------------------------------------------------------------------
--- Employee
+-- Employee (owner as employee in their business)
 -- ---------------------------------------------------------------------------
 INSERT INTO public.employees (
   id, business_id, user_id, name, role, is_active
@@ -149,8 +168,29 @@ INSERT INTO public.employees (
 VALUES (
   'a2e00000-6666-4666-8666-666666666666'::uuid,
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  'e53196fa-bde6-4aff-b9f4-76c8b0f7cb32'::uuid,
+  'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
   'Alice E2E',
+  'employee',
+  true
+)
+ON CONFLICT (id) DO UPDATE SET
+  business_id = EXCLUDED.business_id,
+  user_id = EXCLUDED.user_id,
+  name = EXCLUDED.name,
+  role = EXCLUDED.role,
+  is_active = EXCLUDED.is_active;
+
+-- ---------------------------------------------------------------------------
+-- E2E Employee (authenticated user who is NOT the business owner)
+-- ---------------------------------------------------------------------------
+INSERT INTO public.employees (
+  id, business_id, user_id, name, role, is_active
+)
+VALUES (
+  'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ac'::uuid,
+  'a2e00000-0000-4000-8000-000000000001'::uuid,
+  '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid,
+  'E2E Employee',
   'employee',
   true
 )
@@ -493,7 +533,9 @@ VALUES
   )
 ON CONFLICT DO NOTHING;
 
+-- ---------------------------------------------------------------------------
 -- Service body type prices (for pricing grid test)
+-- ---------------------------------------------------------------------------
 INSERT INTO public.service_body_type_prices (service_id, body_type_id, price_ht, duration_min)
 SELECT
   s.id,
