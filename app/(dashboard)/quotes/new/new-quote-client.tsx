@@ -443,7 +443,7 @@ export function NewQuoteClient({
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label className="block text-xs font-medium text-gray-700 mb-1">Validité jusqu'au *</Label>
+              <Label className="block text-xs font-medium text-gray-700 mb-1">Validité jusqu&apos;au *</Label>
               <Input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} className="mt-1" />
             </div>
             <div>
