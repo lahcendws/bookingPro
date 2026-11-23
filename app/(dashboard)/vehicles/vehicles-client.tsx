@@ -18,7 +18,6 @@ import Link from 'next/link'
 
 interface Vehicle {
   id: string
-  license_plate?: string
   plate_number: string
   brand: string
   model: string
@@ -134,15 +133,14 @@ export function VehiclesClient({
     setSaving(true)
 
     const payload: any = {
-      license_plate: form.plate_number?.toUpperCase().trim(),
-      plate_number: form.plate_number?.toUpperCase().trim(), // Compatibilité
+      plate_number: form.plate_number?.toUpperCase().trim(),
       brand: form.brand,
       model: form.model,
       year: form.year ? Number(form.year) : null,
       color: form.color || null,
       vin: form.vin ? form.vin.toUpperCase().trim() : null,
       body_type_id: form.body_type_id || null,
-      size_class: form.size_class || 'berline', // Legacy
+      size_class: form.size_class || 'berline',
       business_id: businessId,
     }
     if (form.client_id) {
@@ -342,7 +340,7 @@ export function VehiclesClient({
                   <tbody>
                     {filteredVehicles.map(v => (
                       <tr key={v.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors last:border-0">
-                        <td className="px-4 py-3 font-bold text-gray-900 font-mono uppercase">{v.plate_number || v.license_plate}</td>
+                        <td className="px-4 py-3 font-bold text-gray-900 font-mono uppercase">{v.plate_number}</td>
                         <td className="px-4 py-3 font-medium text-gray-900">
                           {v.brand} {v.model} <span className="text-gray-400 font-normal">({v.year || '—'})</span>
                           <div className="mt-0.5">{getBodyTypeBadge(v.body_type?.code || v.size_class)}</div>

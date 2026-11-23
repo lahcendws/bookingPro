@@ -33,7 +33,6 @@ interface Vehicle {
   brand: string
   model: string
   plate_number: string
-  license_plate: string
   body_type_id?: string
   size_class?: string
   client_id?: string
@@ -107,7 +106,7 @@ export function NewQuoteClient({
 
       const { data: vehiclesData } = await supabase
         .from('vehicles')
-        .select('id, brand, model, plate_number, license_plate, body_type_id, size_class, client_id')
+        .select('id, brand, model, plate_number, body_type_id, size_class, client_id')
         .eq('business_id', businessId)
         .order('created_at', { ascending: false })
       if (vehiclesData) setVehicles(vehiclesData)
@@ -306,7 +305,7 @@ export function NewQuoteClient({
                 <SelectContent>
                   {vehicles.filter(v => !selectedClientId || v.client_id === selectedClientId).map(v => (
                     <SelectItem key={v.id} value={v.id}>
-                      {v.brand} {v.model} ({v.plate_number || v.license_plate})
+                      {v.brand} {v.model} ({v.plate_number})
                     </SelectItem>
                   ))}
                 </SelectContent>
