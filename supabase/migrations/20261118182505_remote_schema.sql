@@ -1,6 +1,3 @@
-
-
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -935,6 +932,38 @@ CREATE TABLE IF NOT EXISTS "public"."services" (
 
 ALTER TABLE "public"."services" OWNER TO "postgres";
 
+-- Add primary key to services table if it does not exist (required for FK from service_body_type_prices)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_indexes
+        WHERE schemaname = 'public' AND tablename = 'services' AND indexname = 'services_pkey'
+    ) THEN
+        ALTER TABLE "public"."services" ADD CONSTRAINT "services_pkey" PRIMARY KEY ("id");
+    END IF;
+END
+$$;
+
+CREATE TABLE IF NOT EXISTS "public"."service_body_type_prices" (
+    "service_id" "uuid" NOT NULL,
+    "body_type_id" "uuid" NOT NULL,
+    "price_ht" numeric(10,2) NOT NULL,
+    "duration_min" integer,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "now"(),
+    PRIMARY KEY ("service_id", "body_type_id")
+);
+
+
+ALTER TABLE "public"."service_body_type_prices" OWNER TO "postgres";
+
+
+CREATE INDEX IF NOT EXISTS "idx_sbp_body_type_id" ON "public"."service_body_type_prices"("body_type_id");
+CREATE INDEX IF NOT EXISTS "idx_sbp_service_id" ON "public"."service_body_type_prices"("service_id");
+
+ALTER TABLE "public"."service_body_type_prices"
+    ADD CONSTRAINT "fk_sbp_service_id" FOREIGN KEY ("service_id")
+    REFERENCES "public"."services" ("id") ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS "public"."transactions" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
@@ -956,10 +985,33 @@ CREATE TABLE IF NOT EXISTS "public"."transactions" (
 ALTER TABLE "public"."transactions" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."vehicle_body_types" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "code" "text" UNIQUE NOT NULL,
+    "label" "text" NOT NULL,
+    "label_en" "text",
+    "label_es" "text",
+    "icon" "text",
+    "display_order" integer DEFAULT 0,
+    "is_active" boolean DEFAULT true,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "now"(),
+    CONSTRAINT "vehicle_body_types_pkey" PRIMARY KEY ("id")
+);
+
+
+ALTER TABLE "public"."vehicle_body_types" OWNER TO "postgres";
+
+ALTER TABLE "public"."service_body_type_prices"
+    ADD CONSTRAINT "fk_sbp_body_type_id" FOREIGN KEY ("body_type_id")
+    REFERENCES "public"."vehicle_body_types" ("id") ON DELETE CASCADE;
+
+
 CREATE TABLE IF NOT EXISTS "public"."vehicles" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "business_id" "uuid" NOT NULL,
     "client_id" "uuid" NOT NULL,
+    "body_type_id" "uuid" REFERENCES "public"."vehicle_body_types" ("id") ON DELETE SET NULL,
     "plate_number" "text" NOT NULL,
     "brand" "text" NOT NULL,
     "model" "text" NOT NULL,
@@ -1167,8 +1219,7 @@ ALTER TABLE ONLY "public"."quotes"
 
 
 
-ALTER TABLE ONLY "public"."services"
-    ADD CONSTRAINT "services_pkey" PRIMARY KEY ("id");
+-- (clé primaire de services déjà ajoutée plus haut, dans le bloc DO)
 
 
 
@@ -1933,6 +1984,23 @@ ALTER TABLE "public"."notification_log" ENABLE ROW LEVEL SECURITY;
 
 
 CREATE POLICY "owner_access_businesses" ON "public"."businesses" USING (("owner_id" = "auth"."uid"()));
+
+
+-- Allow active employees to read their assigned business.
+-- Business owners keep their existing permissions.
+CREATE POLICY "employee_read_assigned_business"
+ON "public"."businesses"
+FOR SELECT
+TO authenticated
+USING (
+    EXISTS (
+        SELECT 1
+        FROM public.employees e
+        WHERE e.business_id = businesses.id
+          AND e.user_id = (SELECT auth.uid())
+          AND e.is_active = true
+    )
+);
 
 
 
@@ -3889,6 +3957,3 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 --
 
 CREATE OR REPLACE TRIGGER "on_auth_user_created" AFTER INSERT ON "auth"."users" FOR EACH ROW EXECUTE FUNCTION "public"."handle_new_user"();
-
-
-

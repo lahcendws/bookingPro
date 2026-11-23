@@ -23,11 +23,30 @@ export default async function DashboardPage() {
   const t = await getTranslations('dashboard')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
+  // First try to find a business owned by the user
+  let { data: business } = await supabase
     .from('businesses')
     .select('id, name, currency, timezone, onboarding_completed, enabled_modules')
     .eq('owner_id', user!.id)
     .maybeSingle()
+
+  // If no owned business, check if user is an employee in a business
+  if (!business) {
+    const { data: employee } = await supabase
+      .from('employees')
+      .select('business_id')
+      .eq('user_id', user!.id)
+      .single()
+
+    if (employee) {
+      business = await supabase
+        .from('businesses')
+        .select('id, name, currency, timezone, onboarding_completed, enabled_modules')
+        .eq('id', employee.business_id)
+        .single()
+        .then(r => r.data)
+    }
+  }
 
   if (!business) return null
 
