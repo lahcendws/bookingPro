@@ -13,9 +13,10 @@ import { LangSwitcher } from './lang-switcher'
 interface SidebarProps {
   businessName: string
   enabledModules?: string[]
+  isBusinessOwner?: boolean
 }
 
-export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
+export function Sidebar({ businessName, enabledModules = [], isBusinessOwner = false }: SidebarProps) {
   const t = useTranslations('sidebar')
   const pathname = usePathname()
   const router = useRouter()
@@ -23,22 +24,26 @@ export function Sidebar({ businessName, enabledModules = [] }: SidebarProps) {
   const [open, setOpen] = useState(false)
 
   const allNavItems = [
-    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, module: 'dashboard' },
-    { href: '/jobs', label: 'Chantiers & Atelier', icon: Wrench, module: 'dashboard' },
-    { href: '/vehicles', label: 'Garage & Véhicules', icon: Car, module: 'crm' },
-    { href: '/quotes', label: 'Devis', icon: FileText, module: 'crm' },
-    { href: '/invoices', label: 'Factures & Acomptes', icon: FileText, module: 'pos' },
-    { href: '/workstations', label: 'Postes de Travail', icon: Layers, module: 'bookings' },
-    { href: '/planning', label: 'Planning Postes', icon: CalendarDays, module: 'bookings' },
-    { href: '/inventory-rolls', label: 'Rouleaux & PPF', icon: Ruler, module: 'inventory' },
-    { href: '/warranties', label: 'Garanties', icon: ShieldCheck, module: 'inventory' },
-    { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos' },
-    { href: '/crm', label: t('clients'), icon: Users, module: 'crm' },
-    { href: '/inventory', label: t('inventory'), icon: Package, module: 'inventory' },
-    { href: '/booking', label: t('booking'), icon: CalendarDays, module: 'bookings' },
+    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, module: 'dashboard', adminOnly: false },
+    { href: '/jobs', label: 'Chantiers & Atelier', icon: Wrench, module: 'dashboard', adminOnly: false },
+    { href: '/vehicles', label: 'Garage & Véhicules', icon: Car, module: 'crm', adminOnly: false },
+    { href: '/quotes', label: 'Devis', icon: FileText, module: 'crm', adminOnly: false },
+    { href: '/invoices', label: 'Factures & Acomptes', icon: FileText, module: 'pos', adminOnly: false },
+    { href: '/workstations', label: 'Postes de Travail', icon: Layers, module: 'bookings', adminOnly: false },
+    { href: '/planning', label: 'Planning Postes', icon: CalendarDays, module: 'bookings', adminOnly: false },
+    { href: '/inventory-rolls', label: 'Rouleaux & PPF', icon: Ruler, module: 'inventory', adminOnly: false },
+    { href: '/warranties', label: 'Garanties', icon: ShieldCheck, module: 'inventory', adminOnly: false },
+    { href: '/pos', label: t('pos'), icon: ShoppingCart, module: 'pos', adminOnly: false },
+    { href: '/crm', label: t('clients'), icon: Users, module: 'crm', adminOnly: false },
+    { href: '/inventory', label: t('inventory'), icon: Package, module: 'inventory', adminOnly: false },
+    { href: '/booking', label: t('booking'), icon: CalendarDays, module: 'bookings', adminOnly: false },
   ]
 
-  const nav = allNavItems.filter(item => item.module === 'dashboard' || enabledModules.includes(item.module))
+  // Business owners have access to all modules
+  // Employees can only access modules that are enabled in their business
+  const nav = allNavItems
+    .filter(item => !item.adminOnly || isBusinessOwner)
+    .filter(item => item.module === 'dashboard' || isBusinessOwner || enabledModules.includes(item.module))
 
   async function handleLogout() {
     await supabase.auth.signOut()

@@ -55,15 +55,26 @@ const TIME_OPTIONS = Array.from({ length: 48 }, (_, i) => {
   return `${String(h).padStart(2, '0')}:${m}`
 })
 
-interface Props { business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null }; services: Service[]; employees: Employee[]; workingHours: DayHours[]; userEmail: string }
+interface Props {
+  business: Business & { telegram_chat_id?: string | null; viber_chat_id?: string | null };
+  services: Service[];
+  employees: Employee[];
+  workingHours: DayHours[];
+  userEmail: string;
+  isBusinessOwner: boolean
+}
 type Tab = 'general' | 'services' | 'employees' | 'notifications' | 'billing' | 'account' | 'modules' | 'gdpr' | 'audit'
 
-export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail }: Props) {
+export function SettingsTabs({ business: initial, services: initServices, employees: initEmployees, workingHours: initHours, userEmail, isBusinessOwner }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const t = useTranslations('settings')
   const searchParams = useSearchParams()
-  const initialTab = (['general', 'services', 'employees', 'notifications', 'billing', 'modules', 'gdpr', 'audit'].includes(searchParams.get('tab') ?? '')
+  const validTabs = isBusinessOwner
+      ? ['general', 'services', 'employees', 'notifications', 'billing', 'modules', 'gdpr', 'audit', 'account']
+      : ['general', 'services', 'notifications', 'billing', 'gdpr']
+
+  const initialTab = (validTabs.includes(searchParams.get('tab') ?? '')
     ? searchParams.get('tab')
     : 'general') as Tab
   const [tab, setTab] = useState<Tab>(initialTab)
@@ -380,13 +391,15 @@ export function SettingsTabs({ business: initial, services: initServices, employ
   const tabs: { key: Tab; label: string }[] = [
     { key: 'general', label: t('tabs.general') },
     ...(bookingsOn ? [{ key: 'services' as Tab, label: t('tabs.services') }] : []),
-    { key: 'employees', label: t('tabs.employees') },
+    ...(isBusinessOwner ? [{ key: 'employees', label: t('tabs.employees') }] : []),
     { key: 'notifications', label: t('tabs.notifications') },
-    { key: 'billing', label: t('tabs.billing') },
-    { key: 'modules', label: t('tabs.modules') },
-    { key: 'account', label: t('tabs.account') },
-    { key: 'gdpr', label: t('tabs.gdpr') },
-    { key: 'audit', label: t('tabs.audit') },
+    ...(isBusinessOwner ? [
+      { key: 'billing', label: t('tabs.billing') },
+      { key: 'modules', label: t('tabs.modules') },
+      { key: 'account', label: t('tabs.account') },
+      { key: 'gdpr', label: t('tabs.gdpr') },
+      { key: 'audit', label: t('tabs.audit') },
+    ] : []),
   ]
 
   const generalFields: { key: keyof Business; label: string; type: string }[] = [

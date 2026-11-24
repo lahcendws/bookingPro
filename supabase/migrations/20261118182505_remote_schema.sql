@@ -1846,13 +1846,9 @@ CREATE POLICY "Users can manage warranties of their business" ON "public"."warra
   WHERE ("businesses"."owner_id" = "auth"."uid"()))));
 
 
-
-CREATE POLICY "Users can manage workstations of their business" ON "public"."workstations" TO "authenticated" USING (("business_id" IN ( SELECT "businesses"."id"
-   FROM "public"."businesses"
-  WHERE ("businesses"."owner_id" = "auth"."uid"())))) WITH CHECK (("business_id" IN ( SELECT "businesses"."id"
-   FROM "public"."businesses"
-  WHERE ("businesses"."owner_id" = "auth"."uid"()))));
-
+CREATE POLICY "tenant_access_workstations"
+ON public.workstations
+USING (business_id IN (SELECT id FROM public.businesses WHERE owner_id = auth.uid() UNION SELECT business_id FROM public.employees WHERE user_id = auth.uid() AND is_active = true));
 
 
 CREATE POLICY "Users can view activity logs of their business" ON "public"."activity_logs" FOR SELECT TO "authenticated" USING (("business_id" IN ( SELECT "businesses"."id"

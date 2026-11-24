@@ -68,6 +68,9 @@ export default async function SettingsPage() {
     }
   })
 
+  // Check if current user is the business owner
+  const isBusinessOwner = 'isOwner' in business && business.isOwner === true
+
   return (
     <>
       <Header title={t('title')} />
@@ -77,6 +80,7 @@ export default async function SettingsPage() {
         employees={enrichedEmployees}
         workingHours={businessHours ?? []}
         userEmail={user.email ?? ''}
+        isBusinessOwner={isBusinessOwner}
       />
     </>
   )

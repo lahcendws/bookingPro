@@ -1,25 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { PlanningClient } from './planning-client'
 import { redirect } from 'next/navigation'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function PlanningPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Check business access (owner OR employee)
-  const { data: ownedBusiness } = await supabase.from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
-
-  let business = ownedBusiness
-
-  // If no owned business, check if user is an employee in a business
-  if (!business) {
-    const { data: employee } = await supabase.from('employees').select('business_id').eq('user_id', user.id).maybeSingle()
-    if (employee?.business_id) {
-      business = await supabase.from('businesses').select('id').eq('id', employee.business_id).maybeSingle()
-    }
-  }
-
+  const business = await getBusinessForUser(user.id)
   if (!business) redirect('/onboarding')
 
   const { data: workstations } = await supabase

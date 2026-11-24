@@ -11,13 +11,13 @@ export async function getBusinessForUser(userId: string) {
   // First try to find a business owned by the user
   const { data: ownedBusiness } = await supabase
     .from('businesses')
-    .select('id, name, slug, plan, enabled_modules, timezone, currency, onboarding_completed')
+    .select('id, name, slug, owner_id, plan, enabled_modules, timezone, currency, onboarding_completed')
     .eq('owner_id', userId)
     .order('created_at', { ascending: true })
     .limit(1)
     .maybeSingle()
 
-  if (ownedBusiness) return ownedBusiness
+  if (ownedBusiness) return { ...ownedBusiness, isOwner: true }
 
   // If no owned business, check if user is an employee in a business
   const { data: employee } = await supabase
@@ -29,10 +29,10 @@ export async function getBusinessForUser(userId: string) {
   if (employee?.business_id) {
     const { data: employeeBusiness } = await supabase
       .from('businesses')
-      .select('id, name, slug, plan, enabled_modules, timezone, currency, onboarding_completed')
+      .select('id, name, slug, owner_id, plan, enabled_modules, timezone, currency, onboarding_completed')
       .eq('id', employee.business_id)
       .maybeSingle()
-    return employeeBusiness
+    return employeeBusiness ? { ...employeeBusiness, isOwner: false } : null
   }
 
   return null

@@ -1,13 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { WorkstationsClient } from './workstations-client'
 import { redirect } from 'next/navigation'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function WorkstationsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase.from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
+  const business = await getBusinessForUser(user.id)
   if (!business) return <div className="p-8">Aucune entreprise trouvée.</div>
 
   const { data: workstations } = await supabase

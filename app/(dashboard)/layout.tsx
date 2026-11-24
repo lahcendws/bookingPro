@@ -4,6 +4,9 @@ import { Sidebar } from '@/components/layout/sidebar'
 import { getAuthUser } from '@/lib/auth-user'
 import { getBusinessForUser } from '@/lib/business'
 
+// Default operational modules available to all business users (owners and employees)
+const DEFAULT_MODULES = ['bookings', 'crm', 'pos', 'inventory', 'notifications']
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -30,9 +33,14 @@ export default async function DashboardLayout({
     }
   }
 
+  const isBusinessOwner = 'isOwner' in business && business.isOwner === true
+
+  // Use business configured modules or defaults - ensures employees always have access to core modules
+  const enabledModules = business.enabled_modules?.length ? business.enabled_modules : DEFAULT_MODULES
+
   return (
     <div className="fixed inset-0 flex overflow-hidden bg-gray-50">
-      <Sidebar businessName={business.name} enabledModules={business?.enabled_modules ?? []} />
+      <Sidebar businessName={business.name} enabledModules={enabledModules} isBusinessOwner={isBusinessOwner} />
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto pt-14 md:pt-0">
         {children}
       </div>
