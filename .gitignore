@@ -17,6 +17,7 @@ supabase/.branches/
 # Local development
 .env.local
 .env.*.local
+.env
 
 # IDE
 .vscode/
