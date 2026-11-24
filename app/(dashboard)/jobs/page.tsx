@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { JobsClient } from './jobs-client'
 import { redirect } from 'next/navigation'
+import { getBusinessForUser } from '@/lib/business'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,13 +15,9 @@ export default async function JobsPage() {
 
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase
-    .from('businesses')
-    .select('id')
-    .eq('owner_id', user.id)
-    .maybeSingle()
-
-  if (!business) return <div>Business not found</div>
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user.id)
+  if (!business) redirect('/onboarding')
 
   const { data: jobs } = await supabase
     .from('jobs')
