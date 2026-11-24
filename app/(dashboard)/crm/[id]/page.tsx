@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { getTelegramBotInfo } from '@/lib/telegram'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function ClientDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -14,8 +15,9 @@ export default async function ClientDetailPage(props: { params: Promise<{ id: st
   const t = await getTranslations('clientDetail')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone, telegram_bot_token').eq('owner_id', user!.id).maybeSingle()
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user!.id)
+
   if (!business) return null
 
   const { data: client } = await supabase

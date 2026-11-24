@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { QuotesClient } from './quotes-client'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function QuotesPage(props: { searchParams: Promise<{ vehicle_id?: string }> }) {
   const searchParams = await props.searchParams;
@@ -8,7 +9,8 @@ export default async function QuotesPage(props: { searchParams: Promise<{ vehicl
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase.from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user.id)
   if (!business) redirect('/onboarding')
 
   // If vehicle_id is provided, redirect to new quote page

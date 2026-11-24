@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
 import { NewClientForm } from './new-client-form'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function NewClientPage() {
   const supabase = await createClient()
@@ -13,8 +14,9 @@ export default async function NewClientPage() {
   const user = await getAuthUser()
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase
-    .from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user.id)
+
   if (!business) redirect('/dashboard')
 
   return (

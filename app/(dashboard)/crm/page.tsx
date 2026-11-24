@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { CrmImportButton } from '@/components/clients/crm-import-button'
+import { getBusinessForUser } from '@/lib/business'
 import { formatCurrency, formatInBusinessTimezone } from '@/lib/utils'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
@@ -19,8 +20,8 @@ export default async function CRMPage(
   const t = await getTranslations('crm')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency, timezone').eq('owner_id', user!.id).maybeSingle()
+  // First try to find a business owned by the user, then check as employee
+  let business = await getBusinessForUser(user!.id)
 
   if (!business) return null
 

@@ -9,6 +9,7 @@ import { InventoryImportButton } from '@/components/inventory/inventory-import-b
 import { InventoryExportButton } from '@/components/inventory/inventory-export-button'
 import { InventoryMoreMenu } from '@/components/inventory/inventory-more-menu'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function InventoryPage(
   props: {
@@ -20,8 +21,8 @@ export default async function InventoryPage(
   const t = await getTranslations('inventory')
   const user = await getAuthUser()
 
-  const { data: business } = await supabase
-    .from('businesses').select('id, currency').eq('owner_id', user!.id).maybeSingle()
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user!.id)
 
   if (!business) return null
 

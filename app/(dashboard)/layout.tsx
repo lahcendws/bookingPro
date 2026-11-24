@@ -1,45 +1,19 @@
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { Sidebar } from '@/components/layout/sidebar'
 import { getAuthUser } from '@/lib/auth-user'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
   const user = await getAuthUser()
 
   if (!user) redirect('/login')
 
-  // First try to find a business owned by the user
-  let { data: business } = await supabase
-    .from('businesses')
-    .select('id, name, slug, plan, enabled_modules')
-    .eq('owner_id', user.id)
-    .order('created_at', { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  // If no owned business, check if user is an employee in a business
-  if (!business) {
-    const { data: employee } = await supabase
-      .from('employees')
-      .select('business_id')
-      .eq('user_id', user.id)
-      .single()
-
-    if (employee) {
-      business = await supabase
-        .from('businesses')
-        .select('id, name, slug, plan, enabled_modules')
-        .eq('id', employee.business_id)
-        .single()
-        .then(r => r.data)
-    }
-  }
+  const business = await getBusinessForUser(user.id)
 
   if (!business) redirect('/onboarding')
 

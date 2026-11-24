@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { NewQuoteClient } from './new-quote-client'
+import { getBusinessForUser } from '@/lib/business'
 
 export default async function NewQuotePage(props: { searchParams: Promise<{ vehicle_id?: string; client_id?: string }> }) {
   const searchParams = await props.searchParams;
@@ -8,7 +9,8 @@ export default async function NewQuotePage(props: { searchParams: Promise<{ vehi
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: business } = await supabase.from('businesses').select('id').eq('owner_id', user.id).maybeSingle()
+  // Check business access (owner OR employee)
+  const business = await getBusinessForUser(user.id)
   if (!business) redirect('/onboarding')
 
   // Get vehicle and client if provided
