@@ -1,233 +1,315 @@
 /**
- * Script to seed E2E test data via Supabase
- * Run after create-test-users.mjs
+ * Complete E2E setup script:
+ * 1. Creates or updates E2E test users via Supabase Admin API
+ * 2. Runs the SQL seed file to populate public data
  *
- * Usage: node scripts/setup-e2e-data.mjs
+ * Usage:
+ *   node scripts/setup-e2e-data.mjs
+ *
+ * Requires:
+ *   - Supabase local stack running
+ *   - NEXT_PUBLIC_SUPABASE_URL in .env.local
+ *   - SUPABASE_SERVICE_ROLE_KEY in .env.local
+ *   - Docker container supabase_db_bookingPro running
  */
 
 import { createClient } from '@supabase/supabase-js'
+import { execSync } from 'node:child_process'
+import { readFileSync, existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { parseEnv } from 'node:util'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321'
+const ENV_FILE = process.env.ENV_FILE ?? '.env.local'
+
+if (existsSync(ENV_FILE)) {
+  Object.assign(
+    process.env,
+    parseEnv(readFileSync(ENV_FILE, 'utf8').replace(/^\uFEFF/, ''))
+  )
+  console.log(`Variables lues depuis ${ENV_FILE}`)
+} else {
+  console.warn(
+    `${ENV_FILE} introuvable (dossier courant : ${process.cwd()}) : variables de la session utilisÃ©es.`
+  )
+}
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (!serviceRoleKey) {
-  console.error('SUPABASE_SERVICE_ROLE_KEY is required')
+if (!supabaseUrl || !serviceRoleKey) {
+  console.error(
+    'NEXT_PUBLIC_SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY sont requis (vÃ©rifie .env.local et le dossier courant).'
+  )
+  process.exit(1)
+}
+
+// Garde-fou : ces comptes de test ne doivent jamais Ãªtre prÃ©parÃ©s sur un projet distant.
+let parsedUrl
+try {
+  parsedUrl = new URL(supabaseUrl)
+} catch {
+  console.error(`Abandon : URL Supabase invalide : ${supabaseUrl}`)
+  process.exit(1)
+}
+
+if (!['127.0.0.1', 'localhost'].includes(parsedUrl.hostname)) {
+  console.error(
+    `Abandon : l'URL Supabase n'est pas locale (hÃ´te : ${parsedUrl.host}).`
+  )
   process.exit(1)
 }
 
 const supabase = createClient(supabaseUrl, serviceRoleKey)
 
-// Fixed E2E IDs
-const IDs = {
-  business: 'a2e00000-0000-4000-8000-000000000001',
-  appointment: 'a2e00000-1111-4111-8111-111111111111',
-  vehicle: 'a2e00000-2222-4222-8222-222222222222',
-  client: 'a2e00000-3333-4333-8333-333333333333',
-  service1: 'a2e00000-4444-4444-8444-444444444444',
-  service2: 'a2e00000-5555-4555-8555-555555555555',
-  employeeOwner: 'a2e00000-6666-4666-8666-666666666666',
-  employeeE2E: 'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ac',
-  job: 'a2e11111-1111-4111-8111-111111111111',
-  workstation: 'a2e00000-7777-4777-8777-777777777777',
-  quote: 'a2e00000-8888-4888-8888-888888888888',
-  invoice: 'a2e00000-9999-4999-8999-999999999999'
+// UUID historiques utilisÃ©s dans le fichier SQL seed.
+// Si les comptes existent dÃ©jÃ  avec d'autres UUID, le script adapte le SQL
+// avec les UUID rÃ©ellement retournÃ©s par Supabase Auth.
+const OWNER_UUID = 'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'
+const EMPLOYEE_UUID = '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'
+
+// -----------------------------------------------------------------------------
+// CrÃ©er OU mettre Ã  jour un utilisateur E2E (nom de fonction conservÃ©)
+// -----------------------------------------------------------------------------
+
+async function createUserIfNotExists(email, password, fullName, id) {
+  try {
+    const { data: existingUsers, error: listError } =
+      await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 })
+
+    if (listError) {
+      console.error('âŒ Error checking existing users:', listError.message)
+      return { created: false, error: listError.message }
+    }
+
+    const normalizedEmail = email.trim().toLowerCase()
+    const userById = existingUsers.users.find(user => user.id === id)
+    const userByEmail = existingUsers.users.find(
+      user => user.email?.trim().toLowerCase() === normalizedEmail
+    )
+
+    // Deux comptes diffÃ©rents ne doivent pas Ãªtre confondus.
+    if (userById && userByEmail && userById.id !== userByEmail.id) {
+      const message =
+        `Conflit : l'UUID ${id} et l'email ${email} appartiennent Ã  deux comptes diffÃ©rents.`
+      console.error(`âŒ ${message}`)
+      return { created: false, error: message }
+    }
+
+    const existingUser = userById ?? userByEmail
+
+    if (existingUser) {
+      if (existingUser.id !== id) {
+        console.warn(
+          `âš ï¸ ${email} existe dÃ©jÃ  avec l'UUID ${existingUser.id} (UUID seed historique : ${id}).`
+        )
+      } else {
+        console.log(`â„¹ï¸ User already exists: ${email} (${existingUser.id})`)
+      }
+
+      // RÃ©initialise le compte dans un Ã©tat prÃ©visible pour les tests E2E.
+      const { data, error } = await supabase.auth.admin.updateUserById(
+        existingUser.id,
+        {
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: {
+            ...existingUser.user_metadata,
+            full_name: fullName
+          }
+        }
+      )
+
+      if (error) {
+        console.error(`âŒ Error updating user ${email}:`, error.message)
+        return { created: false, error: error.message }
+      }
+
+      console.log(`âœ… User ready: ${email} (${data.user.id})`)
+      return { created: false, user: data.user }
+    }
+
+    // Aucun compte correspondant : crÃ©ation avec l'UUID historique attendu.
+    const { data, error } = await supabase.auth.admin.createUser({
+      id,
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { full_name: fullName }
+    })
+
+    if (error) {
+      // Une crÃ©ation concurrente peut avoir crÃ©Ã© le mÃªme email entre-temps.
+      if (
+        error.message.toLowerCase().includes('already registered') ||
+        error.message.toLowerCase().includes('already exists')
+      ) {
+        const { data: refreshedUsers, error: refreshError } =
+          await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 })
+
+        if (refreshError) {
+          console.error('âŒ Could not reload users:', refreshError.message)
+          return { created: false, error: refreshError.message }
+        }
+
+        const duplicate = refreshedUsers.users.find(
+          user =>
+            user.id === id ||
+            user.email?.trim().toLowerCase() === normalizedEmail
+        )
+
+        if (duplicate) {
+          const { data: updated, error: updateError } =
+            await supabase.auth.admin.updateUserById(duplicate.id, {
+              email,
+              password,
+              email_confirm: true,
+              user_metadata: {
+                ...duplicate.user_metadata,
+                full_name: fullName
+              }
+            })
+
+          if (updateError) {
+            console.error(
+              `âŒ Error updating existing user ${email}:`,
+              updateError.message
+            )
+            return { created: false, error: updateError.message }
+          }
+
+          console.log(`âœ… Existing user recovered: ${email} (${updated.user.id})`)
+          return { created: false, user: updated.user }
+        }
+      }
+
+      console.error(`âŒ Error creating user ${email}:`, error.message)
+      return { created: false, error: error.message }
+    }
+
+    console.log(`âœ… Created user: ${email} (${data.user.id})`)
+    return { created: true, user: data.user }
+  } catch (err) {
+    console.error(`âŒ Exception creating user ${email}:`, err.message)
+    return { created: false, error: err.message }
+  }
 }
 
-const OWNER_ID = process.env.E2E_OWNER_ID || 'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'
-const EMPLOYEE_ID = process.env.E2E_EMPLOYEE_ID || '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'
+// -----------------------------------------------------------------------------
+// ExÃ©cuter le seed SQL avec les UUID rÃ©els des comptes Auth
+// -----------------------------------------------------------------------------
+
+async function runSeedSQL(ownerId, employeeId) {
+  console.log('\nðŸ“¦ Running SQL seed file...')
+
+  const seedFile = resolve('supabase/seed/e2e-test-data.sql')
+
+  if (!existsSync(seedFile)) {
+    console.error(`âŒ Seed file not found: ${seedFile}`)
+    return false
+  }
+
+  try {
+    let sql = readFileSync(seedFile, 'utf8')
+
+    // Le SQL seed utilise les UUID historiques. On les remplace par les UUID
+    // rÃ©ellement associÃ©s aux emails E2E dans auth.users.
+    if (!sql.includes(OWNER_UUID)) {
+      console.warn(`âš ï¸ UUID owner historique ${OWNER_UUID} absent du fichier seed.`)
+    }
+    if (!sql.includes(EMPLOYEE_UUID)) {
+      console.warn(`âš ï¸ UUID employee historique ${EMPLOYEE_UUID} absent du fichier seed.`)
+    }
+
+    sql = sql
+      .replaceAll(OWNER_UUID, ownerId)
+      .replaceAll(EMPLOYEE_UUID, employeeId)
+
+    console.log(`ðŸ“„ Seed file: ${seedFile}`)
+    console.log(`ðŸ‘¤ Owner UUID utilisÃ© dans le seed: ${ownerId}`)
+    console.log(`ðŸ‘¤ Employee UUID utilisÃ© dans le seed: ${employeeId}`)
+    console.log('ðŸ”„ ExÃ©cution du SQL dans la base Supabase locale...')
+
+    execSync(
+      'docker exec -i supabase_db_bookingPro psql -v ON_ERROR_STOP=1 -U postgres -d postgres',
+      {
+        input: sql,
+        stdio: ['pipe', 'inherit', 'inherit'],
+        timeout: 60000
+      }
+    )
+
+    console.log('âœ… SQL seed executed successfully')
+    return true
+  } catch (error) {
+    console.error('âŒ Error running SQL seed:', error.message)
+    return false
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Main
+// -----------------------------------------------------------------------------
 
 async function main() {
-  console.log('Seeding E2E test data...')
+  console.log('ðŸš€ Setting up E2E test data...\n')
+  console.log('ðŸ“ Supabase URL:', supabaseUrl)
+  console.log('ðŸ”‘ Using service role key:', serviceRoleKey ? '*** (set)' : 'NOT SET')
+  console.log('')
 
-  // Business
-  await supabase.from('businesses').upsert({
-    id: IDs.business,
-    owner_id: OWNER_ID,
-    name: 'Salon Alpha E2E',
-    slug: 'salon-alpha-e2e',
-    timezone: 'Europe/Paris',
-    currency: 'EUR',
-    plan: 'pro',
-    subscription_status: 'active'
-  }, { onConflict: 'id' })
-  console.log('✓ Business created')
+  console.log('ðŸ‘¤ Step 1: Creating/checking E2E users...')
 
-  // Business members
-  await supabase.from('business_members').upsert([
-    { business_id: IDs.business, user_id: OWNER_ID, role: 'admin' },
-    { business_id: IDs.business, user_id: EMPLOYEE_ID, role: 'employee' }
-  ], { onConflict: 'business_id,user_id' })
-  console.log('✓ Business members created')
+  const ownerResult = await createUserIfNotExists(
+    'e2e-owner@test.invalid',
+    'password123',
+    'E2E Owner',
+    OWNER_UUID
+  )
 
-  // Employee (owner as employee in their business - Alice)
-  await supabase.from('employees').upsert({
-    id: IDs.employeeOwner,
-    business_id: IDs.business,
-    user_id: OWNER_ID,
-    name: 'Alice E2E',
-    role: 'employee',
-    is_active: true
-  }, { onConflict: 'id' })
-  console.log('✓ Employee (owner) created')
+  const employeeResult = await createUserIfNotExists(
+    'e2e-employee@test.invalid',
+    'password123',
+    'E2E Employee',
+    EMPLOYEE_UUID
+  )
 
-  // Employee (E2E employee)
-  await supabase.from('employees').upsert({
-    id: IDs.employeeE2E,
-    business_id: IDs.business,
-    user_id: EMPLOYEE_ID,
-    name: 'E2E Employee',
-    role: 'employee',
-    is_active: true
-  }, { onConflict: 'id' })
-  console.log('✓ Employee (E2E) created')
+  if (ownerResult.error || employeeResult.error) {
+    console.error('\nâŒ Failed to prepare E2E users')
+    process.exitCode = 1
+    return
+  }
 
-  // Client
-  await supabase.from('clients').upsert({
-    id: IDs.client,
-    business_id: IDs.business,
-    name: 'Client E2E',
-    phone: '+33612345678',
-    email: 'e2e-client@test.invalid'
-  }, { onConflict: 'id' })
-  console.log('✓ Client created')
+  if (!ownerResult.user?.id || !employeeResult.user?.id) {
+    console.error('\nâŒ Impossible de rÃ©cupÃ©rer les UUID des utilisateurs E2E.')
+    process.exitCode = 1
+    return
+  }
 
-  // Services
-  await supabase.from('services').upsert([
-    {
-      id: IDs.service1,
-      business_id: IDs.business,
-      name: 'Coupe homme',
-      duration_min: 45,
-      price: 3500,
-      capacity: 1,
-      is_active: true
-    },
-    {
-      id: IDs.service2,
-      business_id: IDs.business,
-      name: 'Coupe femmes',
-      duration_min: 60,
-      price: 4500,
-      capacity: 1,
-      is_active: true
-    }
-  ], { onConflict: 'id' })
-  console.log('✓ Services created')
+  console.log('\nâœ… E2E users ready')
 
-  // Vehicle
-  await supabase.from('vehicles').upsert({
-    id: IDs.vehicle,
-    business_id: IDs.business,
-    client_id: IDs.client,
-    plate_number: 'E2E-123-AA',
-    brand: 'Peugeot',
-    model: '308'
-  }, { onConflict: 'id' })
-  console.log('✓ Vehicle created')
+  console.log('\nðŸ—„ï¸  Step 2: Running seed SQL...')
+  const seedSuccess = await runSeedSQL(
+    ownerResult.user.id,
+    employeeResult.user.id
+  )
 
-  // Business hours
-  await supabase.from('business_hours').upsert([
-    { business_id: IDs.business, day_of_week: 1, is_open: true, open_time: '09:00', close_time: '18:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 2, is_open: true, open_time: '09:00', close_time: '18:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 3, is_open: true, open_time: '09:00', close_time: '18:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 4, is_open: true, open_time: '09:00', close_time: '18:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 5, is_open: true, open_time: '09:00', close_time: '14:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 6, is_open: false, open_time: '00:00', close_time: '00:00', break_start: null, break_end: null },
-    { business_id: IDs.business, day_of_week: 0, is_open: false, open_time: '00:00', close_time: '00:00', break_start: null, break_end: null }
-  ], { onConflict: 'business_id,day_of_week' })
-  console.log('✓ Business hours created')
+  if (!seedSuccess) {
+    console.error('\nâŒ Failed to run seed SQL')
+    console.log('\nðŸ’¡ VÃ©rifie que le conteneur supabase_db_bookingPro est dÃ©marrÃ©.')
+    console.log('   Tu peux aussi exÃ©cuter manuellement le fichier :')
+    console.log('   supabase/seed/e2e-test-data.sql')
+    process.exitCode = 1
+    return
+  }
 
-  // Appointment
-  await supabase.from('appointments').upsert({
-    id: IDs.appointment,
-    business_id: IDs.business,
-    client_id: IDs.client,
-    employee_id: IDs.employeeOwner,
-    service_id: IDs.service1,
-    starts_at: '2026-12-20T10:00:00+01:00',
-    ends_at: '2026-12-20T11:00:00+01:00',
-    status: 'confirmed',
-    source: 'manual'
-  }, { onConflict: 'id' })
-  console.log('✓ Appointment created')
-
-  // Workstation
-  await supabase.from('workstations').upsert({
-    id: IDs.workstation,
-    business_id: IDs.business,
-    name: 'Poste PPF 1',
-    description: 'Équipé découpe laser & éclairage LED'
-  }, { onConflict: 'id' })
-  console.log('✓ Workstation created')
-
-  // Quote
-  await supabase.from('quotes').upsert({
-    id: IDs.quote,
-    business_id: IDs.business,
-    client_id: IDs.client,
-    vehicle_id: IDs.vehicle,
-    status: 'brouillon',
-    valid_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-    total_amount: 42000,
-    notes: 'Devis test pour E2E'
-  }, { onConflict: 'id' })
-  console.log('✓ Quote created')
-
-  // Quote lines
-  await supabase.from('quote_lines').upsert([
-    {
-      quote_id: IDs.quote,
-      service_id: IDs.service1,
-      description: 'Coupe homme',
-      quantity: 1,
-      unit_price: 3500,
-      total_price: 3500
-    },
-    {
-      quote_id: IDs.quote,
-      service_id: IDs.service2,
-      description: 'Coupe femmes',
-      quantity: 1,
-      unit_price: 4500,
-      total_price: 4500
-    }
-  ], { onConflict: 'quote_id,service_id' })
-  console.log('✓ Quote lines created')
-
-  // Invoice
-  await supabase.from('invoices').upsert({
-    id: IDs.invoice,
-    business_id: IDs.business,
-    client_id: IDs.client,
-    quote_id: IDs.quote,
-    number: 'FAC-2026-001',
-    status: 'paid',
-    total_amount: 84000,
-    issued_at: new Date().toISOString(),
-    due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-  }, { onConflict: 'id' })
-  console.log('✓ Invoice created')
-
-  // Invoice lines
-  await supabase.from('invoice_lines').upsert([
-    {
-      invoice_id: IDs.invoice,
-      description: 'Coupe homme',
-      quantity: 1,
-      unit_price: 3500,
-      total_price: 3500
-    },
-    {
-      invoice_id: IDs.invoice,
-      description: 'Coupe femmes',
-      quantity: 1,
-      unit_price: 4500,
-      total_price: 4500
-    }
-  ], { onConflict: 'invoice_id,description' })
-  console.log('✓ Invoice lines created')
-
-  console.log('\n✅ E2E test data seeded successfully!')
+  console.log('\nâœ¨ E2E setup complete!')
+  console.log('   Owner:    e2e-owner@test.invalid / password123')
+  console.log('   Employee: e2e-employee@test.invalid / password123')
+  console.log('   Business: Salon Alpha E2E (slug: salon-alpha-e2e)')
+  console.log('   Tracking token: 550e8400-e29b-41d4-a716-446655440000')
 }
 
-main().catch(console.error)
+main().catch(error => {
+  console.error('\nâŒ Unexpected error:', error)
+  process.exitCode = 1
+})

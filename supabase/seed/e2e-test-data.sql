@@ -18,8 +18,8 @@ BEGIN;
 -- job           a2e11111-1111-4111-8111-111111111111
 --
 -- Existing auth users in the local DB:
--- owner    e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab
--- employee 7ae3a5d2-5340-48a0-be08-6ca61303f4ca
+-- owner    38d54b31-2904-497f-bbac-17656e6ab6a3
+-- employee 61636a96-5716-4d72-8000-fa5eddd8ae31
 
 -- ---------------------------------------------------------------------------
 -- Clean up previous E2E public data
@@ -71,7 +71,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = 'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid
+    WHERE id = '38d54b31-2904-497f-bbac-17656e6ab6a3'::uuid
       AND email = 'e2e-owner@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E owner auth user: e2e-owner@test.invalid';
@@ -80,7 +80,7 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM auth.users
-    WHERE id = '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid
+    WHERE id = '61636a96-5716-4d72-8000-fa5eddd8ae31'::uuid
       AND email = 'e2e-employee@test.invalid'
   ) THEN
     RAISE EXCEPTION 'Missing E2E employee auth user: e2e-employee@test.invalid';
@@ -122,7 +122,7 @@ INSERT INTO public.businesses (
 )
 VALUES (
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
+  '38d54b31-2904-497f-bbac-17656e6ab6a3'::uuid,
   'Salon Alpha E2E',
   'salon-alpha-e2e',
   'Europe/Paris',
@@ -148,12 +148,12 @@ INSERT INTO public.business_members (business_id, user_id, role)
 VALUES
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
+    '38d54b31-2904-497f-bbac-17656e6ab6a3'::uuid,
     'admin'
   ),
   (
     'a2e00000-0000-4000-8000-000000000001'::uuid,
-    '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid,
+    '61636a96-5716-4d72-8000-fa5eddd8ae31'::uuid,
     'employee'
   )
 ON CONFLICT (business_id, user_id) DO UPDATE SET
@@ -168,7 +168,7 @@ INSERT INTO public.employees (
 VALUES (
   'a2e00000-6666-4666-8666-666666666666'::uuid,
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ab'::uuid,
+  '38d54b31-2904-497f-bbac-17656e6ab6a3'::uuid,
   'Alice E2E',
   'employee',
   true
@@ -189,7 +189,7 @@ INSERT INTO public.employees (
 VALUES (
   'e4c45cd5-ffe4-4c2f-aa27-91e9ef6788ac'::uuid,
   'a2e00000-0000-4000-8000-000000000001'::uuid,
-  '7ae3a5d2-5340-48a0-be08-6ca61303f4ca'::uuid,
+  '61636a96-5716-4d72-8000-fa5eddd8ae31'::uuid,
   'E2E Employee',
   'employee',
   true
